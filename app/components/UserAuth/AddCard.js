@@ -5,7 +5,6 @@ import * as firebase from 'firebase';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js';
-import { Switch } from 'react-native-switch';
 import { CreditCardInput } from "react-native-credit-card-input";
 import { HOST_IP } from '../../../config'
 
