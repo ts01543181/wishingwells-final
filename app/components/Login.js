@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
- StyleSheet,
- Text,
- View,
- TextInput,
- Button,
- ActivityIndicator,
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput,Button, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import Register from './Register'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -35,6 +28,8 @@ class Login extends Component {
     firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then(data => {
       if (data) {
+        this.setState({loading: true})
+
         const uid = data.uid.substring(0, 10)
         this.props.setUserInfo({
           email: data.email,
@@ -46,11 +41,7 @@ class Login extends Component {
           this.props.setBitcoinValue(data)
           Actions.Home()
         })
-        for (let i = 0; i < 100; i ++) {
-            this.setState({
-              progress: this.state.progress + 0.1
-            })
-        }
+        
       }
     })
     .catch((err) => {
@@ -59,62 +50,105 @@ class Login extends Component {
     })
   }
 
-
-
   render() {
-    console.log('this is teh host IP ', `http://${HOST_IP}:4000/api/getBitcoinValue`)
-    return (
+    
+    return this.state.loading? 
+    <View style={styles.spinnerContainer}>
+      <ActivityIndicator size='large' style={styles.spinner}/> 
+    </View>
+    : (
+      <View>
+        <View>
+        <Image source={require('../../assets/background2.jpg')}  style={styles.backgroundImage}>
       <View style={styles.container}>
-        <Icon name="currency-usd" size={30} color="#000" />
         <Text style={styles.title}>
-          Wishing Well
+          W I S H I N G  W E L L 
         </Text>
+        <View style={styles.inputSection}>
+          <Icon style={styles.email} name="email-outline" size={20} color="#F0F0F0"/>
+          <TextInput
+            style={styles.inputFields}
+            placeholder="EMAIL"
+            onChangeText={(text) => this.setState({email: text})}
+            value={this.email}
+            autoCorrect={false}
+            autoCapitalize='none'
+          />
+        </View>
+        <View style={styles.secondSection}>
+          <Icon style={styles.email} name="lock-outline" size={20} color="#F0F0F0"/>
+          <TextInput
+            style={styles.inputFields}
+            placeholder="PASSWORD"
+            onChangeText={(text) => this.setState({password: text})}
+            value={this.password}
+            autoCorrect={false}
+            secureTextEntry={true}
+            autoCapitalize='none'
+          />
+        </View> 
+        <TouchableOpacity onPress={this._login} style={styles.login}>
+          <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+        
+        <View style={styles.signupSection}>
+          <Text style={styles.account}>DONT HAVE AN ACCOUNT?</Text>
+          <TouchableOpacity onPress={() => Actions.Register()}>
+            <Text style={styles.signupText}>   SIGN UP</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TextInput
-          style={styles.inputFields}
-          placeholder="Email"
-          onChangeText={(text) => this.setState({email: text})}
-          value={this.email}
-          autoCorrect={false}
-          autoCapitalize='none'
-        />
-
-        <TextInput
-          style={styles.inputFields}
-          placeholder="Password"
-          onChangeText={(text) => this.setState({password: text})}
-          value={this.password}
-          autoCorrect={false}
-          secureTextEntry={true}
-          autoCapitalize='none'
-        />
-
-        <Button title="Login" onPress={this._login}></Button>
-
-        <Button title="Register" onPress={() => Actions.Register()}></Button>
-        <Button title="Bypass" onPress={() => Actions.Home()}></Button>
-
+        <TouchableOpacity style={styles.bypass} onPress={() => Actions.Home()}>
+          <Text style={styles.account} > BYPASS </Text>
+        </TouchableOpacity>
+      </View>
+      </Image>
+      </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
- container: {
-   alignItems: 'center',
-   marginTop: '20%',
- },
+  inputSection:{
+    borderBottomWidth: 0.5,
+    borderColor: '#F8F8F8',
+    paddingBottom: 10,
+    marginTop: 280,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  secondSection:{
+    borderBottomWidth: 0.5,
+    borderColor: '#F8F8F8',
+    paddingBottom: 10,
+    marginTop: 60,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  backgroundImage:{
+    width: 400,
+    height: 800,
+    backgroundColor: 'rgba(0,0,0,0)'
+  },
+  background:{
+    flex: 1,
+    width: 200,
+    height: 400,
+  },
+  spinnerContainer: {
+    alignItems: 'center',
+  },
+  spinner: {
+    marginTop: '80%'
+  },
  title: {
-   fontWeight: 'bold'
- },
- inputFields: {
-   borderWidth: 1,
-   justifyContent: 'center',
-   alignItems: 'center',
-   height: 20,
-   width: '50%',
-   marginTop: 20,
-   marginLeft: '20%'
+   fontSize: 20,
+   color: '#E8E8E8',
  },
  credentials: {
    paddingTop: 20
@@ -123,26 +157,58 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: '20%',
   },
-  title: {
-    fontWeight: 'bold'
-  },
   inputFields: {
-    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     height: 20,
     width: '50%',
-    marginTop: 20,
-    marginLeft: '20%'
-  },
-  credentials: {
-    paddingTop: 20
+    marginTop: 1,
+    fontSize: 13,
+    paddingBottom: 5,
+    color: 'white'
   },
   centering: {
     justifyContent:'center',
     alignItems:'center',
     marginTop: '90%',
   },
+  email: {
+    marginRight: 20,
+    marginBottom: 10
+  },
+  login: {
+    borderWidth: 0.5,
+    borderRadius: 20,
+    borderColor: '#FFFFFF',
+    paddingLeft: 110,
+    paddingRight: 110,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: 40
+  },
+  loginText: {
+    color: '#FFFFFF'
+  },
+  signupSection:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 215,
+    marginTop: 40,
+  },
+  signupText:{
+    color: '#F8F8F8',
+    fontWeight: 'bold',
+    fontSize: 13
+  },
+  account: {
+    color: '#E0E0E0',
+    fontSize: 12
+  },
+  bypass:{
+    marginTop: 10
+  }
 });
 
 
