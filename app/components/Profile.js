@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
     email: state.ProfileReducer.email,
     photo: state.PhotoReducer.photo,
     bio: state.ProfileReducer.bio,
-    logs: state.SavingsReducer.entries    
+    logs: state.SavingsReducer.entries
   }
 }
 
@@ -86,12 +86,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 15
   },
-  image: { 
+  image: {
     marginLeft: 85,
     top: 10,
-    height: 200, 
+    height: 200,
     width: 200,
-    borderRadius: 100, 
+    borderRadius: 100,
     backgroundColor: '#C0C0C0',
   },
   namewrap: {
@@ -99,29 +99,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
-    paddingBottom: 20,   
+    paddingBottom: 20,
     fontSize: 30,
     fontWeight: 'bold',
     top: 15,
-    fontFamily: 'Roboto-Light'
   },
   icon:{
     marginLeft: 30
   },
   info:{
-    fontFamily: 'Roboto-Light',    
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 10,
     borderBottomWidth: 0.5,
-    fontFamily: 'Roboto-Light'
-    
+
   }
 })
 
 export default connect(mapStateToProps)(Profile)
-
-
-
-
-
