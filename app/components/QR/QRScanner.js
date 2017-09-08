@@ -16,15 +16,36 @@ class QRScanner extends Component {
       lastScannedUrl: null,
       donationID: '',
     };
-    this.takePicture = this.takePicture.bind(this)
+    this.displayQR = this.displayQR.bind(this)
   }
 
-  takePicture() {
-    const options = {};
-    //options.location = ...
-    this.camera.capture({metadata: options})
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
+  displayQR(data) {
+    if (data.data !== this.state.lastScannedUrl) {
+      this.setState({
+        lastScannedUrl: data.data
+      })
+      Alert.alert(
+        'Donate to this Well?',
+        this.state.lastScannedUrl,
+        [
+          {
+            text: 'Yes',
+            onPress: () => {
+              this.props.setUserInfo({
+                donationID: this.state.donationID,
+              })
+              Actions.DonationWell()
+            },
+          },
+          { text: 'No', onPress: () => {
+            this.setState({
+              lastScannedUrl: null
+            })
+          } },
+        ],
+        { cancellable: false }
+      );
+    }
   }
 
   render() {
@@ -35,8 +56,8 @@ class QRScanner extends Component {
             this.camera = cam;
           }}
           style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+          aspect={Camera.constants.Aspect.fill}
+          onBarCodeRead={data => {this.displayQR(data)}}>
         </Camera>
       </View>
     );

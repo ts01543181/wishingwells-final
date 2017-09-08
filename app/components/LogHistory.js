@@ -56,7 +56,7 @@ class LogHistory extends Component {
           <Text style={styles.savings}>Total Well Savings: <Text style={styles.number}>${this.getTotal()}</Text></Text>
         </View>
             <View style={styles.log}>
-              <FlatList 
+              <FlatList
                 refreshControl={
                   <RefreshControl
                     refreshing={this.state.refreshing}
@@ -97,21 +97,18 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     width: '100%',
     height: 80,
-    fontFamily: 'Roboto-Light'    
   },
   description: {
     fontSize: 20,
     top: 5,
     marginLeft: 10,
-    fontFamily: 'Roboto-Light'
   },
   amount: {
-    fontFamily: 'Roboto-Light'    
   },
   time: {
     marginRight: 10,
     color: 'gray',
-    top: 10,    
+    top: 10,
   },
   firstline: {
     flexDirection: 'row',
@@ -137,19 +134,17 @@ const styles = StyleSheet.create({
   total: {
     height: 40,
     borderBottomWidth: 0.5,
-    borderColor: 'gray',
-    fontFamily: 'Roboto-Light' 
-  }, 
+    borderColor: 'gray', 
+  },
   savings: {
     fontSize: 25,
     marginLeft: 7,
-    fontFamily: 'Roboto-Light'
-    
+
   },
   number: {
     fontSize: 25,
     textAlign: 'right',
-    marginRight: 10    
+    marginRight: 10
   },
 })
 
