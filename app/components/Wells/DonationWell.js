@@ -33,13 +33,6 @@ class DonationWell extends Component {
     this.onSwipeUp = this.onSwipeUp.bind(this);
   }
 
-  componentDidMount() {
-      this.setInterval(
-        () => { this.slowDown() },
-        500
-      );
-    }
-
   onSwipeUp(gestureState) {
 
     if (this.props.paymentReady) {
