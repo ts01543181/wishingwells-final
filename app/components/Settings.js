@@ -133,6 +133,7 @@ class Settings extends Component {
             title="Change Profile Photo"
             onPress={this._pickImage}
             style={styles.button}
+            color="#2eb8b8" 
         />
         </View>
         <Separator label="Personal Information"/>
@@ -187,11 +188,13 @@ class Settings extends Component {
           title="Save Changes"
           onPress={() => this.handleOnSave()}
           style={styles.button}
+          color="#2eb8b8" 
         ></Button>
         <Button
           title="Sign Out"
           onPress={() => this.signOut()}
           style={styles.button}
+          color="#2eb8b8" 
         ></Button>
 
       </View>
