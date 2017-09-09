@@ -88,37 +88,37 @@ class Settings extends Component {
 
   _pickImage() {
     ImagePicker.showImagePicker(null, (res) => {
-      // if (!res.didCancel) {
-      //   const uploadImage = (uri, mime = 'application/octet-stream') => {
-      //     return new Promise((resolve, reject) => {
-      //       const uploadUri = uri.replace('file://', '')
-      //         let uploadBlob = null
-      //         const imageRef = storage.ref('profile_pics').child(`${this.props.uid}`)
+      if (!res.didCancel) {
+        const uploadImage = (uri, mime = 'application/octet-stream') => {
+          return new Promise((resolve, reject) => {
+            const uploadUri = uri.replace('file://', '')
+              let uploadBlob = null
+              const imageRef = storage.ref('profile_pics').child(`${this.props.uid}`)
 
-      //         fs.readFile(uploadUri, 'base64')
-      //         .then((data) => {
-      //           return Blob.build(data, { type: `${mime};BASE64` })
-      //         })
-      //         .then((blob) => {
-      //           uploadBlob = blob
-      //           const task = imageRef.put(blob, { contentType: mime })
+              fs.readFile(uploadUri, 'base64')
+              .then((data) => {
+                return Blob.build(data, { type: `${mime};BASE64` })
+              })
+              .then((blob) => {
+                uploadBlob = blob
+                const task = imageRef.put(blob, { contentType: mime })
 
-      //           task.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
-      //             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      //             if (progress <= 100) {
-      //               console.log('Upload is ' + progress + '% done');
-      //             }
-      //           }, (err) => {
-      //             console.log(err)
-      //           }, 
-      //           () => {
-      //             this.props.setUserPhoto(task.snapshot.downloadURL)
-      //           })
-      //         })
-      //     })
-      //   }
-      //   uploadImage(res.uri)
-      // }
+                task.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+                  var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                  if (progress <= 100) {
+                    console.log('Upload is ' + progress + '% done');
+                  }
+                }, (err) => {
+                  console.log(err)
+                }, 
+                () => {
+                  this.props.setUserPhoto(task.snapshot.downloadURL)
+                })
+              })
+          })
+        }
+        uploadImage(res.uri)
+      }
     })
   }
 

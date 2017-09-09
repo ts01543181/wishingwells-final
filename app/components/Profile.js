@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableHighlight, Image, Button } from 'react-native'
+import { View, Text, StyleSheet, TouchableHighlight, Image, TouchableOpacity, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const mapStateToProps = (state) => {
@@ -48,28 +49,43 @@ class Profile extends Component {
             <NavigationBar title={{title:'Profile'}} rightButton={rightButtonConfig} tintColor='#99ccff'/>
           </View>
         <View>
-            <Image source={{ uri: this.props.photo }} style={styles.image}/>
+            <Image source={{ uri: this.props.photo }} style={styles.image}>
           <View style={styles.namewrap}>
             <Text style={styles.name}>
               {this.props.firstname} {this.props.lastname}
             </Text>
           </View>
+            </Image>
+          <ScrollView>
+          <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
           <View style={styles.info}>
             <Text><Icon name='at' size={25} style={styles.icon}/> {this.props.username}</Text>
             <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
-            <Text style={styles.total}><Icon name='currency-usd' size={25} style={styles.icon}/>{this.getTotal()}</Text>
-            <Button title="Invest" onPress={() => {}}>Invest</Button>
           </View>
+
+          <View style={styles.info}>
+              <Text style={styles.total}><Icon name='currency-usd' size={25} style={styles.icon}/>{this.getTotal()}</Text>
+              <TouchableOpacity style={styles.button} onPress={() => {}}>
+                <Text style={styles.invest}>INVEST</Text>
+              </TouchableOpacity>
+          </View>
+
+          <View style={styles.info}>
             <Text style={styles.about}><Icon name='information-outline' size={25} style={styles.icon}/> A B O U T  M E</Text>
             <Text style={styles.bio}>{this.props.bio}</Text>
+          </View>
+        </Image>
+        </ScrollView>
         </View>
-
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  body: {
+    // marginBottom: '55%'
+  },
   navbar: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -87,33 +103,69 @@ const styles = StyleSheet.create({
     marginLeft: 15
   },
   image: {
-    marginLeft: 85,
-    top: 10,
-    height: 200,
-    width: 200,
-    borderRadius: 100,
+    height: 250, 
+    width: 375,
     backgroundColor: '#C0C0C0',
   },
   namewrap: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: 10,
+    marginTop: 200,
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   name: {
     paddingBottom: 20,
     fontSize: 30,
+    top: 10,
     fontWeight: 'bold',
-    top: 15,
+    // color: "#2eb8b8" 
+    color: 'white',
+    shadowOpacity: 70 
   },
   icon:{
     marginLeft: 30
   },
   info:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 10,
-    borderBottomWidth: 0.5,
-
-  }
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 7,
+    marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: 'rgba(242,242,242,0.4)',
+    
+  }, 
+  bla:{
+    flex: 1,
+    flexDirection: 'row',
+  },
+  money:{
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 7,
+    marginTop: 10,
+    backgroundColor: 'rgba(242,242,242,0.4)',
+  },
+  button: {
+    borderWidth: 0.5,
+    borderRadius: 20,
+    borderColor: 'grey',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 4,
+    paddingBottom: 4,
+    marginLeft: 220,
+    height: 30
+  },
+  backgroundImage:{
+    width: 375,
+    height: 400,
+    backgroundColor: 'rgba(0,0,0,0)'
+  },
 })
 
 export default connect(mapStateToProps)(Profile)
