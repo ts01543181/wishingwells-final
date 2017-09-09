@@ -32,6 +32,11 @@ class Profile extends Component {
     super(props)
 
     this.getTotal = this.getTotal.bind(this)
+    this.invest = this.invest.bind(this)
+  }
+
+  invest() {
+    alert('INVESTING')
   }
 
   getTotal() {
@@ -65,7 +70,7 @@ class Profile extends Component {
 
           <View style={styles.info}>
               <Text style={styles.total}><Icon name='currency-usd' size={25} style={styles.icon}/>{this.getTotal()}</Text>
-              <TouchableOpacity style={styles.button} onPress={() => {}}>
+              <TouchableOpacity style={styles.button} onPress={this.invest}>
                 <Text style={styles.invest}>INVEST</Text>
               </TouchableOpacity>
           </View>
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
     marginLeft: 15
   },
   image: {
-    height: 250, 
+    height: 250,
     width: 375,
     backgroundColor: '#C0C0C0',
   },
@@ -117,9 +122,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     top: 10,
     fontWeight: 'bold',
-    // color: "#2eb8b8" 
+    // color: "#2eb8b8"
     color: 'white',
-    shadowOpacity: 70 
+    shadowOpacity: 70
   },
   icon:{
     marginLeft: 30
@@ -134,8 +139,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
-    
-  }, 
+
+  },
   bla:{
     flex: 1,
     flexDirection: 'row',

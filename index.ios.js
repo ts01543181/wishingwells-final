@@ -20,6 +20,7 @@ import Well from './app/components/Wells/Well'
 import DonationWell from './app/components/Wells/DonationWell'
 import AddCard from './app/components/UserAuth/AddCard'
 import QRScanner from './app/components/QR/QRScanner'
+import Invest from './app/components/Wells/Invest'
 
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -61,6 +62,7 @@ export default class WishingWell extends Component {
             <Scene key="AddCard" component={AddCard} title="AddCard"/>
             <Scene key="QRScanner" component={QRScanner} title="QRScanner"/>
             <Scene key="DonationWell" component={DonationWell} title="DonationWell"/>
+            <Scene key="Invest" component={Invest} title="Invest"/>
         </Scene>
       </Router>
     </Provider>
