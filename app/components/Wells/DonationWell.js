@@ -17,7 +17,8 @@ const mapStateToProps = state => {
     uid: state.ProfileReducer.uid,
     qr: state.ProfileReducer.donationID,
     cardID: state.ProfileReducer.cardID,
-    paymentReady: state.ProfileReducer.paymentReady
+    paymentReady: state.ProfileReducer.paymentReady,
+    receiverTotal: 0,
   }
 }
 
@@ -28,22 +29,17 @@ class DonationWell extends Component {
     this.state = {
       amount: '',
       description: '',
-      coinSpeed: 20,
     }
     this.onSwipeUp = this.onSwipeUp.bind(this);
   }
 
   onSwipeUp(gestureState) {
-
+    console.log(this.props.qr)
     if (this.props.paymentReady) {
 
       this.props.setUserInfo({
         paymentReady: false,
       })
-
-      this.setState({
-        coinSpeed: 2
-      });
 
       const ref = db.ref(`users/${this.props.qr}/logs`)
 
@@ -65,21 +61,14 @@ class DonationWell extends Component {
         }
         axios.post(`http://${HOST_IP}:4000/api/makeDonation`, chargeObj)
         .then(data => {
-          alert('POST MADE')
           console.log(data)
 
-          db.ref(`users/${this.props.qr}/total`).on('value', (donationTotal) => {
-            alert('REQ MADE')
-            const ref = db.ref(`users/${this.props.qr}`)
+          db.ref(`users/${this.props.qr}`).once('value', (user) => {
 
-            ref.update({
-              total: donationTotal.val() + chargeObj.amount
+            db.ref(`users/${this.props.qr}`).update({
+              total: user.val().total + chargeObj.amount
             })
 
-            this.setTimeout(
-              () => { alert('Donation Made!!!') },
-              500
-            );
             // let buyObj = {
             //   walletAddress: this.props.qr,
             //   uid: this.props.uid,
@@ -89,10 +78,7 @@ class DonationWell extends Component {
           })
         })
       } else {
-        this.setTimeout(
-          () => { alert('Donation Logged') },
-          500
-        );
+        alert('Invalid card credentials')
       }
     } else {
       alert('Please confirm donation details')
@@ -101,16 +87,8 @@ class DonationWell extends Component {
 
   render() {
 
-    const config = {
-      velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80
-    };
-
     return (
       <View>
-        <View>
-          <NavigationBar title={{title:'Wishing Well'}} tintColor='#99ccff'/>
-        </View>
         <View style={styles.inputFields}>
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Input Amount</Text>
@@ -126,7 +104,6 @@ class DonationWell extends Component {
         </View>
         <GestureRecognizer
           onSwipeUp={(state) => this.onSwipeUp(state)}
-          config={config}
           style={styles.coin}
           >
           <View style={styles.coin}></View>

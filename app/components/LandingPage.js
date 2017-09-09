@@ -77,12 +77,12 @@ class LandingPage extends Component {
       let rawData = data.bpi
       let dates = Object.keys(rawData)
       let values = Object.values(rawData)
-      
+
       let final = []
       for (let i = 0; i < dates.length; i ++) {
         let obj = {}
         let date = dates[i].split('-').join('').slice(6)
-        obj.x = date 
+        obj.x = date
         obj.y = values[i]
         final.push(obj)
       }
@@ -94,11 +94,16 @@ class LandingPage extends Component {
   }
 
   getTotal() {
-    let total = 0;
-    for(let i = 0; i < this.props.logs.length; i++) {
-      total += Number(this.props.logs[i]['amount'])
-    }
-    return total
+    let total;
+    firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
+      total = data.val().total
+    })
+    return total;
+    // let total = 0;
+    // for(let i = 0; i < this.props.logs.length; i++) {
+    //   total += Number(this.props.logs[i]['amount'])
+    // }
+    // return total
   }
 
   render() {

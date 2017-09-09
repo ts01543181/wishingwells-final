@@ -22,29 +22,33 @@ class QRScanner extends Component {
   displayQR(data) {
     if (data.data !== this.state.lastScannedUrl) {
       this.setState({
-        lastScannedUrl: data.data
+        lastScannedUrl: data.data,
+        donationID: data.data
       })
-      Alert.alert(
-        'Donate to this Well?',
-        this.state.lastScannedUrl,
-        [
-          {
-            text: 'Yes',
-            onPress: () => {
-              this.props.setUserInfo({
-                donationID: this.state.donationID,
-              })
-              Actions.DonationWell()
+      firebase.database().ref(`users/${data.data}`).once('value')
+      .then(data => {
+        Alert.alert(
+          'Donate to this Well?',
+          data.val().email,
+          [
+            {
+              text: 'Yes',
+              onPress: () => {
+                this.props.setUserInfo({
+                  donationID: this.state.donationID,
+                })
+                Actions.DonationWell()
+              },
             },
-          },
-          { text: 'No', onPress: () => {
-            this.setState({
-              lastScannedUrl: null
-            })
-          } },
-        ],
-        { cancellable: false }
-      );
+            { text: 'No', onPress: () => {
+              this.setState({
+                lastScannedUrl: null
+              })
+            } },
+          ],
+          { cancellable: false }
+        );
+      })
     }
   }
 

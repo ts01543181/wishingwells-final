@@ -30,11 +30,16 @@ class LogHistory extends Component {
     })
   }
   getTotal() {
-    let total = 0;
-    for(let i = 0; i < this.props.logs.length; i++) {
-      total += Number(this.props.logs[i]['amount'])
-    }
-    return total
+    let total;
+    firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
+      total = data.val().total
+    })
+    return total;
+    // let total = 0;
+    // for(let i = 0; i < this.props.logs.length; i++) {
+    //   total += Number(this.props.logs[i]['amount'])
+    // }
+    // return total
   }
 
   _onRefresh() {
@@ -134,7 +139,7 @@ const styles = StyleSheet.create({
   total: {
     height: 40,
     borderBottomWidth: 0.5,
-    borderColor: 'gray', 
+    borderColor: 'gray',
   },
   savings: {
     fontSize: 25,
