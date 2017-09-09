@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js';
 import { connect } from 'react-redux'
 
-class ConfirmModal extends Component {
+class DonationConfirmModal extends Component {
   constructor(props) {
     super(props);
   }
@@ -15,7 +15,7 @@ class ConfirmModal extends Component {
   _renderButton = (text, onPress) => (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
-        <Text style={styles.buttonText}>Add to Wallet</Text>
+        <Text style={styles.buttonText}>Confirm</Text>
       </View>
     </TouchableOpacity>
   );
@@ -33,7 +33,7 @@ class ConfirmModal extends Component {
       <Text>You want to save: ${this.props.amount}?</Text>
       <Text>Description: {this.props.description}</Text>
       {this._renderButton('Confirm', () => {
-          this.props.addToWallet();
+          this.props.toggleDonateReady();
           this.setState({ visibleModal: null })
         })
       }
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { setUserInfo })(ConfirmModal)
+export default connect(null, { setUserInfo })(DonationConfirmModal)

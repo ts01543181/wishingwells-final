@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import ConfirmModal from './ConfirmModal.js'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
+import { Actions } from 'react-native-router-flux'
 import { HOST_IP } from '../../../config.js'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -31,18 +32,24 @@ class Well extends Component {
       coinSpeed: 20,
       paymentReady: false
     }
-    this.onSwipeUp = this.onSwipeUp.bind(this);
-    this.togglePaymentReady = this.togglePaymentReady.bind(this);
+    this.getTotal = this.getTotal.bind(this);
+    this.addToWallet = this.addToWallet.bind(this);
   }
 
-  togglePaymentReady() {
-    this.setState({
-      paymentReady: true,
+  getTotal() {
+    let total;
+    firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
+      total = data.val().total
     })
+    return total;
+    // let total = 0;
+    // for(let i = 0; i < this.props.logs.length; i++) {
+    //   total += Number(this.props.logs[i]['amount'])
+    // }
+    // return total
   }
 
-  onSwipeUp(gestureState) {
-    if (this.state.paymentReady) {
+  addToWallet() {
 
       const ref = db.ref(`users/${this.props.uid}/logs`)
 
@@ -52,35 +59,29 @@ class Well extends Component {
         amount: this.state.amount,
         description: this.state.description
       })
+
       this.setState({
         amount: '',
         description: '',
       })
 
-      if (this.props.qr !== '' && this.props.cardID !== '') {
-        let chargeObj = {
-          walletAddress: this.props.qr,
-          cardID: this.props.cardID,
-          amount: Number(this.state.amount),
-        }
-        axios.post(`http://${HOST_IP}:4000/api/makeSavings`, chargeObj)
-        .then(data => {
-          console.log(data)
+      let chargeObj = {
+        walletAddress: this.props.qr,
+        cardID: this.props.cardID,
+        amount: Number(this.state.amount),
+      }
 
-          const ref = db.ref(`users/${this.props.uid}`)
+      const totalRef = db.ref(`users/${this.props.uid}`)
 
-          ref.update({
-            total: this.props.total + chargeObj.amount
-          })
+      totalRef.update({
+        total: this.props.total + chargeObj.amount
+      })
 
-          this.props.setUserInfo({
-            total: this.props.total + chargeObj.amount
-          })
+      this.props.setUserInfo({
+        total: this.props.total + chargeObj.amount
+      })
 
-          alert('Savings Added')
-          this.setState({
-            paymentReady: false
-          })
+      alert('Savings Added')
 
           // let buyObj = {
           //   walletAddress: this.props.qr,
@@ -88,14 +89,7 @@ class Well extends Component {
           // }
 
           // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
-        })
-      } else {
-        alert('Savings Logged')
-      }
-    } else {
-      alert('Please confirm savings details')
     }
-  }
 
   render() {
 
@@ -105,10 +99,13 @@ class Well extends Component {
     };
 
     return (
-      <View>
+      <View style={styles.container}>
         <KeyboardAwareScrollView>
         <View style={styles.navbar}>
           <NavigationBar title={{title:'Wishing Well'}} tintColor='#99ccff'/>
+        </View>
+        <View style={styles.walletAmountContainer}>
+          <Text style={styles.walletAmount}>Your Wallet: ${this.getTotal()}</Text>
         </View>
         <View style={styles.inputFields}>
           <View style={{height: "20%"}}>
@@ -120,23 +117,22 @@ class Well extends Component {
           </View>
           <TextInput placeholder='Description Here' placeholderTextColor={'#A8A8A8'} style={styles.descriptionInputField} multiline={true} numberOfLines={2} onChangeText={(text) => this.setState({description: text})} value={this.state.description}/>
           <View style={styles.confirmModal}>
-            <ConfirmModal amount={this.state.amount} description={this.state.description} togglePaymentReady={this.togglePaymentReady}/>
+            <ConfirmModal amount={this.state.amount} description={this.state.description} addToWallet={this.addToWallet}/>
+          </View>
+          <View style={styles.investButtonContainer}>
+            <Button style={styles.investButton} title="Invest" onPress={() => {Actions.Invest()}}/>
           </View>
         </View>
         </KeyboardAwareScrollView>
-        <GestureRecognizer
-          onSwipeUp={(state) => this.onSwipeUp(state)}
-          config={config}
-          style={styles.coin}
-          >
-          <View style={styles.coin}></View>
-        </GestureRecognizer>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   navbar: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -144,11 +140,20 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     zIndex:2
   },
-  coin: {
-    top: '6%',
-    height: '55%',
-    width: '100%',
+  walletAmountContainer: {
+    marginTop: '10%',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
+  walletAmount: {
+    fontSize: 40,
+  },
+  // coin: {
+  //   top: '6%',
+  //   height: '55%',
+  //   width: '100%',
+  // },
   inputFields: {
     marginTop: '2%',
     marginLeft: '25%',
@@ -163,13 +168,12 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   confirmModal: {
-    marginTop: '5%',
     height: '10%',
     width: 100,
   },
   amountInputField: {
     width: '100%',
-    height: '40%',
+    height: '30%',
     borderColor: 'gray',
     borderColor: 'gray',
     borderWidth: 1,
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
   },
   descriptionInputField: {
     width: '100%',
-    height: '70%',
+    height: '50%',
     borderColor: 'gray',
     borderColor: 'gray',
     borderWidth: 1,
@@ -187,6 +191,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 20
   },
+  investButtonContainer: {
+    marginTop: '60%',
+    borderWidth: 1,
+    borderRadius: 60,
+    borderColor: 'blue',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 30,
+    paddingBottom: 70,
+  },
+  investButton: {
+  }
 })
+
+// <GestureRecognizer
+//   onSwipeUp={(state) => this.onSwipeUp(state)}
+//   config={config}
+//   style={styles.coin}
+//   >
+//   <View style={styles.coin}></View>
+// </GestureRecognizer>
 
 export default connect(mapStateToProps, { setUserInfo })(Well)

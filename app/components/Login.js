@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput,Button, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import Register from './Register'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -41,7 +41,7 @@ class Login extends Component {
           this.props.setBitcoinValue(data)
           Actions.Home()
         })
-        
+
       }
     })
     .catch((err) => {
@@ -51,10 +51,10 @@ class Login extends Component {
   }
 
   render() {
-    
-    return this.state.loading? 
+
+    return this.state.loading?
     <View style={styles.spinnerContainer}>
-      <ActivityIndicator size='large' style={styles.spinner}/> 
+      <ActivityIndicator size='large' style={styles.spinner}/>
     </View>
     : (
       <View>
@@ -62,7 +62,7 @@ class Login extends Component {
         <Image source={require('../../assets/background2.jpg')}  style={styles.backgroundImage}>
       <View style={styles.container}>
         <Text style={styles.title}>
-          W I S H I N G  W E L L 
+          W I S H I N G  W E L L
         </Text>
         <View style={styles.inputSection}>
           <Icon style={styles.email} name="email-outline" size={20} color="#F0F0F0"/>
@@ -86,11 +86,11 @@ class Login extends Component {
             secureTextEntry={true}
             autoCapitalize='none'
           />
-        </View> 
+        </View>
         <TouchableOpacity onPress={this._login} style={styles.login}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
-        
+
         <View style={styles.signupSection}>
           <Text style={styles.account}>DONT HAVE AN ACCOUNT?</Text>
           <TouchableOpacity onPress={() => Actions.Register()}>
