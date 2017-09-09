@@ -29,7 +29,6 @@ class Well extends Component {
     this.state = {
       amount: '',
       description: '',
-      coinSpeed: 20,
       paymentReady: false
     }
     this.getTotal = this.getTotal.bind(this);
@@ -60,11 +59,6 @@ class Well extends Component {
         description: this.state.description
       })
 
-      this.setState({
-        amount: '',
-        description: '',
-      })
-
       let chargeObj = {
         walletAddress: this.props.qr,
         cardID: this.props.cardID,
@@ -81,6 +75,11 @@ class Well extends Component {
         total: this.props.total + chargeObj.amount
       })
 
+      this.setState({
+        amount: '',
+        description: '',
+      })
+
       alert('Savings Added')
 
           // let buyObj = {
@@ -92,12 +91,6 @@ class Well extends Component {
     }
 
   render() {
-
-    const config = {
-      velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80
-    };
-
     return (
       <View style={styles.container}>
         <KeyboardAwareScrollView>
@@ -111,7 +104,7 @@ class Well extends Component {
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Input Amount</Text>
           </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} multiline={true} onChangeText={(text) => this.setState({amount: Number(text)})} value={String(this.state.amount)}/>
+          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} multiline={true} onChangeText={(text) => this.setState({amount: text})} value={String(this.state.amount)}/>
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Description</Text>
           </View>
