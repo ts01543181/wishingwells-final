@@ -17,7 +17,6 @@ const mapStateToProps = state => {
     uid: state.ProfileReducer.uid,
     qr: state.ProfileReducer.qr,
     cardID: state.ProfileReducer.cardID,
-    paymentReady: state.ProfileReducer.paymentReady,
     total: state.ProfileReducer.total,
   }
 }
@@ -30,16 +29,20 @@ class Well extends Component {
       amount: '',
       description: '',
       coinSpeed: 20,
+      paymentReady: false
     }
     this.onSwipeUp = this.onSwipeUp.bind(this);
+    this.togglePaymentReady = this.togglePaymentReady.bind(this);
+  }
+
+  togglePaymentReady() {
+    this.setState({
+      paymentReady: true,
+    })
   }
 
   onSwipeUp(gestureState) {
-    if (this.props.paymentReady) {
-
-      this.props.setUserInfo({
-        paymentReady: false,
-      })
+    if (this.state.paymentReady) {
 
       const ref = db.ref(`users/${this.props.uid}/logs`)
 
@@ -75,6 +78,9 @@ class Well extends Component {
           })
 
           alert('Savings Added')
+          this.setState({
+            paymentReady: false
+          })
 
           // let buyObj = {
           //   walletAddress: this.props.qr,
@@ -114,7 +120,7 @@ class Well extends Component {
           </View>
           <TextInput placeholder='Description Here' placeholderTextColor={'#A8A8A8'} style={styles.descriptionInputField} multiline={true} numberOfLines={2} onChangeText={(text) => this.setState({description: text})} value={this.state.description}/>
           <View style={styles.confirmModal}>
-            <ConfirmModal amount={this.state.amount} description={this.state.description}/>
+            <ConfirmModal amount={this.state.amount} description={this.state.description} togglePaymentReady={this.togglePaymentReady}/>
           </View>
         </View>
         </KeyboardAwareScrollView>

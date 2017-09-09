@@ -33,12 +33,8 @@ class ConfirmModal extends Component {
       <Text>You want to save: ${this.props.amount}?</Text>
       <Text>Description: {this.props.description}</Text>
       {this._renderButton('Confirm', () => {
-          this.props.setUserInfo({
-            paymentReady: true,
-          })
-          this.setState({
-            visibleModal: null
-          })
+          this.props.togglePaymentReady();
+          this.setState({ visibleModal: null })
         })
       }
       {this._renderCloseButton('Close', () => this.setState({ visibleModal: null }))}
