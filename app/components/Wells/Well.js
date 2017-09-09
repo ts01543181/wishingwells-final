@@ -45,7 +45,7 @@ class Well extends Component {
 
       ref.push({
         date: new Date().toDateString(),
-        time: new Date().getTime(),              
+        time: new Date().getTime(),
         amount: this.state.amount,
         description: this.state.description
       })
@@ -74,10 +74,8 @@ class Well extends Component {
             total: this.props.total + chargeObj.amount
           })
 
-          this.setTimeout(
-            () => { alert('Savings Added') },
-            500
-          );
+          alert('Savings Added')
+
           // let buyObj = {
           //   walletAddress: this.props.qr,
           //   uid: this.props.uid,
@@ -86,10 +84,7 @@ class Well extends Component {
           // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
         })
       } else {
-        this.setTimeout(
-          () => { alert('Savings Logged') },
-          500
-        );
+        alert('Savings Logged')
       }
     } else {
       alert('Please confirm savings details')
