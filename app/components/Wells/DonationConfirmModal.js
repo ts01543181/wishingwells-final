@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: 'lightgrey',
-    marginTop: 30,
+    marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
-    height: 50,
-    width: 350,
+    height: 40,
+    width: 200,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   buttonText: {

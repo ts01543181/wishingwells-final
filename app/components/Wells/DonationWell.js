@@ -136,17 +136,17 @@ const styles = StyleSheet.create({
     zIndex:2
   },
   walletAmountContainer: {
-    marginTop: '10%',
+    marginTop: '5%',
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
   walletAmount: {
-    fontSize: 40,
+    fontSize: 30,
   },
   receiverEmail: {
     marginTop: 20,
-    fontSize: 30
+    fontSize: 20
   },
   // coin: {
   //   top: '6%',
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlign: 'center',
     fontSize: 15,
-    marginTop: 20,
+    marginTop: 10,
   },
   descriptionInputField: {
     width: '100%',
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlign: 'center',
     fontSize: 15,
-    marginTop: 20
+    marginTop: 10
   },
   investButtonContainer: {
     marginTop: '60%',

@@ -30,8 +30,7 @@ class InvestConfirmModal extends Component {
 
   _renderModalContent = () => (
     <View style={styles.modalContent}>
-      <Text>You want to save: ${this.props.amount}?</Text>
-      <Text>Description: {this.props.description}</Text>
+      <Text>You want to invest: ${this.props.amount}?</Text>
       {this._renderButton('Confirm', () => {
           this.setState({ visibleModal: null })
           this.props.addToWallet();
@@ -45,7 +44,7 @@ class InvestConfirmModal extends Component {
     return (
       <View style={styles.container}>
         {this._renderButton("Confirm Investment", () => {
-          (this.props.amount > 0 && this.props.description.length > 0) ? this.setState({ visibleModal: 1 }) : alert("Incorrect fields")
+          (this.props.amount > 0) ? this.setState({ visibleModal: 1 }) : alert("Incorrect fields")
         })}
         <Modal isVisible={this.state.visibleModal === 1}>
           {this._renderModalContent()}

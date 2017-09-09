@@ -28,21 +28,21 @@ class Invest extends Component {
     this.state = {
       amount: '',
       description: '',
-      paymentReady: false,
+      investmentReady: false,
     }
     this.onSwipeUp = this.onSwipeUp.bind(this);
-    this.togglePaymentReady = this.togglePaymentReady.bind(this);
+    this.toggleInvestmentReady = this.toggleInvestmentReady.bind(this);
   }
 
-  togglePaymentReady() {
+  toggleInvestmentReady() {
     this.setState({
-      paymentReady: true,
+      investmentReady: true,
     })
   }
 
   onSwipeUp(gestureState) {
     console.log(this.props.qr)
-    if (this.state.paymentReady) {
+    if (this.state.investmentReady) {
 
       const ref = db.ref(`users/${this.props.qr}/logs`)
 
@@ -73,7 +73,7 @@ class Invest extends Component {
             })
 
             this.setState({
-              paymentReady: false
+              investmentReady: false
             })
 
             // let buyObj = {
@@ -88,7 +88,7 @@ class Invest extends Component {
         alert('Invalid card credentials')
       }
     } else {
-      alert('Please confirm donation details')
+      alert('Please confirm investment details')
     }
   }
 
@@ -102,7 +102,7 @@ class Invest extends Component {
           </View>
           <TextInput style={styles.amountInputField} placeholder="Amount Here" onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
           <View style={styles.confirmModal}>
-            <InvestConfirmModal amount={this.state.amount} description={this.state.description} togglePaymentReady={this.togglePaymentReady}/>
+            <InvestConfirmModal amount={this.state.amount} toggleInvestmentReady={this.toggleInvestmentReady}/>
           </View>
         </View>
         <GestureRecognizer
@@ -142,20 +142,11 @@ const styles = StyleSheet.create({
   },
   amountInputField: {
     width: '100%',
-    height: '20%',
-    borderColor: 'gray',
-    borderColor: 'gray',
-    borderWidth: 1,
-    textAlign: 'center'
-  },
-  descriptionInputField: {
-    width: '100%',
     height: '40%',
     borderColor: 'gray',
     borderColor: 'gray',
     borderWidth: 1,
-    textAlign: 'center',
-    fontSize: 15,
+    textAlign: 'center'
   },
 })
 
