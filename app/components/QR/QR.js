@@ -12,6 +12,13 @@ const mapStateToProps = state => {
   }
 }
 
+const leftButtonConfig = {
+  title: 'QR Scanner',
+  handler() {
+    Actions.QRScanner()
+  },
+  tintColor: 'black'
+}
 class QR extends Component {
 
   render() {
@@ -19,7 +26,7 @@ class QR extends Component {
     return (
       <View>
         <View style={styles.navbar}>
-          <NavigationBar title={{title:'QR Code'}} tintColor='#99ccff'/>
+          <NavigationBar title={{title:'QR Code'}} leftButton={leftButtonConfig} tintColor='#99ccff'/>
         </View>
         <View style={styles.body}>
           <QRCode value={this.props.uid} size={250} />
@@ -28,7 +35,6 @@ class QR extends Component {
           <Text>This is your QR code</Text>
         </View>
         <View style={styles.qrButton}>
-          <Button title="QRScanner" onPress={() => Actions.QRScanner()}>Scan a QR Code</Button>
         </View>
       </View>
     )
