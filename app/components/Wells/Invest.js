@@ -5,7 +5,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 import * as firebase from "firebase"
 import { connect } from 'react-redux'
 import axios from 'axios'
-import ConfirmModal from './ConfirmModal.js'
+import InvestConfirmModal from './InvestConfirmModal.js'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 import { HOST_IP } from '../../../config.js'
 
@@ -101,12 +101,8 @@ class Invest extends Component {
             <Text style={styles.credentials}>Input Amount</Text>
           </View>
           <TextInput style={styles.amountInputField} placeholder="Amount Here" onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
-          <View style={{height: "20%"}}>
-            <Text style={styles.credentials}>Description</Text>
-          </View>
-          <TextInput placeholder='Description Here' placeholderTextColor={'#A8A8A8'} style={styles.descriptionInputField} multiline={true} numberOfLines={2} onChangeText={(text) => this.setState({description: text})} value={this.state.description}/>
           <View style={styles.confirmModal}>
-            <ConfirmModal amount={this.state.amount} description={this.state.description} togglePaymentReady={this.togglePaymentReady}/>
+            <InvestConfirmModal amount={this.state.amount} description={this.state.description} togglePaymentReady={this.togglePaymentReady}/>
           </View>
         </View>
         <GestureRecognizer

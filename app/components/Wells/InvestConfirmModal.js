@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js';
 import { connect } from 'react-redux'
 
-class ConfirmModal extends Component {
+class InvestConfirmModal extends Component {
   constructor(props) {
     super(props);
   }
@@ -15,7 +15,7 @@ class ConfirmModal extends Component {
   _renderButton = (text, onPress) => (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
-        <Text style={styles.buttonText}>Add to Wallet</Text>
+        <Text style={styles.buttonText}>Confirm Investment</Text>
       </View>
     </TouchableOpacity>
   );
@@ -44,7 +44,7 @@ class ConfirmModal extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this._renderButton("Add to Wallet", () => {
+        {this._renderButton("Confirm Investment", () => {
           (this.props.amount > 0 && this.props.description.length > 0) ? this.setState({ visibleModal: 1 }) : alert("Incorrect fields")
         })}
         <Modal isVisible={this.state.visibleModal === 1}>
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { setUserInfo })(ConfirmModal)
+export default connect(null, { setUserInfo })(InvestConfirmModal)

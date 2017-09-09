@@ -80,7 +80,6 @@ class Well extends Component {
         description: '',
       })
 
-      alert('Savings Added')
 
           // let buyObj = {
           //   walletAddress: this.props.qr,
@@ -194,8 +193,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 70,
   },
-  investButton: {
-  }
 })
 
 // <GestureRecognizer
