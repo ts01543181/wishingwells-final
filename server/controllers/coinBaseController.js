@@ -9,7 +9,6 @@ let client = new Client({
 
 module.exports = {
   addAWallet: (req, res) => {
-    console.log('HEEEEERE')
     client.createAccount({'name': req.body.UID}, function(err, account) {
       client.getAccount(account.id, function(err, account) {
         account.createAddress(null, function(err, address) {
@@ -21,16 +20,21 @@ module.exports = {
   buyCrypto: (req, res) => {
     console.log('COINBASE PATH', req.body);
     client.getAccounts({}, function(err, accounts) {
+      if (err) {
+        console.log(err)
+      }
       let targetAccount = accounts.filter(function(acct) {
         return acct.name === req.body.uid;
       })
-      // targetAccount[0].buy({'amount': '0.0003', 'currency': 'BTC'}, function(err, buy) {
-      //   console.log(buy);
-      // })
+      targetAccount[0].buy({'amount': req.body.amount, 'currency': 'USD'}, function(err, buy) {
+        if (err) {
+          console.log(err)
+        }
+        res.send(buy);
+      })
     });
   },
   getBitcoinValue: (req, res) => {
-    console.log('we in hereereereree')
     let currencyCode = 'USD'
     client.getSpotPrice({'currency': currencyCode}, function(err, price) {
       console.log('Current bitcoin price in ' + currencyCode + ': ' +  price.data.amount);

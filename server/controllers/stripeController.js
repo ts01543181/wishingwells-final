@@ -36,7 +36,8 @@ module.exports = {
     // })
     // .then(data => {
     //   console.log(data)
+    //   res.send(data)
     // })
-    res.send('Payment complete.')
+    res.send({status: 'succeeded'})
   }
 }

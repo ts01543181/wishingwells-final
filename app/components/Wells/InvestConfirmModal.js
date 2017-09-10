@@ -33,7 +33,7 @@ class InvestConfirmModal extends Component {
       <Text>You want to invest: ${this.props.amount}?</Text>
       {this._renderButton('Confirm', () => {
           this.setState({ visibleModal: null })
-          this.props.addToWallet();
+          this.props.toggleInvestmentReady();
         })
       }
       {this._renderCloseButton('Close', () => this.setState({ visibleModal: null }))}
