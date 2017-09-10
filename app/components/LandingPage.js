@@ -13,6 +13,7 @@ import { VictoryLine, VictoryChart, VictoryTheme } from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
 
+
 const mapStateToProps = (state) => {
   return {
     uid: state.ProfileReducer.uid,
@@ -138,7 +139,7 @@ class LandingPage extends Component {
         <View>
         <NavigationBar title={{title:'MY WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
-
+          
           <ScrollView
             refreshControl={
             <RefreshControl
@@ -163,7 +164,7 @@ class LandingPage extends Component {
             <VictoryLine
               data={this.state.history}
               style={{
-                data: { stroke: "#99ccff" },
+                data: { stroke: 'black' },
                 parent: { border: "1px solid #ccc"}
               }}
               animate={{

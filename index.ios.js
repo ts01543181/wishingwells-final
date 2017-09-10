@@ -49,20 +49,20 @@ export default class WishingWell extends Component {
     <Provider store={store}>
       <Router>
         <Scene key="root" >
-          <Scene key="Login" component={Login} initial hideNavBar/>
+          <Scene key="Login" component={Login} initial panHandler={null} hideNavBar/>
           <Scene key="Register" component={Register} hideNavBar/>
           <Scene key="tabbar" tabs={true} tabBarStyle={{ backgroundColor: '#FFFFFF' }}>
-            <Scene key="Home" component={Landing} iconName="home" icon={TabIcon} hideNavBar/>
-            <Scene key="QR" component={QR} iconName="qrcode" icon={TabIcon} hideNavBar/>
-            <Scene key="Well" component={Well} iconName="currency-usd" icon={TabIcon} hideNavBar/>
-            <Scene key="Log" component={LogHistory} iconName="format-list-bulleted" icon={TabIcon} hideNavBar/>
-            <Scene key="Profile" component={Profile} iconName="account-outline" icon={TabIcon} hideNavBar/>
+            <Scene key="Home" component={Landing} iconName="home" icon={TabIcon} panHandler={null} hideNavBar/>
+            <Scene key="QR" component={QR} iconName="qrcode" icon={TabIcon} panHandler={null} hideNavBar/>
+            <Scene key="Well" component={Well} iconName="currency-usd" icon={TabIcon} panHandler={null} hideNavBar/>
+            <Scene key="Log" component={LogHistory} iconName="format-list-bulleted" icon={TabIcon} panHandler={null} hideNavBar/>
+            <Scene key="Profile" component={Profile} iconName="account-outline" icon={TabIcon} panHandler={null} hideNavBar/>
           </Scene>
-            <Scene key="Settings" component={Settings} hideNavBar/>
-            <Scene key="AddCard" component={AddCard} title="AddCard"/>
-            <Scene key="QRScanner" component={QRScanner} title="QRScanner"/>
-            <Scene key="DonationWell" component={DonationWell} title="DonationWell"/>
-            <Scene key="Invest" component={Invest} title="Invest"/>
+            <Scene key="Settings" component={Settings} panHandler={null} hideNavBar/>
+            <Scene key="AddCard" component={AddCard} title="AddCard" panHandler={null} />
+            <Scene key="QRScanner" component={QRScanner} title="QRScanner" panHandler={null} />
+            <Scene key="DonationWell" component={DonationWell} title="DonationWell" panHandler={null} />
+            <Scene key="Invest" component={Invest} title="Invest" panHandler={null} />
         </Scene>
       </Router>
     </Provider>

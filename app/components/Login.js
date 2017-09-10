@@ -11,6 +11,7 @@ import { setUserInfo } from '../Actions/Profile/ProfileAction'
 import { setBitcoinValue } from '../Actions/Bitcoin/BitcoinAction'
 import axios from 'axios'
 import { HOST_IP } from '../../config.js'
+import Spinner from 'react-native-spinkit'
 
 class Login extends Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class Login extends Component {
 
     return this.state.loading?
     <View style={styles.spinnerContainer}>
-      <ActivityIndicator size='large' style={styles.spinner}/>
+      <Spinner type="FadingCircleAlt" style={styles.spinner}/>
     </View>
     : (
       <View>
