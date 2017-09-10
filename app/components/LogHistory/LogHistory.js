@@ -4,8 +4,8 @@ import NavigationBar from 'react-native-navbar'
 import * as firebase from 'firebase'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { setSavings } from '../Actions/Savings/SavingsAction'
-import { setUserInfo } from '../Actions/Profile/ProfileAction.js'
+import { setSavings } from '../../Actions/Savings/SavingsAction'
+import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 const db = firebase.database()
 
 
@@ -25,13 +25,11 @@ class LogHistory extends Component {
     };
   }
 
-  componentWillMount(){
+  componentDidMount() {
     db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
       (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
     })
-  }
 
-  componentDidMount() {
     firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
       this.props.setUserInfo({
         total: data.val().total
@@ -50,7 +48,7 @@ class LogHistory extends Component {
   render() {
 
     return (
-      <Image source={require('../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
@@ -60,7 +58,7 @@ class LogHistory extends Component {
         </View>
 
         <View style={styles.transactions}>
-          <Text style={styles.transText}>SAVINGS LOG</Text>
+          <Text style={styles.transText}>TRANSACTION LOG</Text>
         </View>
 
             <View style={styles.log}>
