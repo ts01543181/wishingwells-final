@@ -9,16 +9,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as firebase from 'firebase'
 import { amazonKey, amazonSecret } from '../../config'
 import ImagePicker from 'react-native-image-picker'
-// import RNFetchBlob from 'react-native-fetch-blob'
+import RNFetchBlob from 'react-native-fetch-blob'
 import * as Progress from 'react-native-progress'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Actions } from 'react-native-router-flux'
 
 const storage = firebase.storage()
-// const Blob = RNFetchBlob.polyfill.Blob
-// const fs = RNFetchBlob.fs 
-// window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-// window.Blob = Blob
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs 
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
 
 
 const mapStateToProps = (state) => {
