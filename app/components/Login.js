@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ActivityIndicator, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import Register from './Register'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -59,6 +59,7 @@ class Login extends Component {
     </View>
     : (
       <View>
+        
         <View>
         <Image source={require('../../assets/background2.jpg')}  style={styles.backgroundImage}>
       <View style={styles.container}>

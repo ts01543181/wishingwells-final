@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, Alert, Button } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Alert, Button, TouchableWithoutFeedback } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 import * as firebase from "firebase"
@@ -9,6 +9,7 @@ import InvestConfirmModal from './InvestConfirmModal.js'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 import { HOST_IP } from '../../../config.js'
 import Spinner from 'react-native-spinkit'
+import * as Animatable from 'react-native-animatable'
 
 const db = firebase.database()
 
@@ -94,6 +95,7 @@ class Invest extends Component {
               //     alert('Investment Made')
               //   })
               // })
+              this.refs.view.fadeOutUp(800)
               alert('Investment Made')
             })
           } else {
@@ -125,11 +127,13 @@ class Invest extends Component {
           </View>
         </View>
         <GestureRecognizer
-          onSwipeUp={(state) => this.onSwipeUp(state)}
+           onSwipeUp={(state) => this.onSwipeUp(state)} 
           style={styles.coin}
-          >
+        >
            <View style={styles.coin}> 
-            <Spinner type="CircleFlip" size={100} color={'#DAA520'} style={{marginTop:'20%', marginLeft:'37%'}}/>
+              <Animatable.View ref="view">
+                <Spinner type="CircleFlip" size={100} color={'#DAA520'} style={{marginTop:'40%', marginLeft:'37%'}}/>
+              </Animatable.View>
            </View> 
         </GestureRecognizer>
       </View>

@@ -27,6 +27,7 @@ const mapStateToProps = (state) => {
     qr: state.ProfileReducer.qr,
     cardID: state.ProfileReducer.cardID,
     total: state.ProfileReducer.total,
+    goal: state.ProfileReducer.goal,
     bitcoinValue: state.BitcoinValueReducer.bitcoinValue
   }
 }
@@ -44,7 +45,7 @@ class LandingPage extends Component {
   componentWillMount() {
     firebase.database().ref(`users/${this.props.uid}`).once('value').then(data => {
       let logs = (data.val().logs) ? Object.values(data.val().logs) : [];
-      let { username, firstname, lastname, email, photo, bio, wallet, cardID, total, donationID } = data.val()
+      let { username, firstname, lastname, email, photo, bio, wallet, cardID, total, goal, donationID } = data.val()
       this.props.setUserInfo({
         username,
         firstname,
@@ -54,6 +55,7 @@ class LandingPage extends Component {
         qr: wallet,
         cardID,
         total,
+        goal,
         donationID
       })
       this.props.setSavings(logs)
