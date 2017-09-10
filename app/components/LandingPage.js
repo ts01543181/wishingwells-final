@@ -163,7 +163,7 @@ class LandingPage extends Component {
             <VictoryLine
               data={this.state.history}
               style={{
-                data: { stroke: "#99ccff" },
+                data: { stroke: 'black' },
                 parent: { border: "1px solid #ccc"}
               }}
               animate={{

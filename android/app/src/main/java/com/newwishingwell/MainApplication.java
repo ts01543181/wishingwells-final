@@ -3,6 +3,9 @@ package com.newwishingwell;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.react.rnspinkit.RNSpinkitPackage;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
+import com.airbnb.android.react.lottie.LottiePackage;
 import com.horcrux.svg.SvgPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -27,6 +30,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSpinkitPackage(),
+            new RCTCameraPackage(),
+            new LottiePackage(),
             new SvgPackage(),
             new VectorIconsPackage(),
             new ImagePickerPackage(),
