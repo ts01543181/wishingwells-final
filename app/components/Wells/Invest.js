@@ -8,7 +8,7 @@ import axios from 'axios'
 import InvestConfirmModal from './InvestConfirmModal.js'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 import { HOST_IP } from '../../../config.js'
-
+import Spinner from 'react-native-spinkit'
 
 const db = firebase.database()
 
@@ -128,11 +128,14 @@ class Invest extends Component {
           onSwipeUp={(state) => this.onSwipeUp(state)}
           style={styles.coin}
           >
-          <View style={styles.coin}></View>
+           <View style={styles.coin}> 
+            <Spinner type="CircleFlip" size={100} color={'#DAA520'} style={{marginTop:'20%', marginLeft:'37%'}}/>
+           </View> 
         </GestureRecognizer>
       </View>
     )
   }
+
 }
 
 const styles = StyleSheet.create({

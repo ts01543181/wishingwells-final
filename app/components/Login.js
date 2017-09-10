@@ -11,7 +11,6 @@ import { setUserInfo } from '../Actions/Profile/ProfileAction'
 import { setBitcoinValue } from '../Actions/Bitcoin/BitcoinAction'
 import axios from 'axios'
 import { HOST_IP } from '../../config.js'
-import Animation from 'lottie-react-native'
 import Spinner from 'react-native-spinkit'
 
 class Login extends Component {
