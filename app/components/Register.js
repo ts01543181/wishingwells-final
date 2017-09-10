@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   backgroundImage:{
-    width: 400,
-    height: 800,
+    width: '100%',
+    height: '100%',
     backgroundColor: 'rgba(0,0,0,0)'
   },
   background:{

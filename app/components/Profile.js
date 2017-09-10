@@ -20,11 +20,11 @@ const mapStateToProps = (state) => {
 }
 
 const rightButtonConfig = {
-  title: 'Settings',
+  title: 'SETTINGS',
   handler() {
     Actions.Settings()
   },
-  tintColor: 'black'
+  tintColor: 'white'
 }
 
 class Profile extends Component {
@@ -50,38 +50,38 @@ class Profile extends Component {
   render() {
     return (
       <View style={styles.body}>
-          <View style={styles.navbar}>
-            <NavigationBar title={{title:'Profile'}} rightButton={rightButtonConfig} tintColor='#99ccff'/>
-          </View>
-        <View>
+          <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+
+            <NavigationBar title={{title:'PROFILE', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
+
             <Image source={{ uri: this.props.photo }} style={styles.image}>
-          <View style={styles.namewrap}>
-            <Text style={styles.name}>
-              {this.props.firstname} {this.props.lastname}
-            </Text>
-          </View>
+              <View style={styles.namewrap}>
+                <Text style={styles.name}>
+                  {this.props.firstname} {this.props.lastname}
+                </Text>
+              </View>
             </Image>
           <ScrollView>
-          <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
-          <View style={styles.info}>
-            <Text><Icon name='at' size={25} style={styles.icon}/> {this.props.username}</Text>
-            <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
-          </View>
 
-          <View style={styles.info}>
-              <Text style={styles.total}><Icon name='currency-usd' size={25} style={styles.icon}/>{this.getTotal()}</Text>
-              <TouchableOpacity style={styles.button} onPress={this.invest}>
+            <View style={styles.info}>
+              <Text><Icon name='at' size={25} style={styles.icon}/> {this.props.username}</Text>
+              <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
+            </View>
+
+            <View style={styles.info}>
+              <Text><Icon name='currency-usd' size={25} style={styles.icon}/>{this.getTotal()}</Text>
+              <TouchableOpacity style={styles.button} onPress={() => {}}>
                 <Text style={styles.invest}>INVEST</Text>
               </TouchableOpacity>
-          </View>
+            </View>
 
-          <View style={styles.info}>
-            <Text style={styles.about}><Icon name='information-outline' size={25} style={styles.icon}/> A B O U T  M E</Text>
-            <Text style={styles.bio}>{this.props.bio}</Text>
-          </View>
+            <View style={styles.aboutInfo}>
+              <Text style={styles.about}><Icon name='information-outline' size={25} style={styles.icon}/> A B O U T  M E</Text>
+              <Text style={styles.bio}>{this.props.bio}</Text>
+            </View>
+
+          </ScrollView>
         </Image>
-        </ScrollView>
-        </View>
       </View>
     )
   }
@@ -89,14 +89,14 @@ class Profile extends Component {
 
 const styles = StyleSheet.create({
   body: {
-    // marginBottom: '55%'
+    // marginBottom: 55
   },
   navbar: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    zIndex:2
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 1 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
+    // zIndex:2
   },
   about: {
     paddingTop: 15,
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     marginLeft: 15
   },
   image: {
-    height: 250,
-    width: 375,
+    height: 250, 
+    width: '100%',
     backgroundColor: '#C0C0C0',
   },
   namewrap: {
@@ -135,19 +135,28 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     marginLeft: 8,
     marginRight: 8,
-    marginBottom: 7,
+    marginBottom: 20,
     marginTop: 10,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
-
-  },
-  bla:{
+  }, 
+  aboutInfo:{
+    paddingTop: 8,
+    paddingBottom: 12,
+    paddingLeft: 8,
+    paddingRight: 12,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 20,
+    marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: 'rgba(242,242,242,0.4)',
+  }, 
+  money:{
+    borderRadius: 10,
     flex: 1,
     flexDirection: 'row',
-  },
-  money:{
     paddingTop: 8,
-    paddingBottom: 8,
     paddingLeft: 8,
     marginLeft: 8,
     marginRight: 8,
@@ -156,21 +165,25 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(242,242,242,0.4)',
   },
   button: {
+    width: 120,
     borderWidth: 0.5,
     borderRadius: 20,
     borderColor: 'grey',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 4,
+    paddingLeft: 35,
+    paddingTop: 6,
     paddingBottom: 4,
-    marginLeft: 220,
-    height: 30
+    marginLeft: 130,
+    height: 30,
+    backgroundColor: 'rgba(190,190,190,0.5)'
   },
   backgroundImage:{
-    width: 375,
-    height: 400,
+    width: '100%',
+    height: '100%',
     backgroundColor: 'rgba(0,0,0,0)'
   },
+  invest: {
+    color: 'white'
+  }
 })
 
 export default connect(mapStateToProps)(Profile)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, FlatList, ScrollView, RefreshControl } from 'react-native'
+import { View, Text, StyleSheet, FlatList, ScrollView, RefreshControl, Image } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import * as firebase from 'firebase'
 import moment from 'moment'
@@ -53,13 +53,19 @@ class LogHistory extends Component {
   render() {
 
     return (
-      <View>
+      <Image source={require('../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
         <View style={styles.navbar}>
-          <NavigationBar title={{title:'Savings'}} tintColor='#99ccff'/>
+          <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
         <View style={styles.total}>
-          <Text style={styles.savings}>Total Well Savings: <Text style={styles.number}>${this.getTotal()}</Text></Text>
+          <Text style={styles.number}>${this.getTotal()}</Text>
+          <Text style={styles.savings}>Current Well Savings</Text>
         </View>
+
+        <View style={styles.transactions}>
+          <Text style={styles.transText}>TRANSACTION LOG</Text>
+        </View>
+
             <View style={styles.log}>
               <FlatList
                 refreshControl={
@@ -84,31 +90,52 @@ class LogHistory extends Component {
                 style={{height:'100%'}}
               />
               </View>
-      </View>
+      </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  navbar: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    zIndex:2
+  nav:{
+    color: 'white',
   },
-  list: {
-    borderBottomWidth: 0.3,
-    borderColor: 'gray',
+  backgroundImage: {
     width: '100%',
+    height: 800,
+    backgroundColor: 'rgba(0,0,0,0)'
+  },
+  transactions: {
+    marginTop: 20,
+    marginBottom: 8,
+    padding: 10,
+    borderBottomWidth: 0.5,
+    borderColor: 'white',
+    paddingBottom: 0
+  },
+  transText: {
+    color: 'white',
+    fontSize: 15,
+    textAlign: 'center'
+  },
+  // navbar: {
+  //   shadowColor: '#000',
+  //   shadowOffset: { width: 0, height: 1 },
+  //   shadowOpacity: 0.8,
+  //   shadowRadius: 2,
+  //   zIndex:2
+  // },
+  list: {
+    backgroundColor: 'rgba(242,242,242,0.3)',
+    borderRadius: 15,
+    marginBottom: 5,
     height: 80,
+    marginLeft: 10,
+    marginRight: 10
   },
   description: {
     fontSize: 20,
     top: 5,
     marginLeft: 10,
-  },
-  amount: {
   },
   time: {
     marginRight: 10,
@@ -134,22 +161,30 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: '55%'
+    marginBottom: '70%',
   },
   total: {
-    height: 40,
-    borderBottomWidth: 0.5,
-    borderColor: 'gray',
+    alignItems: 'center',
+    height: 100,
+    width: 380,
+    backgroundColor: 'rgba(242,242,242,0.3)',
+    borderRadius: 15,
+    marginTop: 10,
+    marginLeft: 18,
+    marginRight: 18
   },
   savings: {
-    fontSize: 25,
+    fontSize: 20,
     marginLeft: 7,
-
+    color: 'black'
   },
   number: {
-    fontSize: 25,
+    fontSize: 40,
     textAlign: 'right',
-    marginRight: 10
+    marginRight: 10,
+    color: 'black',
+    marginBottom: 10,
+    marginTop: 10
   },
 })
 

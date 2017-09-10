@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Alert, Button } from 'react-native'
+import { View, Text, StyleSheet, Alert, Button,Image } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import QRCode from 'react-native-qrcode'
 import { connect } from 'react-redux'
@@ -12,25 +12,34 @@ const mapStateToProps = state => {
   }
 }
 
+const leftButtonConfig = {
+  title: 'QR SCANNER',
+  handler() {
+    Actions.QRScanner()
+  },
+  tintColor: 'white'
+}
 class QR extends Component {
 
   render() {
 
     return (
+      <Image source={require('../../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
+      
       <View>
         <View style={styles.navbar}>
-          <NavigationBar title={{title:'QR Code'}} tintColor='#99ccff'/>
+        <NavigationBar title={{title:'MY QR', tintColor:"white"}} tintColor='rgba(220, 220, 220, 0.1)' leftButton={leftButtonConfig}/>
         </View>
         <View style={styles.body}>
           <QRCode value={this.props.uid} size={250} />
         </View>
         <View style={styles.qrText}>
-          <Text>This is your QR code</Text>
+          {/* <Text>This is your QR code</Text> */}
         </View>
         <View style={styles.qrButton}>
-          <Button title="QRScanner" onPress={() => Actions.QRScanner()}>Scan a QR Code</Button>
         </View>
       </View>
+      </Image>
     )
   }
 }
@@ -46,7 +55,8 @@ const styles = StyleSheet.create({
   body: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '10%'
+    marginTop: 150,
+    borderWidth: 0.5
   },
   qrText: {
     justifyContent: 'center',
@@ -56,7 +66,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '10%'
-  }
+  },
+  backgroundImage: {
+    width: '100%',
+    // height: '100%',
+    backgroundColor: 'rgba(0,0,0,0)'
+  },
 })
 
 export default connect(mapStateToProps)(QR)
