@@ -48,8 +48,6 @@ class Invest extends Component {
 
     if (this.state.investmentReady) {
 
-      const ref = db.ref(`users/${this.props.qr}/logs`)
-
       if (this.props.uid !== '' && this.props.cardID !== '') {
         let chargeObj = {
           walletAddress: this.props.uid,
@@ -104,6 +102,7 @@ class Invest extends Component {
         })
         .catch(err => {
           console.log(err)
+          alert('Error')
         })
       } else {
         alert('Invalid card credentials')
