@@ -53,13 +53,13 @@ class LogHistory extends Component {
   render() {
 
     return (
-      <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
         <View style={styles.total}>
-          <Text style={styles.savings}>Total Well Savings</Text>
           <Text style={styles.number}>${this.getTotal()}</Text>
+          <Text style={styles.savings}>Current Well Savings</Text>
         </View>
 
         <View style={styles.transactions}>
@@ -174,15 +174,17 @@ const styles = StyleSheet.create({
     marginRight: 18
   },
   savings: {
-    fontSize: 25,
+    fontSize: 20,
     marginLeft: 7,
-    color: 'white'
+    color: 'black'
   },
   number: {
     fontSize: 40,
     textAlign: 'right',
     marginRight: 10,
-    color: 'white'
+    color: 'black',
+    marginBottom: 10,
+    marginTop: 10
   },
 })
 

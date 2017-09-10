@@ -75,7 +75,7 @@ class Profile extends Component {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.info}>
+            <View style={styles.aboutInfo}>
               <Text style={styles.about}><Icon name='information-outline' size={25} style={styles.icon}/> A B O U T  M E</Text>
               <Text style={styles.bio}>{this.props.bio}</Text>
             </View>
@@ -133,6 +133,18 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     paddingLeft: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 20,
+    marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: 'rgba(242,242,242,0.4)',
+  }, 
+  aboutInfo:{
+    paddingTop: 8,
+    paddingBottom: 12,
+    paddingLeft: 8,
+    paddingRight: 12,
     marginLeft: 8,
     marginRight: 8,
     marginBottom: 20,
