@@ -42,6 +42,9 @@ class Login extends Component {
           this.props.setBitcoinValue(data)
           Actions.Home()
         })
+        .catch(err => {
+          console.log(err)
+        })
 
       }
     })
