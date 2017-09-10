@@ -6,6 +6,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { setSavings } from '../../Actions/Savings/SavingsAction'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
+import axios from 'axios'
 const db = firebase.database()
 
 const mapStateToProps = (state) => {
@@ -40,6 +41,11 @@ class WellLogs extends Component {
         total: data.val().total
       })
     })
+
+    axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
+    .then(({ data }) => {
+      console.log(data)
+    })
   }
 
   _onRefresh() {
@@ -61,10 +67,10 @@ class WellLogs extends Component {
         </View>
         <View style={styles.pageButtons}>
           <TouchableOpacity style={styles.button} onPress={onSwipe}>
-            <Text style={styles.buttonText}>Wallet Page</Text>
+            <Text style={styles.buttonText}>Wallet Logs</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <Text style={styles.buttonText}>Well Page</Text>
+            <Text style={styles.buttonText}>Well Logs</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.total}>

@@ -61,10 +61,10 @@ class WalletLogs extends Component {
         </View>
         <View style={styles.pageButtons}>
           <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <Text style={styles.buttonText}>Wallet Page</Text>
+            <Text style={styles.buttonText}>Wallet Logs</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={onSwipe}>
-            <Text style={styles.buttonText}>Well Page</Text>
+            <Text style={styles.buttonText}>Well Logs</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.total}>
