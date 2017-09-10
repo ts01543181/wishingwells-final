@@ -15,9 +15,7 @@ const db = firebase.database()
 const mapStateToProps = state => {
   return {
     uid: state.ProfileReducer.uid,
-    qr: state.ProfileReducer.donationID,
     cardID: state.ProfileReducer.cardID,
-    receiverTotal: 0,
   }
 }
 
@@ -41,48 +39,69 @@ class Invest extends Component {
   }
 
   onSwipeUp(gestureState) {
-    console.log(this.props.qr)
+
+    if (Number(this.state.amount) < 5) {
+      alert('Investment amount should be more than $5.00')
+      return;
+    }
+
     if (this.state.investmentReady) {
 
       const ref = db.ref(`users/${this.props.qr}/logs`)
 
-      ref.push({
-        date: new Date().toDateString(),
-        amount: this.state.amount,
-        description: this.state.description
-      })
-      this.setState({
-        amount: '',
-        description: '',
-      })
-
-      if (this.props.qr !== '' && this.props.cardID !== '') {
+      if (this.props.uid !== '' && this.props.cardID !== '') {
         let chargeObj = {
-          walletAddress: this.props.qr,
+          walletAddress: this.props.uid,
           cardID: this.props.cardID,
-          amount: Number(this.state.amount),
+          amount: Number(this.state.amount) * 100,
         }
-        axios.post(`http://${HOST_IP}:4000/api/makeDonation`, chargeObj)
-        .then(data => {
-          console.log(data)
+        axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
+        .then(({data}) => {
+          console.log(data.status)
 
-          db.ref(`users/${this.props.qr}`).once('value', (user) => {
+          if (data.status === 'succeeded') {
+            db.ref(`users/${this.props.uid}`).once('value', (user) => {
 
-            db.ref(`users/${this.props.qr}`).update({
-              total: user.val().total + chargeObj.amount
+              db.ref(`users/${this.props.uid}`).update({
+                total: user.val().total - (chargeObj.amount / 100)
+              })
+
+              // let buyObj = {
+              //   walletAddress: this.props.uid,
+              //   uid: this.props.uid,
+              //   amount: Number(this.state.amount),
+              // }
+
+              // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
+              // .then(({data}) => {
+              //   console.log(data)
+              //
+              //   let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
+              //   let feesObj = {
+              //     walletAddress: this.props.uid,
+              //     cardID: this.props.cardID,
+              //     amount: fees * 100,
+              //   }
+              //
+              //   axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+              //   .then(() => {
+              //     this.setState({
+              //       amount: '',
+              //       description: '',
+              //       investmentReady: false,
+              //     })
+              //
+              //     alert('Investment Made')
+              //   })
+              // })
+              alert('Investment Made')
             })
-
-            this.setState({
-              investmentReady: false
-            })
-
-            // let buyObj = {
-            //   walletAddress: this.props.qr,
-            //   uid: this.props.uid,
-            // }
-
-            // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
-          })
+          } else {
+            alert('Investment denied: Please check credit card input')
+          }
+        })
+        .catch(err => {
+          console.log(err)
         })
       } else {
         alert('Invalid card credentials')

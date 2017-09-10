@@ -29,23 +29,17 @@ class Well extends Component {
     this.state = {
       amount: '',
       description: '',
-      paymentReady: false
+      paymentReady: false,
     }
-    this.getTotal = this.getTotal.bind(this);
     this.addToWallet = this.addToWallet.bind(this);
   }
 
-  getTotal() {
-    let total;
+  componentDidMount() {
     firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
-      total = data.val().total
+      this.props.setUserInfo({
+        total: data.val().total
+      })
     })
-    return total;
-    // let total = 0;
-    // for(let i = 0; i < this.props.logs.length; i++) {
-    //   total += Number(this.props.logs[i]['amount'])
-    // }
-    // return total
   }
 
   addToWallet() {
@@ -97,7 +91,7 @@ class Well extends Component {
           <NavigationBar title={{title:'Wishing Well'}} tintColor='#99ccff'/>
         </View>
         <View style={styles.walletAmountContainer}>
-          <Text style={styles.walletAmount}>Your Wallet: ${this.getTotal()}</Text>
+          <Text style={styles.walletAmount}>Your Wallet: ${this.props.total}</Text>
         </View>
         <View style={styles.inputFields}>
           <View style={{height: "20%"}}>
