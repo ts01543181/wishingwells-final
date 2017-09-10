@@ -35,6 +35,7 @@ export default class Register extends Component {
           wallet: '',
           photo: '',
           total: 0,
+          goal: 0
         })
       })
       .catch(err => {
