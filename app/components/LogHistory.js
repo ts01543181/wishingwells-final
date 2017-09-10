@@ -5,13 +5,15 @@ import * as firebase from 'firebase'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { setSavings } from '../Actions/Savings/SavingsAction'
+import { setUserInfo } from '../Actions/Profile/ProfileAction.js'
 const db = firebase.database()
 
 
 const mapStateToProps = (state) => {
   return {
     logs: state.SavingsReducer.entries,
-    uid: state.ProfileReducer.uid
+    uid: state.ProfileReducer.uid,
+    total: state.ProfileReducer.total,
   }
 }
 
@@ -21,7 +23,6 @@ class LogHistory extends Component {
     this.state = {
       refreshing: false,
     };
-    this.getTotal = this.getTotal.bind(this)
   }
 
   componentWillMount(){
@@ -29,17 +30,13 @@ class LogHistory extends Component {
       (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
     })
   }
-  getTotal() {
-    let total;
+
+  componentDidMount() {
     firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
-      total = data.val().total
+      this.props.setUserInfo({
+        total: data.val().total
+      })
     })
-    return total;
-    // let total = 0;
-    // for(let i = 0; i < this.props.logs.length; i++) {
-    //   total += Number(this.props.logs[i]['amount'])
-    // }
-    // return total
   }
 
   _onRefresh() {
@@ -58,12 +55,12 @@ class LogHistory extends Component {
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
         <View style={styles.total}>
-          <Text style={styles.number}>${this.getTotal()}</Text>
-          <Text style={styles.savings}>Current Well Savings</Text>
+          <Text style={styles.number}>${this.props.total}</Text>
+          <Text style={styles.savings}>Current Wallet Savings</Text>
         </View>
 
         <View style={styles.transactions}>
-          <Text style={styles.transText}>TRANSACTION LOG</Text>
+          <Text style={styles.transText}>SAVINGS LOG</Text>
         </View>
 
             <View style={styles.log}>
@@ -188,4 +185,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, { setSavings })(LogHistory)
+export default connect(mapStateToProps, { setSavings, setUserInfo })(LogHistory)

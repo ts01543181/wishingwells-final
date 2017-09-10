@@ -120,7 +120,7 @@ class Invest extends Component {
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Input Amount</Text>
           </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount Here" onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
+          <TextInput style={styles.amountInputField} placeholder="Amount Here" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
           <View style={styles.confirmModal}>
             <InvestConfirmModal amount={this.state.amount} toggleInvestmentReady={this.toggleInvestmentReady}/>
           </View>

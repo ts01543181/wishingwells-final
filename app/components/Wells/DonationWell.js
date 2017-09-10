@@ -172,7 +172,7 @@ class DonationWell extends Component {
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Input Amount</Text>
           </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} multiline={true} onChangeText={(text) => this.setState({amount: Number(text)})} value={String(this.state.amount)}/>
+          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} keyboardType={'numeric'} multiline={true} onChangeText={(text) => this.setState({amount: Number(text)})} value={String(this.state.amount)}/>
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Description</Text>
           </View>
