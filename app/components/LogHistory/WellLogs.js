@@ -67,7 +67,7 @@ class WellLogs extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.total}>
-          <Text style={styles.number}>${this.state.wellSavings}</Text>
+          <Text style={styles.number}>${(this.state.wellSavings || 0)}</Text>
           <Text style={styles.savings}>Current Well Savings</Text>
         </View>
 
@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
   total: {
     alignItems: 'center',
     height: 100,
-    width: 380,
+    width: '80%',
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,
     marginTop: 10,
-    marginLeft: 18,
-    marginRight: 18
+    marginLeft: '10%',
+    marginRight: '10%'
   },
   savings: {
     fontSize: 20,

@@ -9,10 +9,11 @@ import { setUserInfo } from '../Actions/Profile/ProfileAction'
 import { setUserPhoto } from '../Actions/Profile/PhotoAction'
 import { setBitcoinValue } from '../Actions/Bitcoin/BitcoinAction'
 import axios from 'axios'
-import { VictoryLine, VictoryChart, VictoryTheme } from "victory-native"
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie} from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
-
+import TimerMixin from 'react-timer-mixin'
+import reactMixin from 'react-mixin'
 
 const mapStateToProps = (state) => {
   return {
@@ -38,6 +39,9 @@ class LandingPage extends Component {
     this.state = {
       history: [],
       refreshing: false,
+      wellSavings: '',
+      pieData: [],
+      colorScale: []
     }
     // this.getTotal = this.getTotal.bind(this)
   }
@@ -59,8 +63,46 @@ class LandingPage extends Component {
         donationID
       })
       this.props.setSavings(logs)
-      this.props.setUserPhoto(photo)
+      this.props.setUserPhoto(photo)  
     })
+    firebase.database().ref(`users/${this.props.uid}`).on('value', (snapshot) => {
+      let { total, wallet, goal } = snapshot.val()
+        if (wallet !== '') {
+          axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
+          .then(({ data }) => {
+            this.setState({
+              wellSavings: data[0].native_balance.amount
+            })
+            if (this.props.total > 0) {
+              this.setState({
+                pieData: [
+                  { x: "Well", y: (+this.state.wellSavings / goal) * 100},
+                  { x: 'Wallet', y: (total / goal) * 100},
+                  { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
+                ],
+                colorScale: ['black', 'grey', 'darkgrey']
+              })
+            } else {
+              this.setState({
+                pieData: [
+                  { x: "Well", y: (+this.state.wellSavings / goal) * 100},
+                  { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
+                ],
+                colorScale: ['black', 'darkgrey']
+              })
+            }
+
+          })
+        } else {
+          this.setState({
+            pieData: [
+              { x: 'Wallet', y: (total / goal) * 100},
+              { x: 'Goal', y: ((goal - total) / goal) * 100},
+            ],
+            colorScale: ['grey', 'darkgrey']
+          })
+        }
+      })
 
     axios.get(`http://${HOST_IP}:80/api/getBitcoinValue`)
     .then(({ data }) => {
@@ -87,6 +129,7 @@ class LandingPage extends Component {
         history: final
       })
     })
+
   }
 
   _onRefresh() {
@@ -177,15 +220,23 @@ class LandingPage extends Component {
           </VictoryChart>
 
           
-              <Text>Goal: {this.props.goal || 100}</Text>
-            <Progress.Bar progress={this.props.total / this.props.goal || 100} width={200} height={120} style={styles.bar}/>
-
+              <Text>Goal: {this.props.goal}</Text>
+              <Text>Well Savings: ${this.state.wellSavings || 0}</Text>
+              <View style={{marginBottom: '10%'}}>
+                <VictoryPie data={this.state.pieData}
+                colorScale={this.state.colorScale}
+                innerRadius={50}
+                width={350}
+                />
+              </View>
           </ScrollView>
       </View>
       </Image>
     )
   }
 }
+
+reactMixin(LandingPage.prototype, TimerMixin);
 
 const styles = StyleSheet.create({
   backgroundImage: {

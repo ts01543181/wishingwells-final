@@ -76,7 +76,7 @@ class WalletLogs extends Component {
           <Text style={styles.transText}>SAVINGS LOG</Text>
         </View>
 
-            <View style={styles.log}>
+            <ScrollView style={styles.log}>
               <FlatList
                 refreshControl={
                   <RefreshControl
@@ -99,7 +99,7 @@ class WalletLogs extends Component {
                 }
                 style={{height:'100%'}}
               />
-              </View>
+              </ScrollView>
       </Image>
     )
   }
@@ -187,17 +187,17 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: '70%',
+    marginBottom: '51%',
   },
   total: {
     alignItems: 'center',
     height: 100,
-    width: 380,
+    width: '80%',
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,
     marginTop: 10,
-    marginLeft: 18,
-    marginRight: 18
+    marginLeft: '10%',
+    marginRight: '10%'
   },
   savings: {
     fontSize: 20,
