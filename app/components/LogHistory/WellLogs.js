@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { setSavings } from '../../Actions/Savings/SavingsAction'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 import axios from 'axios'
+import { HOST_IP } from '../../../config.js'
 const db = firebase.database()
 
 const mapStateToProps = (state) => {
