@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     marginBottom: 20,
-    marginTop: 25,
+    marginTop: 15,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
   },

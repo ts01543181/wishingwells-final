@@ -12,8 +12,6 @@ import axios from 'axios'
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie} from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
-import TimerMixin from 'react-timer-mixin'
-import reactMixin from 'react-mixin'
 
 const mapStateToProps = (state) => {
   return {
@@ -63,7 +61,7 @@ class LandingPage extends Component {
         donationID
       })
       this.props.setSavings(logs)
-      this.props.setUserPhoto(photo)  
+      this.props.setUserPhoto(photo)
     })
     firebase.database().ref(`users/${this.props.uid}`).on('value', (snapshot) => {
       let { total, wallet, goal } = snapshot.val()
@@ -133,7 +131,7 @@ class LandingPage extends Component {
   }
 
   _onRefresh() {
-   
+
     this.setState({refreshing: true});
     axios.get(`http://${HOST_IP}:80/api/getBitcoinValue`)
     .then(({ data }) => {
@@ -180,39 +178,17 @@ class LandingPage extends Component {
   render() {
     return (
       <View style={styles.body}>
-      <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>      
+      <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
       {/* <View> */}
         <View>
         <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
-        <ScrollView
-            refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}
-              />} 
-          >
-          <View style={styles.priceWrap}>
-            {/* <View style={styles.priceWrap}> */}
-              <View style={styles.priceBox}>
-                <Text style={styles.priceText}>1</Text>
-                <Text style={styles.priceCurr}>BITCOIN</Text>
-              </View>
-              <View style={styles.priceBox}> 
-                <Text style={styles.priceText}>{this.props.bitcoinValue}</Text>
-                <Text style={styles.priceCurr}>USD</Text>
-              {/* </View> */}
-            </View>
-          </View>
-          </ScrollView>
-
-      </Image>
           <ScrollView
             refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh.bind(this)}
-              />} 
+              />}
           >
           <View style={styles.bla}>
             <View style={styles.chartWrap}>
@@ -232,7 +208,7 @@ class LandingPage extends Component {
                     duration: 2000,
                     onLoad: { duration: 1000 }
                   }}
-                /> 
+                />
               </VictoryChart>
             </View>
           </View>
@@ -242,7 +218,7 @@ class LandingPage extends Component {
             <Text style={styles.goalText}>W E L L  S A V I N G S: ${this.state.wellSavings || 0}</Text>
           </View>
 
-          
+
             <View style={styles.pieWrap}>
               <View style={{marginBottom: '10%'}}>
               <Text style={styles.chartText}>G O A L  C H A R T</Text>
@@ -254,6 +230,7 @@ class LandingPage extends Component {
               </View>
             </View>
           </ScrollView>
+          </Image>
        </View>
     )
   }
@@ -306,7 +283,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign:'center',
-    backgroundColor: 'rgba(0,0,0,0)'    
+    backgroundColor: 'rgba(0,0,0,0)'
   },
   priceText: {
     color: 'white',
