@@ -30,7 +30,8 @@ const mapStateToProps = (state) => {
     photo: state.PhotoReducer.photo,
     bio: state.ProfileReducer.bio,
     uid: state.ProfileReducer.uid,
-    photo: state.PhotoReducer.photo
+    photo: state.PhotoReducer.photo,
+    goal: state.ProfileReducer.goal
   }
 }
 
@@ -76,7 +77,8 @@ class Settings extends Component {
       lastname: this.state.formData.lastname || this.props.lastname,
       email: this.state.formData.email || this.props.email,
       bio: this.state.formData.bio || this.props.bio,
-      photo: this.state.photo || this.props.photo
+      photo: this.state.photo || this.props.photo,
+      goal: this.state.formData.goal || this.props.goal
     })
   }
   
@@ -169,6 +171,12 @@ class Settings extends Component {
             iconLeft={<Icon name='email-outline' size={30} style={styles.icon}/>}
             placeholder='Email'
             value={this.props.email}
+          />
+        <InputField
+            ref='goal'
+            iconLeft={<Icon name='information-outline' size={30} style={styles.icon}/>}
+            placeholder='Set a goal'
+            value={this.props.goal}
           />
         <InputField
             ref='bio'
