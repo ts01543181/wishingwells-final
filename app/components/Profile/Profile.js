@@ -6,7 +6,8 @@ import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import axios from 'axios'
-import {HOST_IP} from '../../config.js'
+import {HOST_IP} from '../../../config.js'
+import CashOutModal from './CashOutModal.js'
 
 
 const mapStateToProps = (state) => {
@@ -66,7 +67,7 @@ class Profile extends Component {
   render() {
     return (
       <View style={styles.body}>
-          <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+          <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
 
             <NavigationBar title={{title:'PROFILE', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
 
@@ -86,9 +87,7 @@ class Profile extends Component {
 
             <View style={styles.info}>
                <Text><Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
-               <TouchableOpacity style={styles.button} onPress={() => {}}>
-                 <Text style={styles.invest}>CASH OUT</Text>
-               </TouchableOpacity>
+               <CashOutModal style={styles.invest} wellAmount={this.state.wellSavings}/>
              </View>
 
             <View style={styles.aboutInfo}>
