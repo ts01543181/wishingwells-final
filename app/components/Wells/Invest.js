@@ -139,7 +139,7 @@ class Invest extends Component {
         >
            <View style={styles.coin}>
               <Animatable.View ref="view">
-                <Spinner type="CircleFlip" size={100} color={'#DAA520'} style={{marginTop:'40%', marginLeft:'37%'}}/>
+                <Spinner type="CircleFlip" size={150} color={'#DAA520'} style={{marginTop:'40%', marginLeft:'31%'}}/>
               </Animatable.View>
            </View>
         </GestureRecognizer>
