@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 150,
-    borderWidth: 0.5
   },
   qrText: {
     justifyContent: 'center',
