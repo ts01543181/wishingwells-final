@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
     borderColor: '#aaa',
     borderWidth: 1,
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
+    marginTop: 10
   },
   buttonText: {
     fontSize: 15,
