@@ -78,7 +78,7 @@ class Settings extends Component {
       email: this.state.formData.email || this.props.email,
       bio: this.state.formData.bio || this.props.bio,
       photo: this.state.photo || this.props.photo,
-      goal: this.state.formData.goal || this.props.goal
+      goal: +this.state.formData.goal || +this.props.goal
     })
   }
   
