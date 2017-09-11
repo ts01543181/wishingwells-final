@@ -48,8 +48,6 @@ class Invest extends Component {
 
     if (this.state.investmentReady) {
 
-      const ref = db.ref(`users/${this.props.qr}/logs`)
-
       if (this.props.uid !== '' && this.props.cardID !== '') {
         let chargeObj = {
           walletAddress: this.props.uid,
@@ -72,7 +70,7 @@ class Invest extends Component {
               //   uid: this.props.uid,
               //   amount: Number(this.state.amount),
               // }
-
+              //
               // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
               // .then(({data}) => {
               //   console.log(data)
@@ -92,11 +90,19 @@ class Invest extends Component {
               //       investmentReady: false,
               //     })
               //
+              //     const ref = db.ref(`users/${this.props.uid}/investmentLogs`)
+              //
+              //     ref.push({
+              //       date: new Date().toDateString(),
+              //       time: new Date().getTime(),
+              //       amount: Number(data.subtotal.amount),
+              //     })
+              //
               //     alert('Investment Made')
               //   })
               // })
+
               this.refs.view.fadeOutUp(800)
-              alert('Investment Made')
             })
           } else {
             alert('Investment denied: Please check credit card input')
@@ -104,6 +110,7 @@ class Invest extends Component {
         })
         .catch(err => {
           console.log(err)
+          alert('Error')
         })
       } else {
         alert('Invalid card credentials')
@@ -121,20 +128,20 @@ class Invest extends Component {
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Input Amount</Text>
           </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount Here" onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
+          <TextInput style={styles.amountInputField} placeholder="Amount Here" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
           <View style={styles.confirmModal}>
             <InvestConfirmModal amount={this.state.amount} toggleInvestmentReady={this.toggleInvestmentReady}/>
           </View>
         </View>
         <GestureRecognizer
-           onSwipeUp={(state) => this.onSwipeUp(state)} 
+           onSwipeUp={(state) => this.onSwipeUp(state)}
           style={styles.coin}
         >
-           <View style={styles.coin}> 
+           <View style={styles.coin}>
               <Animatable.View ref="view">
                 <Spinner type="CircleFlip" size={100} color={'#DAA520'} style={{marginTop:'40%', marginLeft:'37%'}}/>
               </Animatable.View>
-           </View> 
+           </View>
         </GestureRecognizer>
       </View>
     )

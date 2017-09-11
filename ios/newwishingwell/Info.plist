@@ -5,7 +5,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>UseMicrophone</string>
 	<key>CFBundleGetInfoString</key>
-	<string></string>
+	<string/>
 	<key>NSCameraUsageDescription</key>
 	<string>takePhotos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -47,7 +47,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -60,7 +60,7 @@
 		</dict>
 	</dict>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

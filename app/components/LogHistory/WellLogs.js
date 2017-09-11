@@ -1,45 +1,44 @@
-import React, { Component } from 'react'
-import { View, Text, StyleSheet, FlatList, ScrollView, RefreshControl, Image } from 'react-native'
+import React, { Component, PropTypes } from 'react';
+import { View, Text, StyleSheet, FlatList, ScrollView, RefreshControl, Image, TouchableOpacity } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import * as firebase from 'firebase'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { setSavings } from '../Actions/Savings/SavingsAction'
+import { setSavings } from '../../Actions/Savings/SavingsAction'
+import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
+import axios from 'axios'
+import { HOST_IP } from '../../../config.js'
 const db = firebase.database()
-
 
 const mapStateToProps = (state) => {
   return {
-    logs: state.SavingsReducer.entries,
-    uid: state.ProfileReducer.uid
+    uid: state.ProfileReducer.uid,
   }
 }
 
-class LogHistory extends Component {
+class WellLogs extends Component {
+  static propTypes = {
+    number: PropTypes.number.isRequired,
+    color: PropTypes.string.isRequired,
+    onSwipe: PropTypes.func.isRequired,
+  };
+
   constructor() {
     super()
     this.state = {
       refreshing: false,
+      wellSavings: '',
     };
-    this.getTotal = this.getTotal.bind(this)
   }
 
-  componentWillMount(){
-    db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
-      (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
+  componentDidMount() {
+
+    axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
+    .then(({ data }) => {
+      this.setState({
+        wellSavings: data[0].native_balance.amount
+      })
     })
-  }
-  getTotal() {
-    let total;
-    firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
-      total = data.val().total
-    })
-    return total;
-    // let total = 0;
-    // for(let i = 0; i < this.props.logs.length; i++) {
-    //   total += Number(this.props.logs[i]['amount'])
-    // }
-    // return total
   }
 
   _onRefresh() {
@@ -52,50 +51,51 @@ class LogHistory extends Component {
 
   render() {
 
+    const { onSwipe } = this.props;
+
     return (
-      <Image source={require('../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
+        <View style={styles.pageButtons}>
+          <TouchableOpacity style={styles.button} onPress={onSwipe}>
+            <Text style={styles.buttonText}>Wallet Logs</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <Text style={styles.buttonText}>Well Logs</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.total}>
-          <Text style={styles.number}>${this.getTotal()}</Text>
+          <Text style={styles.number}>${this.state.wellSavings}</Text>
           <Text style={styles.savings}>Current Well Savings</Text>
         </View>
 
         <View style={styles.transactions}>
-          <Text style={styles.transText}>TRANSACTION LOG</Text>
+          <Text style={styles.transText}>SAVINGS LOG</Text>
         </View>
-
-            <View style={styles.log}>
-              <FlatList
-                refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh.bind(this)}
-                    />}
-                removeClippedSubviews={false}
-                data={this.props.logs.reverse()}
-                renderItem={({item}) =>
-                  <View style={styles.list}>
-
-                    <View style={styles.firstline}>
-                      <Text style={styles.description}>{item.description}</Text>
-                      <Text style={styles.time}>{moment(item.time).fromNow()}</Text>
-                    </View>
-
-                    <Text style={styles.date}>{item.date}</Text>
-                    <Text style={styles.amount}>${item.amount}</Text>
-                  </View>
-                }
-                style={{height:'100%'}}
-              />
-              </View>
       </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  pageButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  button: {
+    padding: 5,
+    borderRadius: 5,
+    borderColor: '#aaa',
+    borderWidth: 1,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10
+  },
+  buttonText: {
+    fontSize: 15,
+  },
   nav:{
     color: 'white',
   },
@@ -186,6 +186,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10
   },
-})
+});
 
-export default connect(mapStateToProps, { setSavings })(LogHistory)
+export default connect(mapStateToProps, { setSavings, setUserInfo })(WellLogs)

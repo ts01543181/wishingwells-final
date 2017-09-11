@@ -68,13 +68,6 @@ class Profile extends Component {
               <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
             </View>
 
-            <View style={styles.info}>
-              <Text><Icon name='currency-usd' size={25} style={styles.icon}/>{this.getTotal()}</Text>
-              <TouchableOpacity style={styles.button} onPress={() => {}}>
-                <Text style={styles.invest}>INVEST</Text>
-              </TouchableOpacity>
-            </View>
-
             <View style={styles.aboutInfo}>
               <Text style={styles.about}><Icon name='information-outline' size={25} style={styles.icon}/> A B O U T  M E</Text>
               <Text style={styles.bio}>{this.props.bio}</Text>
@@ -108,7 +101,7 @@ const styles = StyleSheet.create({
     marginLeft: 15
   },
   image: {
-    height: 250, 
+    height: 250,
     width: '100%',
     backgroundColor: '#C0C0C0',
   },
@@ -136,10 +129,10 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     marginBottom: 20,
-    marginTop: 10,
+    marginTop: 25,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
-  }, 
+  },
   aboutInfo:{
     paddingTop: 8,
     paddingBottom: 12,
@@ -151,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
-  }, 
+  },
   money:{
     borderRadius: 10,
     flex: 1,

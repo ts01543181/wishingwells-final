@@ -53,47 +53,113 @@ class DonationWell extends Component {
   }
 
   donate() {
+
+    if (Number(this.state.amount) < 5) {
+      alert('Donation amount should be more than $5.00')
+      return;
+    }
+
     if (this.state.donateReady) {
 
-      const ref = db.ref(`users/${this.props.qr}/logs`)
+      if (this.props.uid !== '' && this.props.cardID !== '') {
+        let chargeObj = {
+          walletAddress: this.props.uid,
+          cardID: this.props.cardID,
+          amount: Number(this.state.amount) * 100,
+        }
+        axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
+        .then(({data}) => {
+          console.log(data.status)
 
-      ref.push({
-        date: new Date().toDateString(),
-        amount: this.state.amount,
-        description: this.state.description
-      })
+          if (data.status === 'succeeded') {
+            db.ref(`users/${this.props.uid}`).once('value', (user) => {
 
-      this.setState({
-        amount: '',
-        description: '',
-      })
-
-      let chargeObj = {
-        walletAddress: this.props.qr,
-        cardID: this.props.cardID,
-        amount: Number(this.state.amount),
+              db.ref(`users/${this.props.uid}`).update({
+                total: user.val().total - (chargeObj.amount / 100)
+              })
+            }) // TAKE OUT THIS BRACKET
+            //
+            //   let buyObj = {
+            //     walletAddress: this.props.qr,
+            //     uid: this.props.qr,
+            //     amount: Number(this.state.amount),
+            //   }
+            //
+            //   axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
+            //   .then(({data}) => {
+            //     console.log(data)
+            //
+            //     let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
+            //     let feesObj = {
+            //       walletAddress: this.props.uid,
+            //       cardID: this.props.cardID,
+            //       amount: fees * 100,
+            //     }
+            //
+            //     axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+            //     .then(() => {
+            //       this.setState({
+            //         amount: '',
+            //         description: '',
+            //         donateReady: false,
+            //       })
+            //
+            //       alert('Donation Made')
+            //     })
+            //   })
+            // })
+            alert('Donation Made!!!')
+          } else {
+            alert('Donation denied: Please check credit card input')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          alert('Error')
+        })
+      } else {
+        alert('Invalid card credentials')
       }
-
-      db.ref(`users/${this.props.qr}`).once('value', (user) => {
-
-        db.ref(`users/${this.props.qr}`).update({
-          total: user.val().total + chargeObj.amount
-        })
-
-        this.setState({
-          donateReady: false
-        })
-        alert('Donation made!')
-      })
+    } else {
+      alert('Please confirm donation details')
     }
+
+    // if (this.state.donateReady) {
+    //
+    //   const ref = db.ref(`users/${this.props.qr}/logs`)
+    //
+    //   ref.push({
+    //     date: new Date().toDateString(),
+    //     amount: this.state.amount,
+    //     description: this.state.description
+    //   })
+    //
+    //   this.setState({
+    //     amount: '',
+    //     description: '',
+    //   })
+    //
+    //   let chargeObj = {
+    //     walletAddress: this.props.qr,
+    //     cardID: this.props.cardID,
+    //     amount: Number(this.state.amount),
+    //   }
+    //
+    //   db.ref(`users/${this.props.qr}`).once('value', (user) => {
+    //
+    //     db.ref(`users/${this.props.qr}`).update({
+    //       total: user.val().total + chargeObj.amount
+    //     })
+    //
+    //     this.setState({
+    //       donateReady: false
+    //     })
+    //     alert('Donation made!')
+    //   })
+    // }
   }
 
   render() {
-
-    const config = {
-      velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80
-    };
 
     return (
       <View style={styles.container}>
@@ -106,7 +172,7 @@ class DonationWell extends Component {
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Input Amount</Text>
           </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} multiline={true} onChangeText={(text) => this.setState({amount: Number(text)})} value={String(this.state.amount)}/>
+          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} keyboardType={'numeric'} multiline={true} onChangeText={(text) => this.setState({amount: Number(text)})} value={String(this.state.amount)}/>
           <View style={{height: "20%"}}>
             <Text style={styles.credentials}>Description</Text>
           </View>

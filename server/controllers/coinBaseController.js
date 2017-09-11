@@ -40,5 +40,16 @@ module.exports = {
       console.log('Current bitcoin price in ' + currencyCode + ': ' +  price.data.amount);
       res.send(price.data.amount)
     });
+  },
+  getWellTotal: (req, res) => {
+    client.getAccounts({}, function(err, accounts) {
+      if (err) {
+        console.log(err)
+      }
+      let targetAccount = accounts.filter(function(acct) {
+        return acct.name === req.body.uid;
+      })
+      res.send(targetAccount)
+    });
   }
 }
