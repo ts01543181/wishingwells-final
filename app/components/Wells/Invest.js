@@ -70,7 +70,7 @@ class Invest extends Component {
               //   uid: this.props.uid,
               //   amount: Number(this.state.amount),
               // }
-
+              //
               // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
               // .then(({data}) => {
               //   console.log(data)
@@ -90,11 +90,19 @@ class Invest extends Component {
               //       investmentReady: false,
               //     })
               //
+              //     const ref = db.ref(`users/${this.props.uid}/investmentLogs`)
+              //
+              //     ref.push({
+              //       date: new Date().toDateString(),
+              //       time: new Date().getTime(),
+              //       amount: Number(data.subtotal.amount),
+              //     })
+              //
               //     alert('Investment Made')
               //   })
               // })
+
               this.refs.view.fadeOutUp(800)
-              alert('Investment Made')
             })
           } else {
             alert('Investment denied: Please check credit card input')
@@ -126,14 +134,14 @@ class Invest extends Component {
           </View>
         </View>
         <GestureRecognizer
-           onSwipeUp={(state) => this.onSwipeUp(state)} 
+           onSwipeUp={(state) => this.onSwipeUp(state)}
           style={styles.coin}
         >
-           <View style={styles.coin}> 
+           <View style={styles.coin}>
               <Animatable.View ref="view">
                 <Spinner type="CircleFlip" size={100} color={'#DAA520'} style={{marginTop:'40%', marginLeft:'37%'}}/>
               </Animatable.View>
-           </View> 
+           </View>
         </GestureRecognizer>
       </View>
     )

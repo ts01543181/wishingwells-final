@@ -12,9 +12,7 @@ const db = firebase.database()
 
 const mapStateToProps = (state) => {
   return {
-    logs: state.SavingsReducer.entries,
     uid: state.ProfileReducer.uid,
-    total: state.ProfileReducer.total,
   }
 }
 
@@ -29,23 +27,17 @@ class WellLogs extends Component {
     super()
     this.state = {
       refreshing: false,
+      wellSavings: '',
     };
   }
 
   componentDidMount() {
-    db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
-      (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
-    })
-
-    firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
-      this.props.setUserInfo({
-        total: data.val().total
-      })
-    })
 
     axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
     .then(({ data }) => {
-      console.log(data)
+      this.setState({
+        wellSavings: data[0].native_balance.amount
+      })
     })
   }
 
@@ -75,38 +67,13 @@ class WellLogs extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.total}>
-          <Text style={styles.number}>${this.props.total}</Text>
+          <Text style={styles.number}>${this.state.wellSavings}</Text>
           <Text style={styles.savings}>Current Well Savings</Text>
         </View>
 
         <View style={styles.transactions}>
-          <Text style={styles.transText}>TRANSACTION LOG</Text>
+          <Text style={styles.transText}>SAVINGS LOG</Text>
         </View>
-
-            <View style={styles.log}>
-              <FlatList
-                refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh.bind(this)}
-                    />}
-                removeClippedSubviews={false}
-                data={this.props.logs.reverse()}
-                renderItem={({item}) =>
-                  <View style={styles.list}>
-
-                    <View style={styles.firstline}>
-                      <Text style={styles.description}>{item.description}</Text>
-                      <Text style={styles.time}>{moment(item.time).fromNow()}</Text>
-                    </View>
-
-                    <Text style={styles.date}>{item.date}</Text>
-                    <Text style={styles.amount}>${item.amount}</Text>
-                  </View>
-                }
-                style={{height:'100%'}}
-              />
-              </View>
       </Image>
     )
   }

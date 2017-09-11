@@ -73,7 +73,7 @@ class WalletLogs extends Component {
         </View>
 
         <View style={styles.transactions}>
-          <Text style={styles.transText}>TRANSACTION LOG</Text>
+          <Text style={styles.transText}>SAVINGS LOG</Text>
         </View>
 
             <View style={styles.log}>
