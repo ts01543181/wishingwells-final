@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import InvestConfirmModal from './InvestConfirmModal.js'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
+import { setSavings } from '../../Actions/Savings/SavingsAction.js'
 import { HOST_IP } from '../../../config.js'
 import Spinner from 'react-native-spinkit'
 import * as Animatable from 'react-native-animatable'
@@ -63,6 +64,17 @@ class Invest extends Component {
 
               db.ref(`users/${this.props.uid}`).update({
                 total: user.val().total - (chargeObj.amount / 100)
+              })
+
+              // PUT THIS DB CALL IN THE FINAL STAGE OF THE CALL CHAIN
+
+              const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+
+              investmentLogsRef.push({
+                date: new Date().toDateString(),
+                time: new Date().getTime(),
+                amount: this.state.amount,
+                description: 'SELF INVESTMENT'
               })
 
               // let buyObj = {
@@ -183,4 +195,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, { setUserInfo })(Invest)
+export default connect(mapStateToProps, { setUserInfo, setSavings })(Invest)
