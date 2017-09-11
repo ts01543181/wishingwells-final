@@ -174,10 +174,11 @@ class Settings extends Component {
           />
         <InputField
             ref='goal'
-            iconLeft={<Icon name='information-outline' size={30} style={styles.icon}/>}
+            iconLeft={<Icon name='currency-usd' size={30} style={styles.icon}/>}
             placeholder='Set a goal'
             value={this.props.goal}
           />
+     
         <InputField
             ref='bio'
             iconLeft={<Icon name='information-outline' size={30} style={styles.icon}/>}

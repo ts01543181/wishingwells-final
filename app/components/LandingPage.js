@@ -80,7 +80,7 @@ class LandingPage extends Component {
                   { x: 'Wallet', y: (total / goal) * 100},
                   { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
                 ],
-                colorScale: ['black', 'grey', 'darkgrey']
+                colorScale: ['#f3d8e5', '#e7b1cb', '#D0D0D0']
               })
             } else {
               this.setState({
@@ -88,7 +88,7 @@ class LandingPage extends Component {
                   { x: "Well", y: (+this.state.wellSavings / goal) * 100},
                   { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
                 ],
-                colorScale: ['black', 'darkgrey']
+                colorScale: ['#f3d8e5', '#D0D0D0']
               })
             }
 
@@ -99,7 +99,7 @@ class LandingPage extends Component {
               { x: 'Wallet', y: (total / goal) * 100},
               { x: 'Goal', y: ((goal - total) / goal) * 100},
             ],
-            colorScale: ['grey', 'darkgrey']
+            colorScale: ['#e7b1cb', '#D0D0D0']
           })
         }
       })
@@ -179,13 +179,13 @@ class LandingPage extends Component {
 
   render() {
     return (
+      <View style={styles.body}>
       <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>      
-      <View>
+      {/* <View> */}
         <View>
-        <NavigationBar title={{title:'MY WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
+        <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
-          
-          <ScrollView
+        <ScrollView
             refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -193,56 +193,114 @@ class LandingPage extends Component {
               />} 
           >
           <View style={styles.priceWrap}>
-            <View style={styles.priceBox}>
-              <Text style={styles.priceText}>1</Text>
-              <Text style={styles.priceCurr}>BITCOIN</Text>
+            {/* <View style={styles.priceWrap}> */}
+              <View style={styles.priceBox}>
+                <Text style={styles.priceText}>1</Text>
+                <Text style={styles.priceCurr}>BITCOIN</Text>
+              </View>
+              <View style={styles.priceBox}> 
+                <Text style={styles.priceText}>{this.props.bitcoinValue}</Text>
+                <Text style={styles.priceCurr}>USD</Text>
+              {/* </View> */}
             </View>
-            <View style={styles.priceBox}> 
-              <Text style={styles.priceText}>{this.props.bitcoinValue}</Text>
-              <Text style={styles.priceCurr}>USD</Text>
+          </View>
+          </ScrollView>
+
+      </Image>
+          <ScrollView
+            refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+              />} 
+          >
+          <View style={styles.bla}>
+            <View style={styles.chartWrap}>
+              <Text style={styles.chartText}>P R I C E  C H A R T</Text>
+              <VictoryChart
+                theme={VictoryTheme.material}
+              >
+                <VictoryLine
+                interpolation="natural"
+
+                  data={this.state.history}
+                  style={{
+                    data: { stroke: "#df9fbe" },
+                    parent: { border: "1px solid #ccc"}
+                  }}
+                  animate={{
+                    duration: 2000,
+                    onLoad: { duration: 1000 }
+                  }}
+                /> 
+              </VictoryChart>
             </View>
           </View>
 
-          <VictoryChart
-            theme={VictoryTheme.material}
-          >
-            <VictoryLine
-              data={this.state.history}
-              style={{
-                data: { stroke: 'black' },
-                parent: { border: "1px solid #ccc"}
-              }}
-              animate={{
-                duration: 1000,
-                onLoad: { duration: 1000 }
-              }}
-            /> 
-          </VictoryChart>
+          <View style={styles.goalWrap}>
+            <Text style={styles.goalText}>G O A L: ${this.props.goal}</Text>
+            <Text style={styles.goalText}>W E L L  S A V I N G S: ${this.state.wellSavings || 0}</Text>
+          </View>
 
           
-              <Text>Goal: {this.props.goal}</Text>
-              <Text>Well Savings: ${this.state.wellSavings || 0}</Text>
+            <View style={styles.pieWrap}>
               <View style={{marginBottom: '10%'}}>
+              <Text style={styles.chartText}>G O A L  C H A R T</Text>
                 <VictoryPie data={this.state.pieData}
                 colorScale={this.state.colorScale}
                 innerRadius={50}
                 width={350}
                 />
               </View>
+            </View>
           </ScrollView>
-      </View>
-      </Image>
+       </View>
     )
   }
 }
 
-reactMixin(LandingPage.prototype, TimerMixin);
-
 const styles = StyleSheet.create({
+  bla: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  priceWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    marginLeft: 25,
+    marginRight: 25,
+  },
+  body: {
+    marginBottom: '45%'
+  },
   backgroundImage: {
     width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0,0,0,0)'
+    height: '38%',
+    backgroundColor: 'rgba(0,0,0,0)',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+  },
+  chartWrap: {
+    backgroundColor: 'rgba(250,250,250,0.5)',
+    height: 380,
+    borderRadius: 20,
+    marginTop: 20,
   },
   priceCurr: {
     color: 'white',
@@ -256,14 +314,6 @@ const styles = StyleSheet.create({
     marginTop: 45,
     textAlign:'center',
     backgroundColor: 'rgba(0,0,0,0)'
-  },
-  priceWrap: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 40,
-    marginRight: 40,
-    marginTop: 10
   },
   priceBox: {
     backgroundColor: 'rgba(250,250,250,0.5)',
@@ -280,9 +330,42 @@ const styles = StyleSheet.create({
   },
   bar: {
     transform: [{ rotate: '270deg'}],
-    marginTop: '30%',
+    marginTop: '20%',
     marginLeft: '23%',
     marginBottom: '40%'
+  },
+  chartText: {
+    textAlign: 'center',
+    marginTop: 10,
+    fontSize: 18,
+    color: 'grey'
+  },
+  wellText:{
+    textAlign: 'center',
+    marginTop: 10,
+    fontSize: 18,
+    color: 'grey'
+  },
+  pieWrap:{
+    backgroundColor: 'rgba(250,250,250,0.5)',
+    width: 380,
+    height: 390,
+    borderRadius: 20,
+    marginTop: 18,
+  },
+  goalWrap: {
+    backgroundColor: 'rgba(250,250,250,0.5)',
+    width: 380,
+    height: 100,
+    borderRadius: 20,
+    marginTop: 18,
+    justifyContent: 'center'
+  },
+  goalText: {
+    alignSelf: 'center',
+    fontSize: 16,
+    color: 'grey',
+    marginBottom: 5
   }
 })
 
