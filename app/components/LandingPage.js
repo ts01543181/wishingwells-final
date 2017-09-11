@@ -170,15 +170,15 @@ class LandingPage extends Component {
                 parent: { border: "1px solid #ccc"}
               }}
               animate={{
-                duration: 2000,
+                duration: 1000,
                 onLoad: { duration: 1000 }
               }}
             /> 
           </VictoryChart>
 
           
-              <Text>Well</Text>
-            <Progress.Bar progress={0.5} width={200} height={120} style={styles.bar}/>
+              <Text>Goal: {this.props.goal || 100}</Text>
+            <Progress.Bar progress={this.props.total / this.props.goal || 100} width={200} height={120} style={styles.bar}/>
 
           </ScrollView>
       </View>

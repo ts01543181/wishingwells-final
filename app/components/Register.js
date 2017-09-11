@@ -85,7 +85,7 @@ export default class Register extends Component {
           <TextInput
             style={styles.inputFields}
             placeholder="RE-ENTER PASSWORD"
-            onChangeText={(text) => this.setState({password: text})}
+            onChangeText={(text) => this.setState({reEnter: text})}
             value={this.password}
             autoCorrect={false}
             secureTextEntry={true}
