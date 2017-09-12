@@ -67,6 +67,7 @@ class WellLogs extends Component {
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
+
         <View style={styles.pageButtons}>
           <TouchableOpacity style={styles.button} onPress={onSwipe}>
             <Text style={styles.buttonText}>Wallet Logs</Text>
@@ -226,10 +227,25 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 5
   },
+  // totalWrap:{
+  //   flex:1,
+  //   flexDirection:'row',
+  //   alignItems:'center',
+  //   marginTop: 60
+  // },
+  total: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
+    width: 360,
+    backgroundColor: 'rgba(242,242,242,0.3)',
+    borderRadius: 15,
+    marginTop: 10,
+  },
   totalWrap:{
     flex:1,
     flexDirection:'row',
-    alignItems:'center',
+    justifyContent:'center',
     justifyContent:'center',
     marginTop: 60,
     marginBottom: 40,

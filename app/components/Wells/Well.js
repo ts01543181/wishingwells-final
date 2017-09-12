@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, Alert, Button } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Alert, Button, Image } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 import * as firebase from "firebase"
@@ -20,6 +20,14 @@ const mapStateToProps = state => {
     cardID: state.ProfileReducer.cardID,
     total: state.ProfileReducer.total,
   }
+}
+
+const rightButtonConfig = {
+  title: 'INVEST',
+  handler() {
+    Actions.Invest()
+  },
+  tintColor: 'white'
 }
 
 class Well extends Component {
@@ -85,39 +93,53 @@ class Well extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <KeyboardAwareScrollView>
-        <View style={styles.navbar}>
-          <NavigationBar title={{title:'Wishing Well'}} tintColor='#99ccff'/>
+      // <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
+        <View style={styles.container}>
+          <KeyboardAwareScrollView>
+          <View style={styles.navbar}>
+          <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
+            {/* <NavigationBar title={{title:'Wishing Well'}} tintColor='#99ccff' rightButton={rightButtonConfig}/> */}
+          </View>
+
+          <View style={styles.walletAmountContainer}>
+            <Text style={styles.walletText}>WALLET BALANCE</Text>
+            <Text style={styles.walletAmount}>${this.props.total}</Text>
+          </View>
+
+          {/* <View style={styles.inputFields}> */}
+          <View>
+
+            <View style={styles.amountWrap}>
+                <Text style={styles.dollarSign}>$</Text>
+                  <TextInput style={styles.amountInputField} placeholder="0" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: text})} value={String(this.state.amount)}/>
+            </View>
+
+            <View style={styles.descriptionWrap}>
+              <TextInput placeholder='Description Here' style={styles.descriptionInputField} multiline={true} numberOfLines={2} onChangeText={(text) => this.setState({description: text})} maxLength={54} value={this.state.description}/>
+            </View>
+
+            <View style={styles.confirmModal}>
+              <ConfirmModal amount={this.state.amount} description={this.state.description} addToWallet={this.addToWallet}/>
+            </View>
+
+          </View>
+
+          </KeyboardAwareScrollView>
         </View>
-        <View style={styles.walletAmountContainer}>
-          <Text style={styles.walletAmount}>Your Wallet: ${this.props.total}</Text>
-        </View>
-        <View style={styles.inputFields}>
-          <View style={{height: "20%"}}>
-            <Text style={styles.credentials}>Input Amount</Text>
-          </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} keyboardType={'numeric'} multiline={true} onChangeText={(text) => this.setState({amount: text})} value={String(this.state.amount)}/>
-          <View style={{height: "20%"}}>
-            <Text style={styles.credentials}>Description</Text>
-          </View>
-          <TextInput placeholder='Description Here' placeholderTextColor={'#A8A8A8'} style={styles.descriptionInputField} multiline={true} numberOfLines={2} onChangeText={(text) => this.setState({description: text})} value={this.state.description}/>
-          <View style={styles.confirmModal}>
-            <ConfirmModal amount={this.state.amount} description={this.state.description} addToWallet={this.addToWallet}/>
-          </View>
-          <View style={styles.investButtonContainer}>
-            <Button style={styles.investButton} title="Invest" onPress={() => {Actions.Invest()}}/>
-          </View>
-        </View>
-        </KeyboardAwareScrollView>
-      </View>
+      // </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0)'
+  },
   container: {
     flex: 1,
+    backgroundColor: 'white'
   },
   navbar: {
     shadowColor: '#000',
@@ -127,52 +149,58 @@ const styles = StyleSheet.create({
     zIndex:2
   },
   walletAmountContainer: {
-    marginTop: '10%',
+    marginTop: '5%',
     alignItems: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+  },
+  walletText:{
+    fontSize: 14,
+    color: '#2aa2a2',
   },
   walletAmount: {
-    fontSize: 40,
+    fontSize: 60,
+    color: 'grey'
   },
-  // coin: {
-  //   top: '6%',
-  //   height: '55%',
-  //   width: '100%',
-  // },
   inputFields: {
-    marginTop: '2%',
-    marginLeft: '25%',
-    height: '25%',
-    width: '50%',
-    borderColor: 'gray',
     alignItems: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
-  credentials: {
-    paddingTop: 10
+  amountWrap: {
+    flex: 1,
+    flexDirection:'row',
+    marginTop: '5%',
+    marginBottom: '5%',
+    borderRadius: 300,
+    width: '70%',
+    height: '90%',
+    paddingTop: '25%',
+    paddingBottom: '25%',
+    justifyContent:'center',
+    alignSelf: 'center',
+    backgroundColor: 'rgba(133, 224, 224,0.5)',  
   },
-  confirmModal: {
-    height: '10%',
-    width: 100,
+  dollarSign:{
+    backgroundColor:'rgba(0,0,0,0)',
+    fontSize: 18,
   },
   amountInputField: {
-    width: '100%',
-    height: '30%',
-    borderColor: 'gray',
-    borderColor: 'gray',
-    borderWidth: 1,
     textAlign: 'center',
-    fontSize: 15,
-    marginTop: 20,
+    width:'50%',
+    fontSize: 60,
+    backgroundColor: 'rgba(0,0,0,0)',
+    justifyContent: 'center'
+  },
+  descriptionWrap:{
+    width: '97%',
+    marginLeft: '1%',
+    textAlign:'left'
   },
   descriptionInputField: {
     width: '100%',
-    height: '50%',
     borderColor: 'gray',
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderBottomWidth: 0.5,
     textAlign: 'center',
     fontSize: 15,
     marginTop: 20
@@ -186,6 +214,16 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingTop: 30,
     paddingBottom: 70,
+  },
+  credentials: {
+    paddingTop: 10
+  },
+  confirmModal: {
+    flex: 1,
+    justifyContent:'center',
+    alignSelf: 'center',
+    height: '10%',
+    width: 100,
   },
 })
 

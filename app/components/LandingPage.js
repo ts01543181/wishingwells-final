@@ -75,7 +75,7 @@ class LandingPage extends Component {
                   { x: 'Wallet', y: (total / goal) * 100},
                   { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
                 ],
-                colorScale: ['#f3d8e5', '#e7b1cb', '#D0D0D0']
+                colorScale: ['#70dbdb', '#9fbfdf', '#D0D0D0']
               })
             } else {
               this.setState({
@@ -83,7 +83,7 @@ class LandingPage extends Component {
                   { x: "Well", y: (+this.state.wellSavings / goal) * 100},
                   { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
                 ],
-                colorScale: ['#f3d8e5', '#D0D0D0']
+                colorScale: ['#70dbdb', '#D0D0D0']
               })
             }
           })
@@ -93,7 +93,7 @@ class LandingPage extends Component {
               { x: 'Wallet', y: (total / goal) * 100},
               { x: 'Goal', y: ((goal - total) / goal) * 100},
             ],
-            colorScale: ['#e7b1cb', '#D0D0D0']
+            colorScale: ['#9fbfdf', '#D0D0D0']
           })
         }
       })
@@ -206,7 +206,7 @@ class LandingPage extends Component {
                 interpolation="natural"
                   data={this.state.history}
                   style={{
-                    data: { stroke: "#df9fbe" },
+                    data: { stroke: "#2eb8b8" },
                     parent: { border: "1px solid #ccc"}
                   }}
                   animate={{
@@ -218,20 +218,21 @@ class LandingPage extends Component {
             </View>
           </View>
           <View style={styles.goalWrap}>
-            <Text style={styles.goalText}>G O A L: ${this.props.goal}</Text>
-            <Text style={styles.goalText}>W E L L  S A V I N G S: ${this.state.wellSavings || 0}</Text>
+            <Text style={styles.goalText}>G O A L: <Text style={styles.boldText}>${this.props.goal}</Text></Text>
+            <Text style={styles.goalText}>W E L L  S A V I N G S: <Text style={styles.boldText}>${this.state.wellSavings || 0}</Text></Text>
           </View>
 
             <View style={styles.pieWrap}>
-              <View style={{marginBottom: '10%'}}>
+              {/* <View style={{marginBottom: '10%'}}> */}
               <Text style={styles.chartText}>G O A L  C H A R T</Text>
                 <VictoryPie data={this.state.pieData}
                 colorScale={this.state.colorScale}
                 innerRadius={50}
-                width={350}
+                width={300}
                 />
-              </View>
+              {/* </View> */}
             </View>
+
           </ScrollView>
        </View>
     )
@@ -344,7 +345,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 16,
     color: 'grey',
-    marginBottom: 5
+    marginBottom: 5,
+  },
+  boldText: {
+    fontWeight: 'bold'
   }
 })
 export default connect(mapStateToProps, { setSavings, setUserInfo, setUserPhoto, setBitcoinValue })(LandingPage)

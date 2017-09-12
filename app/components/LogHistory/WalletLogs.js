@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
   },
   transactions: {
     marginTop: 20,
-    // marginBottom: 8,
     padding: 10,
     borderBottomWidth: 0.5,
     borderColor: 'white',
@@ -198,15 +197,6 @@ const styles = StyleSheet.create({
   log : {
     marginBottom: '30%',
   },
-  total: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 100,
-    width: 360,
-    backgroundColor: 'rgba(242,242,242,0.3)',
-    borderRadius: 15,
-    marginTop: 10,
-  },
   savings: {
     fontSize: 20,
     marginLeft: 7,
@@ -218,6 +208,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: 'white',
     marginTop: 5
+  },
+  total: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
+    width: 360,
+    backgroundColor: 'rgba(242,242,242,0.3)',
+    borderRadius: 15,
+    marginTop: 10,
   },
   totalWrap:{
     flex:1,
