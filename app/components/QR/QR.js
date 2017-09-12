@@ -24,7 +24,7 @@ class QR extends Component {
   render() {
 
     return (
-      <Image source={require('../../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
       
       <View>
         <View style={styles.navbar}>
@@ -45,13 +45,13 @@ class QR extends Component {
 }
 
 const styles = StyleSheet.create({
-  navbar: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    zIndex:2
-  },
+  // navbar: {
+  //   shadowColor: '#000',
+  //   shadowOffset: { width: 0, height: 1 },
+  //   shadowOpacity: 0.8,
+  //   shadowRadius: 2,
+  //   zIndex:2
+  // },
   body: {
     justifyContent: 'center',
     alignItems: 'center',
