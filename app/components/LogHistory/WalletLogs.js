@@ -20,13 +20,16 @@ class WalletLogs extends Component {
     color: PropTypes.string.isRequired,
     onSwipe: PropTypes.func.isRequired,
   };
+
   constructor() {
     super()
     this.state = {
       refreshing: false,
     };
   }
+
   componentDidMount() {
+    console.log('WALLET LOGS', this.props.logs)
     db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
       (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
     })
@@ -36,6 +39,7 @@ class WalletLogs extends Component {
       })
     })
   }
+
   _onRefresh() {
     this.setState({refreshing: true});
     db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
@@ -43,6 +47,7 @@ class WalletLogs extends Component {
     })
     this.setState({refreshing: false});
   }
+
   render() {
     const { onSwipe } = this.props;
     return (
@@ -191,8 +196,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: 400,
-    // marginBottom: '30%',
+    marginBottom: '30%',
   },
   total: {
     alignItems: 'center',

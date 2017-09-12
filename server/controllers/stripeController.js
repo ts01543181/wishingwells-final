@@ -29,15 +29,15 @@ module.exports = {
   },
   makePayment: (req, res) => {
     console.log('REQ BODY', req.body)
-    // stripe.charges.create({
-    //   amount: req.body.amount,
-    //   currency: 'usd',
-    //   customer: req.body.cardID,
-    // })
-    // .then(data => {
-    //   console.log(data)
-    //   res.send(data)
-    // })
+    stripe.charges.create({
+      amount: req.body.amount,
+      currency: 'usd',
+      customer: req.body.cardID,
+    })
+    .then(data => {
+      console.log(data)
+      res.send(data)
+    })
     res.send({status: 'succeeded'})
   }
 }

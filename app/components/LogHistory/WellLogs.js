@@ -8,11 +8,13 @@ import { setSavings } from '../../Actions/Savings/SavingsAction'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 import axios from 'axios'
 import { HOST_IP } from '../../../config.js'
-const db = firebase.database()
 
+const db = firebase.database()
 const mapStateToProps = (state) => {
   return {
+    logs: state.SavingsReducer.wellEntries,
     uid: state.ProfileReducer.uid,
+    total: state.ProfileReducer.total,
   }
 }
 
@@ -28,10 +30,23 @@ class WellLogs extends Component {
     this.state = {
       refreshing: false,
       wellSavings: '',
+      wellLogs: []
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
+      console.log('here', data.val())
+      this.setState({
+        wellLogs: Object.values(data.val())
+      })
+    })
+
+    db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
+      this.setState({
+        wellLogs: Object.values(data.val())
+      })
+    })
 
     axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
     .then(({ data }) => {
@@ -50,11 +65,9 @@ class WellLogs extends Component {
   }
 
   render() {
-
     const { onSwipe } = this.props;
-
     return (
-      <Image source={require('../../../assets/QRbackground.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
@@ -66,19 +79,42 @@ class WellLogs extends Component {
             <Text style={styles.buttonText}>Well Logs</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.total}>
-          <Text style={styles.number}>${(this.state.wellSavings || 0)}</Text>
-          <Text style={styles.savings}>Current Well Savings</Text>
+        <View style={styles.totalWrap}>
+          <View style={styles.total}>
+            <Text style={styles.number}>${this.state.wellSavings || 0}</Text>
+            <Text style={styles.savings}>Current Well Savings</Text>
+          </View>
         </View>
 
-        <View style={styles.transactions}>
-          <Text style={styles.transText}>SAVINGS LOG</Text>
-        </View>
-      </Image>
+          <View style={styles.transactions}>
+            <Text style={styles.transText}>SAVINGS LOG</Text>
+          </View>
+          <View style={styles.log}>
+          <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+                />}
+            removeClippedSubviews={false}
+            data={this.state.wellLogs.reverse()}
+            renderItem={({item}) =>
+              <View style={styles.list}>
+                <Text style={styles.description}>{item.description}</Text>
+                <View style={styles.secondLine}>
+                  <Text style={styles.date}>{item.date}</Text>
+                  <Text style={styles.time}>{moment(item.time).fromNow()}</Text>
+                </View>
+                <Text style={styles.amount}>${item.amount}</Text>
+              </View>
+            }
+            style={{height:'100%'}}
+          />
+          </View>
+    </Image>
     )
   }
 }
-
 const styles = StyleSheet.create({
   pageButtons: {
     flexDirection: 'row',
@@ -86,15 +122,26 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 5,
-    borderRadius: 5,
-    borderColor: '#aaa',
+    borderRadius: 20,
+    borderColor: 'white',
     borderWidth: 1,
+    paddingLeft:15,
+    paddingRight:15,
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 10
+    marginTop: 10,
+    backgroundColor: 'rgba(242,242,242,0.3)',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
   },
   buttonText: {
     fontSize: 15,
+    color: 'white'
   },
   nav:{
     color: 'white',
@@ -106,7 +153,7 @@ const styles = StyleSheet.create({
   },
   transactions: {
     marginTop: 20,
-    marginBottom: 8,
+    // marginBottom: 8,
     padding: 10,
     borderBottomWidth: 0.5,
     borderColor: 'white',
@@ -127,33 +174,37 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,
-    marginBottom: 5,
-    height: 80,
+    marginBottom: 1,
+    marginTop: 5,
+    height: 110,
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   description: {
     fontSize: 20,
     top: 5,
     marginLeft: 10,
+    marginRight: 10,
+    color: 'white'
   },
   time: {
     marginRight: 10,
     color: 'gray',
     top: 10,
   },
-  firstline: {
+  secondLine: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
+    marginBottom: 2
   },
   amount: {
     textAlign: 'right',
     alignSelf: 'stretch',
-    fontSize: 20,
-    marginBottom: 3,
+    fontSize: 30,
     marginRight: 10,
-    marginTop: 4
+    marginTop: 4,
+    color: 'white'
   },
   date: {
     marginLeft: 10,
@@ -161,31 +212,43 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: '70%',
+    marginBottom: '30%',
   },
   total: {
     alignItems: 'center',
+    justifyContent: 'center',
     height: 100,
-    width: '80%',
+    width: 360,
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,
     marginTop: 10,
-    marginLeft: '10%',
-    marginRight: '10%'
   },
   savings: {
     fontSize: 20,
     marginLeft: 7,
-    color: 'black'
+    color: 'white'
   },
   number: {
     fontSize: 40,
     textAlign: 'right',
     marginRight: 10,
-    color: 'black',
-    marginBottom: 10,
-    marginTop: 10
+    color: 'white',
+    marginTop: 5
+  },
+  totalWrap:{
+    flex:1,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center',
+    marginTop: 60,
+    marginBottom: 40,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
   },
 });
-
 export default connect(mapStateToProps, { setSavings, setUserInfo })(WellLogs)

@@ -11,5 +11,6 @@ router.post('/makeInvestment', stripeController.makePayment)
 router.post('/payFees', stripeController.makePayment)
 router.get('/getBitcoinValue', coinBaseController.getBitcoinValue)
 router.post('/getWellTotal', coinBaseController.getWellTotal)
+router.post('/cashOut', coinBaseController.cashOut)
 
 module.exports = router;

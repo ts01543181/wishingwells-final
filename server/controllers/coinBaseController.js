@@ -51,5 +51,27 @@ module.exports = {
       })
       res.send(targetAccount)
     });
+  },
+  cashOut: (req, res) => {
+    console.log(req.body)
+
+    client.getAccounts({}, function(err, accounts) {
+      if (err) {
+        console.log(err)
+      }
+      let targetAccount = accounts.filter(function(acct) {
+        return acct.name === req.body.uid;
+      })
+      targetAccount[0].sendMoney({
+        'to': req.body.to,
+        'amount': req.body.amount,
+        'currency': 'USD'}, function(err, tx) {
+        if (err) {
+          res.send('Error')
+        }
+        console.log(tx)
+        res.send(tx)
+      })
+    });
   }
 }

@@ -326,14 +326,15 @@ const styles = StyleSheet.create({
   },
   pieWrap:{
     backgroundColor: 'rgba(250,250,250,0.5)',
-    width: 380,
+    width: '100%',
     height: 390,
     borderRadius: 20,
     marginTop: 18,
+    justifyContent: 'center'
   },
   goalWrap: {
     backgroundColor: 'rgba(250,250,250,0.5)',
-    width: 380,
+    width: '100%',
     height: 100,
     borderRadius: 20,
     marginTop: 18,

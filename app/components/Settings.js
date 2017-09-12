@@ -16,7 +16,7 @@ import { Actions } from 'react-native-router-flux'
 
 const storage = firebase.storage()
 const Blob = RNFetchBlob.polyfill.Blob
-const fs = RNFetchBlob.fs 
+const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
@@ -70,7 +70,7 @@ class Settings extends Component {
       })
     } else {
       this.props.setUserPhoto(this.state.photo)
-    } 
+    }
     firebase.database().ref(`users/${this.props.uid}`).update({
       username: this.state.formData.username || this.props.username,
       firstname: this.state.formData.firstname || this.props.firstname,
@@ -81,7 +81,7 @@ class Settings extends Component {
       goal: +this.state.formData.goal || +this.props.goal
     })
   }
-  
+
   signOut() {
     firebase.auth().signOut().then(() => {
       Actions.Login()
@@ -112,7 +112,7 @@ class Settings extends Component {
                   }
                 }, (err) => {
                   console.log(err)
-                }, 
+                },
                 () => {
                   this.props.setUserPhoto(task.snapshot.downloadURL)
                 })
@@ -135,7 +135,7 @@ class Settings extends Component {
             title="Change Profile Photo"
             onPress={this._pickImage}
             style={styles.button}
-            color="#2eb8b8" 
+            color="#2eb8b8"
         />
         </View>
         <Separator label="Personal Information"/>
@@ -178,7 +178,7 @@ class Settings extends Component {
             placeholder='Set a goal'
             value={this.props.goal}
           />
-     
+
         <InputField
             ref='bio'
             iconLeft={<Icon name='information-outline' size={30} style={styles.icon}/>}
@@ -186,7 +186,7 @@ class Settings extends Component {
             value={this.props.bio}
           />
         <Separator label="Private Information"/>
-        <LinkField 
+        <LinkField
           iconLeft={<Text style={styles.cardtext}>Add Credit Card</Text>}
           onPress={()=>Actions.AddCard()}
           iconRight={<Icon name='chevron-right' size={30} style={styles.icon}/>}
@@ -197,14 +197,16 @@ class Settings extends Component {
           title="Save Changes"
           onPress={() => this.handleOnSave()}
           style={styles.button}
-          color="#2eb8b8" 
+          color="#2eb8b8"
         ></Button>
-        <Button
-          title="Sign Out"
-          onPress={() => this.signOut()}
-          style={styles.button}
-          color="#2eb8b8" 
-        ></Button>
+        <View style={styles.signoutButtonView}>
+          <Button
+            title="Sign Out"
+            onPress={() => this.signOut()}
+            style={styles.signoutButton}
+            color="#2eb8b8"
+          ></Button>
+        </View>
 
       </View>
         </KeyboardAwareScrollView>
@@ -232,7 +234,14 @@ const styles = StyleSheet.create({
     color:'gray'
   },
   button:{
-    marginTop: 15
+    marginTop: 15,
+  },
+  signoutButton: {
+    marginTop: 15,
+    paddingBottom: 20
+  },
+  signoutButtonView: {
+    height: 60,
   },
   cardtext: {
     fontSize: 18,

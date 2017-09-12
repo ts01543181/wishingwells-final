@@ -86,8 +86,8 @@ class Profile extends Component {
             </View>
 
             <View style={styles.info}>
-               <Text><Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
-               <CashOutModal style={styles.invest} wellAmount={this.state.wellSavings}/>
+               <Text style={styles.wellSavingsAmount}><Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
+               <CashOutModal style={styles.invest} uid={this.props.uid} wellAmount={this.state.wellSavings}/>
              </View>
 
             <View style={styles.aboutInfo}>
@@ -154,6 +154,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   aboutInfo:{
     paddingTop: 8,
@@ -166,6 +168,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
+  },
+  wellSavingsAmount: {
+    fontSize: 30
   },
   money:{
     borderRadius: 10,
