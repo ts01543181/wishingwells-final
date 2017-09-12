@@ -93,20 +93,19 @@ class Well extends Component {
 
   render() {
     return (
-      // <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
-        <View style={styles.container}>
-          <KeyboardAwareScrollView>
+    <View style={styles.container}>
+      <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
           <View style={styles.navbar}>
           <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
-            {/* <NavigationBar title={{title:'Wishing Well'}} tintColor='#99ccff' rightButton={rightButtonConfig}/> */}
           </View>
 
           <View style={styles.walletAmountContainer}>
-            <Text style={styles.walletText}>WALLET BALANCE</Text>
             <Text style={styles.walletAmount}>${this.props.total}</Text>
+            <Text style={styles.walletText}>WALLET BALANCE</Text>
           </View>
+      </Image>
 
-          {/* <View style={styles.inputFields}> */}
+          <KeyboardAwareScrollView>
           <View>
 
             <View style={styles.amountWrap}>
@@ -126,28 +125,29 @@ class Well extends Component {
 
           </KeyboardAwareScrollView>
         </View>
-      // </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
   backgroundImage:{
+    borderBottomLeftRadius: 170,
+    borderBottomRightRadius: 170,
     width: '100%',
-    height: '100%',
+    height: '30%',
     backgroundColor: 'rgba(0,0,0,0)'
   },
   container: {
     flex: 1,
     backgroundColor: 'white'
   },
-  navbar: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    zIndex:2
-  },
+  // navbar: {
+  //   shadowColor: '#000',
+  //   shadowOffset: { width: 0, height: 1 },
+  //   shadowOpacity: 0.8,
+  //   shadowRadius: 2,
+  //   zIndex:2
+  // },
   walletAmountContainer: {
     marginTop: '5%',
     alignItems: 'center',
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   walletAmount: {
     fontSize: 60,
-    color: 'grey'
+    color: 'white'
   },
   inputFields: {
     alignItems: 'center',

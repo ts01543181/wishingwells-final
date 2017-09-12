@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, Alert, Button, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Alert, Button, TouchableWithoutFeedback, Image } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 import * as firebase from "firebase"
@@ -18,6 +18,7 @@ const mapStateToProps = state => {
   return {
     uid: state.ProfileReducer.uid,
     cardID: state.ProfileReducer.cardID,
+    total: state.ProfileReducer.total,    
   }
 }
 
@@ -157,26 +158,39 @@ class Invest extends Component {
   render() {
 
     return (
-      <View>
-        <View style={styles.inputFields}>
-          <View style={{height: "20%"}}>
-            <Text style={styles.credentials}>Input Amount</Text>
+      <View style={styles.bodyWrap}>
+       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+          
+          <View style={styles.walletWrap}>
+            <Text style={styles.walletAmount}>${this.props.total}</Text>
+            <Text style={styles.walletText}>CURRENT WALLET BALANCE</Text>
           </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount Here" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
-          <View style={styles.confirmModal}>
-            <InvestConfirmModal amount={this.state.amount} toggleInvestmentReady={this.toggleInvestmentReady}/>
-          </View>
+
+      </Image>
+         
+        <View>
+          <Text style={styles.credentials}>A M O U N T   T O   I N V E S T</Text>
         </View>
+
+        <View style={styles.amountInputField}>
+          <Text style={styles.dollarSign}>$</Text>
+          <TextInput style={styles.amountInput} placeholder="0" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
+        </View>
+
         <GestureRecognizer
            onSwipeUp={(state) => this.onSwipeUp(state)}
           style={styles.coin}
         >
            <View style={styles.coin}>
               <Animatable.View ref="view">
-                <Spinner type="CircleFlip" size={150} color={'#DAA520'} style={{marginTop:'40%', marginLeft:'31%'}}/>
+                <Spinner type="CircleFlip" size={150} color={'#DAA520'}/>
               </Animatable.View>
            </View>
         </GestureRecognizer>
+
+          <View style={styles.confirmModal}>
+            <InvestConfirmModal amount={this.state.amount} toggleInvestmentReady={this.toggleInvestmentReady}/>
+          </View>
       </View>
     )
   }
@@ -184,36 +198,68 @@ class Invest extends Component {
 }
 
 const styles = StyleSheet.create({
-  coin: {
-    top: '6%',
-    height: '75%',
-    width: '100%',
+  bodyWrap: {
+    backgroundColor: 'white',  
+    height: '100%'
   },
-  inputFields: {
-    marginTop: '2%',
-    marginLeft: '25%',
+  backgroundImage: {
     height: '20%',
-    width: '50%',
-    borderColor: 'gray',
+  },
+  walletWrap: {
+    // justifyContent: 'center',
+  },
+  walletAmount: {
+    // textAlign: 'center',
+    // alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0)',
+    fontSize: 50,
+    color: 'white'
+  },
+  walletText: {
+    color: 'white',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0)'
+  },
+  amountWrap: {
+    marginTop: '30%',
+    borderWidth: 1,
     alignItems: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   credentials: {
-    paddingTop: 10
+    paddingTop: '5%',
+    fontSize: 15,
+    textAlign: 'center'
   },
   confirmModal: {
-    marginTop: '5%',
-    height: '10%',
-    width: 100,
+    marginTop: '20%',
   },
   amountInputField: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: 'grey',
+  },
+  amountInput: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',    
+    fontSize: 50,
+    width: '35%',
+    marginTop: '5%'
+  },
+  dollarSign: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',        
+    fontSize: 50
+  },
+  coin: {
     width: '100%',
-    height: '40%',
-    borderColor: 'gray',
-    borderColor: 'gray',
-    borderWidth: 1,
-    textAlign: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',    
+    marginTop: '8%'
   },
 })
 
