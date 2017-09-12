@@ -35,34 +35,30 @@ class WellLogs extends Component {
   }
 
   componentWillMount() {
-    db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
-      console.log('here', data.val())
-      this.setState({
-        wellLogs: Object.values(data.val())
-      })
+    db.ref(`users/${this.props.uid}`).once('value').then(data => {
+      if (data.val().investmentLogs) {
+          this.setState({
+            wellLogs: Object.values(data.val().investmentLogs)
+          })
+      }
     })
 
-    db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
-      this.setState({
-        wellLogs: Object.values(data.val())
-      })
+    db.ref(`users/${this.props.uid}`).on('value', data => {
+      if (data.val().investmentLogs) {
+          this.setState({
+            wellLogs: Object.values(data.val().investmentLogs)
+          })
+      }
     })
 
     axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
     .then(({ data }) => {
       this.setState({
-        wellSavings: data[0].native_balance.amount
+        wellSavings: (data[0].native_balance.amount || 0)
       })
     })
   }
 
-  _onRefresh() {
-    this.setState({refreshing: true});
-    db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
-      (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
-    })
-    this.setState({refreshing: false});
-  }
 
   render() {
     const { onSwipe } = this.props;
@@ -91,11 +87,6 @@ class WellLogs extends Component {
           </View>
           <View style={styles.log}>
           <FlatList
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh.bind(this)}
-                />}
             removeClippedSubviews={false}
             data={this.state.wellLogs.reverse()}
             renderItem={({item}) =>
