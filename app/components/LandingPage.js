@@ -76,7 +76,7 @@ class LandingPage extends Component {
                   { x: 'Wallet', y: (total / goal) * 100},
                   { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
                 ],
-                colorScale: ['#70dbdb', '#9fbfdf', '#D0D0D0']
+                colorScale: ['#4A4AB2', '#9fbfdf', '#D0D0D0']
               })
             } else {
               this.setState({
@@ -84,7 +84,7 @@ class LandingPage extends Component {
                   { x: "Well", y: (+this.state.wellSavings / goal) * 100},
                   { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
                 ],
-                colorScale: ['#70dbdb', '#D0D0D0']
+                colorScale: ['#4A4AB2', '#D0D0D0']
               })
             }
           })
@@ -170,13 +170,15 @@ class LandingPage extends Component {
             <Text style={styles.goalText}>G O A L: <Text style={styles.boldText}>${this.props.goal}</Text></Text>
             <Text style={styles.goalText}>W E L L  S A V I N G S: <Text style={styles.boldText}>${this.state.wellSavings || 0}</Text></Text>
           </View>
-                  
+
             <View style={styles.pieWrap}>
               <Text style={styles.pieText}>G O A L  C H A R T</Text>
                 <VictoryPie data={this.state.pieData}
                 colorScale={this.state.colorScale}
                 innerRadius={50}
-                width={300}
+                width={350}
+                labelRadius={140}
+                style={{ labels: { fontSize: 15 } }}
                 />
             </View>
           </ScrollView>
@@ -261,7 +263,13 @@ const styles = StyleSheet.create({
   },
   chartText: {
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: '10%',
+    fontSize: 18,
+    color: 'grey'
+  },
+  goalChartText: {
+    textAlign: 'center',
+    marginTop: '20%',
     fontSize: 18,
     color: 'grey',
   },
@@ -284,14 +292,15 @@ const styles = StyleSheet.create({
     height: 390,
     borderRadius: 20,
     marginTop: 18,
-    justifyContent: 'center'
+    marginBottom: '5%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   goalWrap: {
     backgroundColor: 'rgba(250,250,250,0.5)',
     width: '100%',
     height: 100,
     borderRadius: 20,
-    marginTop: 18,
     justifyContent: 'center'
   },
   goalText: {

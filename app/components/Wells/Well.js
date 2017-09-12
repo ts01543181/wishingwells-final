@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     paddingBottom: '25%',
     justifyContent:'center',
     alignSelf: 'center',
-    backgroundColor: 'rgba(92, 214, 214,0.5)',  
+    backgroundColor: 'rgba(92, 214, 214,0.5)',
   },
   dollarSign:{
     backgroundColor:'rgba(0,0,0,0)',

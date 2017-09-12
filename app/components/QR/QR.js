@@ -25,7 +25,7 @@ class QR extends Component {
 
     return (
       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
-      
+
       <View>
         <View style={styles.navbar}>
         <NavigationBar title={{title:'MY QR', tintColor:"white"}} tintColor='rgba(220, 220, 220, 0.1)' leftButton={leftButtonConfig}/>
@@ -34,7 +34,9 @@ class QR extends Component {
           <QRCode value={this.props.uid} size={250} />
         </View>
         <View style={styles.qrText}>
-          {/* <Text>This is your QR code</Text> */}
+          <Text></Text>
+          <Text></Text>
+          <Text style={styles.qrMessage}>This is your QR code, have someone scan it to help fill your well!</Text>
         </View>
         <View style={styles.qrButton}>
         </View>
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
   body: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 150,
+    marginTop: 130,
   },
   qrText: {
     justifyContent: 'center',
@@ -65,6 +67,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '10%'
+  },
+  qrMessage: {
+    width: '63%',
+    textAlign: 'center'
   },
   backgroundImage: {
     width: '100%',

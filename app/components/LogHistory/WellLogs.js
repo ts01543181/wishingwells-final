@@ -35,40 +35,42 @@ class WellLogs extends Component {
   }
 
   componentWillMount() {
-    db.ref(`users/${this.props.uid}`).once('value').then(data => {
-      if (data.val().investmentLogs) {
-          this.setState({
-            wellLogs: Object.values(data.val().investmentLogs)
-          })
-      }
+    db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
+      console.log('here', data.val())
+      this.setState({
+        wellLogs: Object.values(data.val())
+      })
     })
 
-    db.ref(`users/${this.props.uid}`).on('value', data => {
-      if (data.val().investmentLogs) {
-          this.setState({
-            wellLogs: Object.values(data.val().investmentLogs)
-          })
-      }
+    db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
+      this.setState({
+        wellLogs: Object.values(data.val())
+      })
     })
 
     axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
     .then(({ data }) => {
       this.setState({
-        wellSavings: (data[0].native_balance.amount || 0)
+        wellSavings: data[0].native_balance.amount
       })
     })
   }
 
+  _onRefresh() {
+    this.setState({refreshing: true});
+    db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
+      (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
+    })
+    this.setState({refreshing: false});
+  }
 
   render() {
     const { onSwipe } = this.props;
     return (
       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
-
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
-
         <View style={styles.pageButtons}>
           <TouchableOpacity style={styles.button} onPress={onSwipe}>
             <Text style={styles.buttonText}>Wallet Logs</Text>
@@ -77,7 +79,6 @@ class WellLogs extends Component {
             <Text style={styles.buttonText}>Well Logs</Text>
           </TouchableOpacity>
         </View>
-
         <View style={styles.totalWrap}>
           <View style={styles.total}>
             <Text style={styles.number}>${this.state.wellSavings || 0}</Text>
@@ -88,9 +89,13 @@ class WellLogs extends Component {
           <View style={styles.transactions}>
             <Text style={styles.transText}>SAVINGS LOG</Text>
           </View>
-
           <View style={styles.log}>
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+                />}
             removeClippedSubviews={false}
             data={this.state.wellLogs.reverse()}
             renderItem={({item}) =>
@@ -106,7 +111,6 @@ class WellLogs extends Component {
             style={{height:'100%'}}
           />
           </View>
-
     </Image>
     )
   }
@@ -145,10 +149,11 @@ const styles = StyleSheet.create({
   backgroundImage: {
     width: '100%',
     height: 800,
-    backgroundColor: 'rgba(0,0,0,0)',
+    backgroundColor: 'rgba(0,0,0,0)'
   },
   transactions: {
-    marginTop: '20%',
+    marginTop: 20,
+    // marginBottom: 8,
     padding: 10,
     borderBottomWidth: 0.5,
     borderColor: 'white',
@@ -159,6 +164,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center'
   },
+  // navbar: {
+  //   shadowColor: '#000',
+  //   shadowOffset: { width: 0, height: 1 },
+  //   shadowOpacity: 0.8,
+  //   shadowRadius: 2,
+  //   zIndex:2
+  // },
   list: {
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,
@@ -200,7 +212,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: '50%',
+    marginBottom: '90%',
   },
   total: {
     alignItems: 'center',
@@ -223,21 +235,12 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 5
   },
-  total: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 100,
-    width: 360,
-    backgroundColor: 'rgba(242,242,242,0.3)',
-    borderRadius: 15,
-    marginTop: 10,
-  },
   totalWrap:{
     flex:1,
     flexDirection:'row',
+    alignItems:'center',
     justifyContent:'center',
-    justifyContent:'center',
-    // marginTop: '15%',
+    marginTop: '15%',
     marginBottom: 40,
     shadowColor: '#000000',
     shadowOffset: {

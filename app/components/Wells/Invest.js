@@ -11,6 +11,7 @@ import { setSavings } from '../../Actions/Savings/SavingsAction.js'
 import { HOST_IP } from '../../../config.js'
 import Spinner from 'react-native-spinkit'
 import * as Animatable from 'react-native-animatable'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const db = firebase.database()
 
@@ -18,7 +19,7 @@ const mapStateToProps = state => {
   return {
     uid: state.ProfileReducer.uid,
     cardID: state.ProfileReducer.cardID,
-    total: state.ProfileReducer.total,    
+    total: state.ProfileReducer.total,
   }
 }
 
@@ -166,22 +167,22 @@ class Invest extends Component {
           flex: 1,
           resizeMode,
         }}>
-          
           <View style={styles.walletWrap}>
             <Text style={styles.walletAmount}>${this.props.total}</Text>
             <Text style={styles.walletText}>CURRENT WALLET BALANCE</Text>
           </View>
-
         </Image>
       </View>
-         
+
         <View>
           <Text style={styles.credentials}>A M O U N T   T O   I N V E S T</Text>
         </View>
 
         <View style={styles.amountInputField}>
           <Text style={styles.dollarSign}>$</Text>
+          <KeyboardAwareScrollView>
           <TextInput style={styles.amountInput} placeholder="0" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
+          </KeyboardAwareScrollView>
         </View>
 
         <GestureRecognizer
@@ -205,7 +206,7 @@ class Invest extends Component {
 
 const styles = StyleSheet.create({
   bodyWrap: {
-    backgroundColor: 'white',  
+    backgroundColor: 'white',
     height: '100%'
   },
   container: {
@@ -264,21 +265,22 @@ const styles = StyleSheet.create({
   amountInput: {
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',    
+    textAlign: 'center',
     fontSize: 50,
     width: '35%',
-    marginTop: '5%'
+    marginTop: '5%',
   },
   dollarSign: {
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',        
-    fontSize: 50
+    textAlign: 'center',
+    fontSize: 50,
+    marginLeft: '35%'
   },
   coin: {
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center',    
+    alignItems: 'center',
     marginTop: '8%'
   },
 })
