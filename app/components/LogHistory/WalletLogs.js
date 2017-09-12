@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import { setSavings } from '../../Actions/Savings/SavingsAction'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 const db = firebase.database()
-
 const mapStateToProps = (state) => {
   return {
     logs: state.SavingsReducer.entries,
@@ -15,7 +14,6 @@ const mapStateToProps = (state) => {
     total: state.ProfileReducer.total,
   }
 }
-
 class WalletLogs extends Component {
   static propTypes = {
     number: PropTypes.number.isRequired,
@@ -31,10 +29,10 @@ class WalletLogs extends Component {
   }
 
   componentDidMount() {
+    console.log('WALLET LOGS', this.props.logs)
     db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
       (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
     })
-
     firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
       this.props.setUserInfo({
         total: data.val().total
@@ -51,9 +49,7 @@ class WalletLogs extends Component {
   }
 
   render() {
-
     const { onSwipe } = this.props;
-
     return (
       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
         <View style={styles.navbar}>
@@ -67,19 +63,16 @@ class WalletLogs extends Component {
             <Text style={styles.buttonText}>Well Logs</Text>
           </TouchableOpacity>
         </View>
-
-
         <View style={styles.totalWrap}>
           <View style={styles.total}>
             <Text style={styles.number}>${this.props.total}</Text>
             <Text style={styles.savings}>Current Wallet Savings</Text>
           </View>
         </View>
-        
+
           <View style={styles.transactions}>
             <Text style={styles.transText}>SAVINGS LOG</Text>
           </View>
-
           <View style={styles.log}>
           <FlatList
             refreshControl={
@@ -91,13 +84,11 @@ class WalletLogs extends Component {
             data={this.props.logs.reverse()}
             renderItem={({item}) =>
               <View style={styles.list}>
-
                 <Text style={styles.description}>{item.description}</Text>
                 <View style={styles.secondLine}>
                   <Text style={styles.date}>{item.date}</Text>
                   <Text style={styles.time}>{moment(item.time).fromNow()}</Text>
                 </View>
-
                 <Text style={styles.amount}>${item.amount}</Text>
               </View>
             }
@@ -108,7 +99,6 @@ class WalletLogs extends Component {
     )
   }
 }
-
 const styles = StyleSheet.create({
   pageButtons: {
     flexDirection: 'row',
@@ -206,8 +196,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: 400,
-    // marginBottom: '30%',
+    marginBottom: '30%',
   },
   total: {
     alignItems: 'center',
@@ -244,7 +233,6 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.3,
-},
+  },
 });
-
 export default connect(mapStateToProps, { setSavings, setUserInfo })(WalletLogs)

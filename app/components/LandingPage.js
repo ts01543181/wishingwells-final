@@ -12,9 +12,6 @@ import axios from 'axios'
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie} from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
-import TimerMixin from 'react-timer-mixin'
-import reactMixin from 'react-mixin'
-
 const mapStateToProps = (state) => {
   return {
     uid: state.ProfileReducer.uid,
@@ -32,7 +29,6 @@ const mapStateToProps = (state) => {
     bitcoinValue: state.BitcoinValueReducer.bitcoinValue
   }
 }
-
 class LandingPage extends Component {
   constructor(props) {
     super(props)
@@ -45,7 +41,6 @@ class LandingPage extends Component {
     }
     // this.getTotal = this.getTotal.bind(this)
   }
-
   componentWillMount() {
     firebase.database().ref(`users/${this.props.uid}`).once('value').then(data => {
       let logs = (data.val().logs) ? Object.values(data.val().logs) : [];
@@ -63,7 +58,7 @@ class LandingPage extends Component {
         donationID
       })
       this.props.setSavings(logs)
-      this.props.setUserPhoto(photo)  
+      this.props.setUserPhoto(photo)
     })
     firebase.database().ref(`users/${this.props.uid}`).on('value', (snapshot) => {
       let { total, wallet, goal } = snapshot.val()
@@ -91,7 +86,6 @@ class LandingPage extends Component {
                 colorScale: ['#f3d8e5', '#D0D0D0']
               })
             }
-
           })
         } else {
           this.setState({
@@ -103,19 +97,16 @@ class LandingPage extends Component {
           })
         }
       })
-
     axios.get(`http://${HOST_IP}:80/api/getBitcoinValue`)
     .then(({ data }) => {
       this.props.setBitcoinValue(data)
     })
-
     axios.get('https://api.coindesk.com/v1/bpi/historical/close.json')
     .then(({ data }) => {
       console.log('bitcoin historical value', data.bpi)
       let rawData = data.bpi
       let dates = Object.keys(rawData)
       let values = Object.values(rawData)
-
       let final = []
       for (let i = 0; i < dates.length; i ++) {
         let obj = {}
@@ -124,30 +115,25 @@ class LandingPage extends Component {
         obj.y = values[i]
         final.push(obj)
       }
-
       this.setState({
         history: final
       })
     })
-
   }
-
   _onRefresh() {
-   
+
     this.setState({refreshing: true});
     axios.get(`http://${HOST_IP}:80/api/getBitcoinValue`)
     .then(({ data }) => {
       this.props.setBitcoinValue(data)
     })
     // .then(() => this.setState({refreshing: false}))
-
     // axios.get('https://api.coindesk.com/v1/bpi/historical/close.json')
     // .then(({ data }) => {
     //   console.log('bitcoin historical value', data.bpi)
     //   let rawData = data.bpi
     //   let dates = Object.keys(rawData)
     //   let values = Object.values(rawData)
-
     //   let final = []
     //   for (let i = 0; i < dates.length; i ++) {
     //     let obj = {}
@@ -156,14 +142,12 @@ class LandingPage extends Component {
     //     obj.y = values[i]
     //     final.push(obj)
     //   }
-
     //   this.setState({
     //     history: final
     //   })
     // })
     this.setState({refreshing: false});
   }
-
   // getTotal() {
   //   let total;
   //   firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
@@ -176,11 +160,10 @@ class LandingPage extends Component {
   //   // }
   //   // return total
   // }
-
   render() {
     return (
       <View style={styles.body}>
-      <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>      
+      <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
       {/* <View> */}
         <View>
         <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
@@ -190,7 +173,7 @@ class LandingPage extends Component {
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh.bind(this)}
-              />} 
+              />}
           >
           <View style={styles.priceWrap}>
             {/* <View style={styles.priceWrap}> */}
@@ -198,21 +181,20 @@ class LandingPage extends Component {
                 <Text style={styles.priceText}>1</Text>
                 <Text style={styles.priceCurr}>BITCOIN</Text>
               </View>
-              <View style={styles.priceBox}> 
+              <View style={styles.priceBox}>
                 <Text style={styles.priceText}>{this.props.bitcoinValue}</Text>
                 <Text style={styles.priceCurr}>USD</Text>
               {/* </View> */}
             </View>
           </View>
           </ScrollView>
-
       </Image>
           <ScrollView
             refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh.bind(this)}
-              />} 
+              />}
           >
           <View style={styles.bla}>
             <View style={styles.chartWrap}>
@@ -222,7 +204,6 @@ class LandingPage extends Component {
               >
                 <VictoryLine
                 interpolation="natural"
-
                   data={this.state.history}
                   style={{
                     data: { stroke: "#df9fbe" },
@@ -232,17 +213,15 @@ class LandingPage extends Component {
                     duration: 2000,
                     onLoad: { duration: 1000 }
                   }}
-                /> 
+                />
               </VictoryChart>
             </View>
           </View>
-
           <View style={styles.goalWrap}>
             <Text style={styles.goalText}>G O A L: ${this.props.goal}</Text>
             <Text style={styles.goalText}>W E L L  S A V I N G S: ${this.state.wellSavings || 0}</Text>
           </View>
 
-          
             <View style={styles.pieWrap}>
               <View style={{marginBottom: '10%'}}>
               <Text style={styles.chartText}>G O A L  C H A R T</Text>
@@ -258,7 +237,6 @@ class LandingPage extends Component {
     )
   }
 }
-
 const styles = StyleSheet.create({
   bla: {
     flex: 1,
@@ -306,7 +284,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign:'center',
-    backgroundColor: 'rgba(0,0,0,0)'    
+    backgroundColor: 'rgba(0,0,0,0)'
   },
   priceText: {
     color: 'white',
@@ -348,14 +326,15 @@ const styles = StyleSheet.create({
   },
   pieWrap:{
     backgroundColor: 'rgba(250,250,250,0.5)',
-    width: 380,
+    width: '100%',
     height: 390,
     borderRadius: 20,
     marginTop: 18,
+    justifyContent: 'center'
   },
   goalWrap: {
     backgroundColor: 'rgba(250,250,250,0.5)',
-    width: 380,
+    width: '100%',
     height: 100,
     borderRadius: 20,
     marginTop: 18,
@@ -368,5 +347,4 @@ const styles = StyleSheet.create({
     marginBottom: 5
   }
 })
-
 export default connect(mapStateToProps, { setSavings, setUserInfo, setUserPhoto, setBitcoinValue })(LandingPage)

@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import InvestConfirmModal from './InvestConfirmModal.js'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
+import { setSavings } from '../../Actions/Savings/SavingsAction.js'
 import { HOST_IP } from '../../../config.js'
 import Spinner from 'react-native-spinkit'
 import * as Animatable from 'react-native-animatable'
@@ -54,64 +55,97 @@ class Invest extends Component {
           cardID: this.props.cardID,
           amount: Number(this.state.amount) * 100,
         }
-        axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
-        .then(({data}) => {
-          console.log(data.status)
 
-          if (data.status === 'succeeded') {
-            db.ref(`users/${this.props.uid}`).once('value', (user) => {
+        // DELETE THIS //
 
-              db.ref(`users/${this.props.uid}`).update({
-                total: user.val().total - (chargeObj.amount / 100)
-              })
+        db.ref(`users/${this.props.uid}`).once('value', (user) => {
 
-              // let buyObj = {
-              //   walletAddress: this.props.uid,
-              //   uid: this.props.uid,
-              //   amount: Number(this.state.amount),
-              // }
-              //
-              // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
-              // .then(({data}) => {
-              //   console.log(data)
-              //
-              //   let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
-              //   let feesObj = {
-              //     walletAddress: this.props.uid,
-              //     cardID: this.props.cardID,
-              //     amount: fees * 100,
-              //   }
-              //
-              //   axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
-              //   .then(() => {
-              //     this.setState({
-              //       amount: '',
-              //       description: '',
-              //       investmentReady: false,
-              //     })
-              //
-              //     const ref = db.ref(`users/${this.props.uid}/investmentLogs`)
-              //
-              //     ref.push({
-              //       date: new Date().toDateString(),
-              //       time: new Date().getTime(),
-              //       amount: Number(data.subtotal.amount),
-              //     })
-              //
-              //     alert('Investment Made')
-              //   })
-              // })
+          db.ref(`users/${this.props.uid}`).update({
+            total: user.val().total - (chargeObj.amount / 100)
+          })
 
-              this.refs.view.fadeOutUp(800)
-            })
-          } else {
-            alert('Investment denied: Please check credit card input')
-          }
+
+          const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+
+          investmentLogsRef.push({
+            date: new Date().toDateString(),
+            time: new Date().getTime(),
+            amount: this.state.amount,
+            description: 'SELF INVESTMENT'
+          })
+
+          this.refs.view.fadeOutUp(800)
         })
-        .catch(err => {
-          console.log(err)
-          alert('Error')
-        })
+
+        // DELETE END //
+
+        // axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
+        // .then(({data}) => {
+        //   console.log(data.status)
+        //
+        //   if (data.status === 'succeeded') {
+        //     db.ref(`users/${this.props.uid}`).once('value', (user) => {
+        //
+        //       db.ref(`users/${this.props.uid}`).update({
+        //         total: user.val().total - (chargeObj.amount / 100)
+        //       })
+        //
+        //       // let buyObj = {
+        //       //   walletAddress: this.props.uid,
+        //       //   uid: this.props.uid,
+        //       //   amount: Number(this.state.amount),
+        //       // }
+        //       //
+        //       // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
+        //       // .then(({data}) => {
+        //       //   console.log(data)
+        //       //
+        //       //   let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
+        //       //   let feesObj = {
+        //       //     walletAddress: this.props.uid,
+        //       //     cardID: this.props.cardID,
+        //       //     amount: fees * 100,
+        //       //   }
+        //       //
+        //       //   axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+        //       //   .then(() => {
+        //       //     this.setState({
+        //       //       amount: '',
+        //       //       description: '',
+        //       //       investmentReady: false,
+        //       //     })
+        //       //
+        //       //     const ref = db.ref(`users/${this.props.uid}/investmentLogs`)
+        //       //
+        //       //     ref.push({
+        //       //       date: new Date().toDateString(),
+        //       //       time: new Date().getTime(),
+        //       //       amount: Number(data.subtotal.amount),
+        //       //     })
+        //
+        //           // const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+        //           //
+        //           // investmentLogsRef.push({
+        //           //   date: new Date().toDateString(),
+        //           //   time: new Date().getTime(),
+        //           //   amount: this.state.amount,
+        //           //   description: 'SELF INVESTMENT'
+        //           // })
+        //       //
+        //       //     alert('Investment Made')
+        //       //   })
+        //       // })
+        //
+        //       this.refs.view.fadeOutUp(800)
+        //     })
+        //   } else {
+        //     alert('Investment denied: Please check credit card input')
+        //   }
+        // })
+        // .catch(err => {
+        //   console.log(err)
+        //   alert('Error')
+        // })
       } else {
         alert('Invalid card credentials')
       }
@@ -183,4 +217,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, { setUserInfo })(Invest)
+export default connect(mapStateToProps, { setUserInfo, setSavings })(Invest)

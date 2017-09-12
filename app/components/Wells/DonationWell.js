@@ -108,6 +108,16 @@ class DonationWell extends Component {
             //     })
             //   })
             // })
+
+            const investmentLogsRef = db.ref(`users/${this.props.qr}/investmentLogs`)
+
+            investmentLogsRef.push({
+              date: new Date().toDateString(),
+              time: new Date().getTime(),
+              amount: this.state.amount,
+              description: this.state.description,
+            })
+
             alert('Donation Made!!!')
           } else {
             alert('Donation denied: Please check credit card input')

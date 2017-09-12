@@ -5,6 +5,9 @@ import { connect } from 'react-redux'
 import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import axios from 'axios'
+import {HOST_IP} from '../../../config.js'
+import CashOutModal from './CashOutModal.js'
 
 
 const mapStateToProps = (state) => {
@@ -15,7 +18,8 @@ const mapStateToProps = (state) => {
     email: state.ProfileReducer.email,
     photo: state.PhotoReducer.photo,
     bio: state.ProfileReducer.bio,
-    logs: state.SavingsReducer.entries
+    logs: state.SavingsReducer.entries,
+    uid: state.ProfileReducer.uid
   }
 }
 
@@ -30,9 +34,22 @@ const rightButtonConfig = {
 class Profile extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      wellSavings: '',
+    }
 
     this.getTotal = this.getTotal.bind(this)
     this.invest = this.invest.bind(this)
+  }
+
+  componentDidMount() {
+
+    axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
+    .then(({ data }) => {
+      this.setState({
+        wellSavings: data[0].native_balance.amount
+      })
+    })
   }
 
   invest() {
@@ -50,7 +67,7 @@ class Profile extends Component {
   render() {
     return (
       <View style={styles.body}>
-          <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+          <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
 
             <NavigationBar title={{title:'PROFILE', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
 
@@ -67,6 +84,11 @@ class Profile extends Component {
               <Text><Icon name='at' size={25} style={styles.icon}/> {this.props.username}</Text>
               <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
             </View>
+
+            <View style={styles.info}>
+               <Text style={styles.wellSavingsAmount}><Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
+               <CashOutModal style={styles.invest} uid={this.props.uid} wellAmount={this.state.wellSavings}/>
+             </View>
 
             <View style={styles.aboutInfo}>
               <Text style={styles.about}><Icon name='information-outline' size={25} style={styles.icon}/> A B O U T  M E</Text>
@@ -129,9 +151,11 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     marginBottom: 20,
-    marginTop: 25,
+    marginTop: 15,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   aboutInfo:{
     paddingTop: 8,
@@ -144,6 +168,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 10,
     backgroundColor: 'rgba(242,242,242,0.4)',
+  },
+  wellSavingsAmount: {
+    fontSize: 30
   },
   money:{
     borderRadius: 10,
