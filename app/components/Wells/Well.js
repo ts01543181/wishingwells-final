@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     width:'50%',
     fontSize: 60,
     backgroundColor: 'rgba(0,0,0,0)',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   descriptionWrap:{
     width: '97%',
