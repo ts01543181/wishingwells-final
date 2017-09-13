@@ -167,9 +167,7 @@ class LandingPage extends Component {
           <View style={styles.container}>
             <View style={styles.chartWrap}>
               <Text style={styles.chartText}>P R I C E  C H A R T</Text>
-              <VictoryChart
-             
-              >
+              <VictoryChart>
                 <VictoryLine
                 interpolation="natural"
                   data={this.state.history}
@@ -310,7 +308,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 390,
     borderRadius: 20,
-    marginTop: 18,
+    marginTop: '7%',
     marginBottom: '5%',
     justifyContent: 'center',
     alignItems: 'center'
@@ -320,7 +318,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 100,
     borderRadius: 20,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: '7%'    
   },
   goalText: {
     alignSelf: 'center',

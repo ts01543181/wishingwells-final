@@ -118,7 +118,7 @@ class Profile extends Component {
             </Image>
           <ScrollView>
 
-            <View style={styles.info}>
+            <View style={styles.firstInfo}>
               <Text><Icon name='at' size={25} style={styles.icon}/> {this.props.username}</Text>
               <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
             </View>
@@ -128,7 +128,7 @@ class Profile extends Component {
             </View>
 
             <View style={styles.info}>
-               <Text style={styles.wellSavingsAmount}>Well Amount: <Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
+               <Text style={styles.wellSavingsAmount}>W E L L  A M O U N T: <Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
                <CashOutModal style={styles.invest} uid={this.props.uid} wellAmount={this.state.wellSavings}/>
              </View>
 
@@ -145,16 +145,6 @@ class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-  body: {
-    // marginBottom: 55
-  },
-  navbar: {
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 1 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
-    // zIndex:2
-  },
   about: {
     paddingTop: 15,
     marginLeft: 10,
@@ -179,7 +169,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     top: 10,
     fontWeight: 'bold',
-    // color: "#2eb8b8"
     color: 'white',
     shadowOpacity: 70
   },
@@ -199,6 +188,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  firstInfo:{
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 10,
+    marginTop: 15,
+    borderRadius: 10,
+    backgroundColor: 'rgba(242,242,242,0.4)'
+  },
   aboutInfo:{
     paddingTop: 8,
     paddingBottom: 12,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(242,242,242,0.4)',
   },
   wellSavingsAmount: {
-    fontSize: 30
+    fontSize: 20
   },
   money:{
     borderRadius: 10,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(190,190,190,0.5)'
   },
   goalAmount: {
-    fontSize: 20
+    fontSize: 15
   },
   backgroundImage:{
     width: '100%',

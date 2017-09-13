@@ -5,7 +5,8 @@ import {
   Text,
   View,
   TextInput,
-  Button
+  Button,
+  Image
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
@@ -33,10 +34,19 @@ const store = createStore(reducers)
 
 class TabIcon extends Component {
   render() {
-    let select
     return (
       <View style={{flex:1, flexDirection:'row', alignItems:'center', alignSelf:'center', justifyContent: 'center'}}>
         <Icon name={this.props.iconName || "circle"} size={27}/>
+        <Text style={{fontSize: 12}}>{this.props.title}</Text>
+      </View>
+    );
+  }
+}
+class CustomIcon extends Component {
+  render() {
+    return (
+      <View style={{flex:1, flexDirection:'row', alignItems:'center', alignSelf:'center', justifyContent: 'center'}}>
+        <Image source={require('./assets/icon.png')} style={styles.icon}/>
         <Text style={{fontSize: 12}}>{this.props.title}</Text>
       </View>
     );
@@ -55,7 +65,7 @@ export default class WishingWell extends Component {
           <Scene key="tabbar" tabs={true} tabBarStyle={{ backgroundColor: '#FFFFFF' }}>
             <Scene key="Home" component={Landing} iconName="home" icon={TabIcon} panHandler={null} hideNavBar/>
             <Scene key="QR" component={QR} iconName="qrcode" icon={TabIcon} panHandler={null} hideNavBar/>
-            <Scene key="Well" component={Well} iconName="currency-usd" icon={TabIcon} panHandler={null} hideNavBar/>
+            <Scene key="Well" component={Well} icon={CustomIcon} panHandler={null} hideNavBar/>
             <Scene key="Log" component={LogHistory} iconName="format-list-bulleted" icon={TabIcon} panHandler={null} hideNavBar/>
             <Scene key="Profile" component={Profile} iconName="account-outline" icon={TabIcon} panHandler={null} hideNavBar/>
           </Scene>
@@ -88,6 +98,10 @@ const styles = StyleSheet.create({
   credentials: {
     paddingTop: 20
   },
+  icon: {
+    width: '38%',
+    resizeMode: 'contain'
+  }
 });
 
 // AppRegistry.registerComponent('WishingWell', () => WishingWell);
