@@ -64,6 +64,7 @@ class WellLogs extends Component {
     const { onSwipe } = this.props;
     return (
       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
@@ -76,6 +77,7 @@ class WellLogs extends Component {
             <Text style={styles.buttonText}>Well Logs</Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.totalWrap}>
           <View style={styles.total}>
             <Text style={styles.number}>${this.state.wellSavings || 0}</Text>
@@ -86,6 +88,7 @@ class WellLogs extends Component {
           <View style={styles.transactions}>
             <Text style={styles.transText}>SAVINGS LOG</Text>
           </View>
+
           <View style={styles.log}>
           <FlatList
             removeClippedSubviews={false}
@@ -103,6 +106,7 @@ class WellLogs extends Component {
             style={{height:'100%'}}
           />
           </View>
+
     </Image>
     )
   }
@@ -141,11 +145,10 @@ const styles = StyleSheet.create({
   backgroundImage: {
     width: '100%',
     height: 800,
-    backgroundColor: 'rgba(0,0,0,0)'
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   transactions: {
-    marginTop: 20,
-    // marginBottom: 8,
+    marginTop: '20%',
     padding: 10,
     borderBottomWidth: 0.5,
     borderColor: 'white',
@@ -156,13 +159,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center'
   },
-  // navbar: {
-  //   shadowColor: '#000',
-  //   shadowOffset: { width: 0, height: 1 },
-  //   shadowOpacity: 0.8,
-  //   shadowRadius: 2,
-  //   zIndex:2
-  // },
   list: {
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,
@@ -204,7 +200,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: '30%',
+    marginBottom: '50%',
   },
   total: {
     alignItems: 'center',
@@ -227,12 +223,6 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 5
   },
-  // totalWrap:{
-  //   flex:1,
-  //   flexDirection:'row',
-  //   alignItems:'center',
-  //   marginTop: 60
-  // },
   total: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -247,7 +237,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'center',
     justifyContent:'center',
-    marginTop: 60,
+    // marginTop: '15%',
     marginBottom: 40,
     shadowColor: '#000000',
     shadowOffset: {

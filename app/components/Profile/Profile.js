@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
   },
   dollarIcon:{
     marginLeft: 30,
-    // color: 'grey'
   },
   info:{
     paddingTop: 8,
