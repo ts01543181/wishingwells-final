@@ -90,6 +90,7 @@ class Login extends Component {
         <View>
         <Image source={require('../../assets/background2.jpg')}  style={styles.backgroundImage}>
       <View style={styles.container}>
+          <Image source={require('../../assets/loginLogo.png')} style={styles.logo}/>
         <Text style={styles.title}>
           W I S H I N G  W E L L
         </Text>
@@ -139,11 +140,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderColor: '#F8F8F8',
     paddingBottom: 10,
-    marginTop: 280,
+    marginTop: 220,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  logo: {
+    height: '10%',
+    resizeMode: 'contain',
   },
   secondSection:{
     borderBottomWidth: 0.5,
@@ -174,6 +179,7 @@ const styles = StyleSheet.create({
  title: {
    fontSize: 20,
    color: '#E8E8E8',
+   marginTop: '4%'
  },
  credentials: {
    paddingTop: 20
@@ -219,7 +225,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 215,
     marginTop: 40,
   },
   signupText:{
