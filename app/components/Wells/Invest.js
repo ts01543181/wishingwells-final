@@ -110,7 +110,7 @@ class Invest extends Component {
                   amount: Number(fees) * 100,
                 }
 
-                axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+                axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, feesObj)
                 .then((data) => {
 
                   console.log(data)
