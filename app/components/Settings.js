@@ -176,7 +176,7 @@ class Settings extends Component {
             ref='goal'
             iconLeft={<Icon name='currency-usd' size={30} style={styles.icon}/>}
             placeholder='Set a Well Goal'
-            value={this.props.goal}
+            value={String(this.props.goal)}
           />
 
         <InputField
