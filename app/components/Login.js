@@ -25,6 +25,30 @@ class Login extends Component {
     this._login = this._login.bind(this)
   }
 
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged((data) => {
+      if (data) {
+        this.setState({loading: true})
+
+        const uid = data.uid.substring(0, 10)
+        this.props.setUserInfo({
+          email: data.email,
+          uid: uid,
+        })
+
+        axios.get(`http://${HOST_IP}:4000/api/getBitcoinValue`)
+        .then(({ data }) => {
+          this.props.setBitcoinValue(data)
+          Actions.Home()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        return
+      } 
+    });
+  }
+
   _login() {
     firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then(data => {

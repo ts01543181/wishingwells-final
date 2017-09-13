@@ -9,7 +9,7 @@ import { setUserInfo } from '../Actions/Profile/ProfileAction'
 import { setUserPhoto } from '../Actions/Profile/PhotoAction'
 import { setBitcoinValue } from '../Actions/Bitcoin/BitcoinAction'
 import axios from 'axios'
-import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie} from "victory-native"
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie, VictoryAxis } from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
 const mapStateToProps = (state) => {
@@ -37,9 +37,10 @@ class LandingPage extends Component {
       refreshing: false,
       wellSavings: '',
       pieData: [],
-      colorScale: []
+      colorScale: [],
+      dates: []
     }
-    // this.getTotal = this.getTotal.bind(this)
+
   }
   componentWillMount() {
     firebase.database().ref(`users/${this.props.uid}`).once('value').then(data => {
@@ -113,25 +114,18 @@ class LandingPage extends Component {
         let date = dates[i].split('-').join('').slice(6)
         obj.x = date
         obj.y = values[i]
+        this.setState({
+          dates: [...this.state.dates, +date]
+        })
         final.push(obj)
       }
+      final = final.slice(Math.floor(final.length / 2))
       this.setState({
         history: final
       })
     })
   }
-  // getTotal() {
-  //   let total;
-  //   firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
-  //     total = data.val().total
-  //   })
-  //   return total;
-  //   // let total = 0;
-  //   // for(let i = 0; i < this.props.logs.length; i++) {
-  //   //   total += Number(this.props.logs[i]['amount'])
-  //   // }
-  //   // return total
-  // }
+  
   render() {
     return (
       <View style={styles.body}>
@@ -155,7 +149,7 @@ class LandingPage extends Component {
             <View style={styles.chartWrap}>
               <Text style={styles.chartText}>P R I C E  C H A R T</Text>
               <VictoryChart
-                theme={VictoryTheme.material}
+             
               >
                 <VictoryLine
                 interpolation="natural"
