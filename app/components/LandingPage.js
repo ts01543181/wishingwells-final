@@ -9,7 +9,7 @@ import { setUserInfo } from '../Actions/Profile/ProfileAction'
 import { setUserPhoto } from '../Actions/Profile/PhotoAction'
 import { setBitcoinValue } from '../Actions/Bitcoin/BitcoinAction'
 import axios from 'axios'
-import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie} from "victory-native"
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie, VictoryAxis } from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
 const mapStateToProps = (state) => {
@@ -37,9 +37,10 @@ class LandingPage extends Component {
       refreshing: false,
       wellSavings: '',
       pieData: [],
-      colorScale: []
+      colorScale: [],
+      dates: []
     }
-    // this.getTotal = this.getTotal.bind(this)
+
   }
   componentWillMount() {
     firebase.database().ref(`users/${this.props.uid}`).once('value').then(data => {
@@ -113,53 +114,18 @@ class LandingPage extends Component {
         let date = dates[i].split('-').join('').slice(6)
         obj.x = date
         obj.y = values[i]
+        this.setState({
+          dates: [...this.state.dates, +date]
+        })
         final.push(obj)
       }
+      final = final.slice(Math.floor(final.length / 2))
       this.setState({
         history: final
       })
     })
   }
-  _onRefresh() {
-
-    this.setState({refreshing: true});
-    axios.get(`http://${HOST_IP}:80/api/getBitcoinValue`)
-    .then(({ data }) => {
-      this.props.setBitcoinValue(data)
-    })
-    // .then(() => this.setState({refreshing: false}))
-    // axios.get('https://api.coindesk.com/v1/bpi/historical/close.json')
-    // .then(({ data }) => {
-    //   console.log('bitcoin historical value', data.bpi)
-    //   let rawData = data.bpi
-    //   let dates = Object.keys(rawData)
-    //   let values = Object.values(rawData)
-    //   let final = []
-    //   for (let i = 0; i < dates.length; i ++) {
-    //     let obj = {}
-    //     let date = dates[i].split('-').join('').slice(6)
-    //     obj.x = date
-    //     obj.y = values[i]
-    //     final.push(obj)
-    //   }
-    //   this.setState({
-    //     history: final
-    //   })
-    // })
-    this.setState({refreshing: false});
-  }
-  // getTotal() {
-  //   let total;
-  //   firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
-  //     total = data.val().total
-  //   })
-  //   return total;
-  //   // let total = 0;
-  //   // for(let i = 0; i < this.props.logs.length; i++) {
-  //   //   total += Number(this.props.logs[i]['amount'])
-  //   // }
-  //   // return total
-  // }
+  
   render() {
     return (
       <View style={styles.body}>
@@ -169,11 +135,6 @@ class LandingPage extends Component {
         <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
         <ScrollView
-            refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}
-              />}
           >
           <View style={styles.priceWrap}>
             {/* <View style={styles.priceWrap}> */}
@@ -190,17 +151,13 @@ class LandingPage extends Component {
           </ScrollView>
       </Image>
           <ScrollView
-            refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}
-              />}
+            
           >
           <View style={styles.bla}>
             <View style={styles.chartWrap}>
               <Text style={styles.chartText}>P R I C E  C H A R T</Text>
               <VictoryChart
-                theme={VictoryTheme.material}
+             
               >
                 <VictoryLine
                 interpolation="natural"

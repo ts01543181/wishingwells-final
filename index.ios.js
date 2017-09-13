@@ -27,7 +27,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Register from './app/components/Register'
 import reducers from './app/Reducers/index'
 
-
+console.disableYellowBox = true;
 const store = createStore(reducers)
 
 class TabIcon extends Component {
