@@ -6,6 +6,7 @@ import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import axios from 'axios'
+import DonationWell from './DonationWell.js'
 import {HOST_IP} from '../../../config.js'
 import * as firebase from 'firebase'
 
@@ -58,7 +59,7 @@ class DonationProfile extends Component {
   render() {
     return (
       <View style={styles.body}>
-          <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+          <Image source={require('../../../assets/background2sliced.jpg')}  style={styles.backgroundImage}>
 
             <Image source={{ uri: this.state.photo }} style={styles.image}>
               <View style={styles.namewrap}>

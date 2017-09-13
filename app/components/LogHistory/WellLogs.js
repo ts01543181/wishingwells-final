@@ -78,7 +78,7 @@ class WellLogs extends Component {
   render() {
     const { onSwipe } = this.props;
     return (
-      <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
@@ -92,7 +92,7 @@ class WellLogs extends Component {
         </View>
         <View style={styles.totalWrap}>
           <View style={styles.total}>
-            <Text style={styles.number}>${this.state.wellSavings || 0}</Text>
+            <Text style={styles.number}>${this.state.wellSavings.toFixed(2) || 0}</Text>
             <Text style={styles.savings}>Current Well Savings</Text>
           </View>
         </View>
@@ -116,7 +116,7 @@ class WellLogs extends Component {
                   <Text style={styles.date}>{item.date}</Text>
                   <Text style={styles.time}>{moment(item.time).fromNow()}</Text>
                 </View>
-                <Text style={styles.amount}>${item.amount}</Text>
+                <Text style={styles.amount}>${Number(item.amount).toFixed(2)}</Text>
               </View>
             }
             style={{height:'100%'}}
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: 800,
+    height: 1000,
     backgroundColor: 'rgba(0,0,0,0)'
   },
   transactions: {
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    marginBottom: '90%',
+    marginBottom: '140%',
   },
   total: {
     alignItems: 'center',
