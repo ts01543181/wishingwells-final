@@ -77,37 +77,40 @@ class DonationWell extends Component {
               db.ref(`users/${this.props.uid}`).update({
                 total: user.val().total - (chargeObj.amount / 100)
               })
-            }) // TAKE OUT THIS BRACKET
-            //
-            //   let buyObj = {
-            //     walletAddress: this.props.qr,
-            //     uid: this.props.qr,
-            //     amount: Number(this.state.amount),
-            //   }
-            //
-            //   axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
-            //   .then(({data}) => {
-            //     console.log(data)
-            //
-            //     let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
-            //     let feesObj = {
-            //       walletAddress: this.props.uid,
-            //       cardID: this.props.cardID,
-            //       amount: fees * 100,
-            //     }
-            //
-            //     axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
-            //     .then(() => {
-            //       this.setState({
-            //         amount: '',
-            //         description: '',
-            //         donateReady: false,
-            //       })
-            //
-            //       alert('Donation Made')
-            //     })
-            //   })
-            // })
+
+              let buyObj = {
+                walletAddress: this.props.qr,
+                uid: this.props.qr,
+                amount: Number(this.state.amount),
+              }
+
+              axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
+              .then(({data}) => {
+                console.log(data)
+
+                let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
+                let feesObj = {
+                  walletAddress: this.props.uid,
+                  cardID: this.props.cardID,
+                  amount: fees * 100,
+                }
+
+                axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+                .then(() => {
+                  this.setState({
+                    amount: '',
+                    description: '',
+                    donateReady: false,
+                  })
+
+                  alert('Donation Made')
+                })
+              })
+              .catch(err => {
+                console.log(err),
+                alert("Coinbase buy didn't go through. (You can only cash out up to 3 times per day)")
+              })
+            })
 
             const investmentLogsRef = db.ref(`users/${this.props.qr}/investmentLogs`)
 
@@ -117,8 +120,6 @@ class DonationWell extends Component {
               amount: this.state.amount,
               description: this.state.description,
             })
-
-            alert('Donation Made!!!')
           } else {
             alert('Donation denied: Please check credit card input')
           }
@@ -224,11 +225,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 20
   },
-  // coin: {
-  //   top: '6%',
-  //   height: '55%',
-  //   width: '100%',
-  // },
   inputFields: {
     marginTop: '2%',
     marginLeft: '25%',

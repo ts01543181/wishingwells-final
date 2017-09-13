@@ -11,6 +11,7 @@ import { setSavings } from '../../Actions/Savings/SavingsAction.js'
 import { HOST_IP } from '../../../config.js'
 import Spinner from 'react-native-spinkit'
 import * as Animatable from 'react-native-animatable'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const db = firebase.database()
 
@@ -18,7 +19,7 @@ const mapStateToProps = state => {
   return {
     uid: state.ProfileReducer.uid,
     cardID: state.ProfileReducer.cardID,
-    total: state.ProfileReducer.total,    
+    total: state.ProfileReducer.total,
   }
 }
 
@@ -57,99 +58,102 @@ class Invest extends Component {
           amount: Number(this.state.amount) * 100,
         }
 
-        // DELETE THIS //
+        // // TEST CASING //
+        //
+        // db.ref(`users/${this.props.uid}`).once('value', (user) => {
+        //
+        //   db.ref(`users/${this.props.uid}`).update({
+        //     total: user.val().total - (chargeObj.amount / 100)
+        //   })
+        //
+        //
+        //   const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+        //
+        //   investmentLogsRef.push({
+        //     date: new Date().toDateString(),
+        //     time: new Date().getTime(),
+        //     amount: this.state.amount,
+        //     description: 'SELF INVESTMENT'
+        //   })
+        //
+        //   this.refs.view.fadeOutUp(800)
+        // })
+        //
+        // // TEST CASING //
 
-        db.ref(`users/${this.props.uid}`).once('value', (user) => {
+        axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
+        .then(({data}) => {
+          console.log(data.status)
 
-          db.ref(`users/${this.props.uid}`).update({
-            total: user.val().total - (chargeObj.amount / 100)
-          })
+          if (data.status === 'succeeded') {
+            db.ref(`users/${this.props.uid}`).once('value', (user) => {
 
+              db.ref(`users/${this.props.uid}`).update({
+                total: user.val().total - (chargeObj.amount / 100)
+              })
 
-          const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+              let buyObj = {
+                walletAddress: this.props.uid,
+                uid: this.props.uid,
+                amount: Number(this.state.amount),
+              }
 
-          investmentLogsRef.push({
-            date: new Date().toDateString(),
-            time: new Date().getTime(),
-            amount: this.state.amount,
-            description: 'SELF INVESTMENT'
-          })
+              axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
+              .then(({data}) => {
+                console.log(data)
 
-          this.refs.view.fadeOutUp(800)
+                let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
+
+                let feesObj = {
+                  walletAddress: this.props.uid,
+                  cardID: this.props.cardID,
+                  amount: Number(fees) * 100,
+                }
+
+                axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+                .then((data) => {
+
+                  console.log(data)
+
+                  const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+
+                  investmentLogsRef.push({
+                    date: new Date().toDateString(),
+                    time: new Date().getTime(),
+                    amount: this.state.amount,
+                    description: 'SELF INVESTMENT'
+                  })
+
+                  this.setState({
+                    amount: '',
+                    description: '',
+                    investmentReady: false,
+                  })
+
+                  alert('Investment Made')
+                })
+                .catch(err => {
+                  console.log(err)
+                  alert("Coinbase buy didn't go through (You can only invest up to 3 times per day)")
+                })
+              })
+              .catch(err => {
+                console.log(err)
+                alert("Coinbase buy didn't go through")
+              })
+            })
+          } else {
+            alert('Investment denied: Please check credit card input')
+          }
         })
-
-        // DELETE END //
-
-        // axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
-        // .then(({data}) => {
-        //   console.log(data.status)
-        //
-        //   if (data.status === 'succeeded') {
-        //     db.ref(`users/${this.props.uid}`).once('value', (user) => {
-        //
-        //       db.ref(`users/${this.props.uid}`).update({
-        //         total: user.val().total - (chargeObj.amount / 100)
-        //       })
-        //
-        //       // let buyObj = {
-        //       //   walletAddress: this.props.uid,
-        //       //   uid: this.props.uid,
-        //       //   amount: Number(this.state.amount),
-        //       // }
-        //       //
-        //       // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
-        //       // .then(({data}) => {
-        //       //   console.log(data)
-        //       //
-        //       //   let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
-        //       //   let feesObj = {
-        //       //     walletAddress: this.props.uid,
-        //       //     cardID: this.props.cardID,
-        //       //     amount: fees * 100,
-        //       //   }
-        //       //
-        //       //   axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
-        //       //   .then(() => {
-        //       //     this.setState({
-        //       //       amount: '',
-        //       //       description: '',
-        //       //       investmentReady: false,
-        //       //     })
-        //       //
-        //       //     const ref = db.ref(`users/${this.props.uid}/investmentLogs`)
-        //       //
-        //       //     ref.push({
-        //       //       date: new Date().toDateString(),
-        //       //       time: new Date().getTime(),
-        //       //       amount: Number(data.subtotal.amount),
-        //       //     })
-        //
-        //           // const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
-        //           //
-        //           // investmentLogsRef.push({
-        //           //   date: new Date().toDateString(),
-        //           //   time: new Date().getTime(),
-        //           //   amount: this.state.amount,
-        //           //   description: 'SELF INVESTMENT'
-        //           // })
-        //       //
-        //       //     alert('Investment Made')
-        //       //   })
-        //       // })
-        //
-        //       this.refs.view.fadeOutUp(800)
-        //     })
-        //   } else {
-        //     alert('Investment denied: Please check credit card input')
-        //   }
-        // })
-        // .catch(err => {
-        //   console.log(err)
-        //   alert('Error')
-        // })
+        .catch(err => {
+          console.log(err)
+          alert('Error')
+        })
       } else {
         alert('Invalid card credentials')
       }
+      this.refs.view.fadeOutUp(800)
     } else {
       alert('Please confirm investment details')
     }
@@ -166,22 +170,22 @@ class Invest extends Component {
           flex: 1,
           resizeMode,
         }}>
-          
           <View style={styles.walletWrap}>
             <Text style={styles.walletAmount}>${this.props.total}</Text>
             <Text style={styles.walletText}>CURRENT WALLET BALANCE</Text>
           </View>
-
         </Image>
       </View>
-         
+
         <View>
           <Text style={styles.credentials}>A M O U N T   T O   I N V E S T</Text>
         </View>
 
         <View style={styles.amountInputField}>
           <Text style={styles.dollarSign}>$</Text>
+          <KeyboardAwareScrollView>
           <TextInput style={styles.amountInput} placeholder="0" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
+          </KeyboardAwareScrollView>
         </View>
 
         <GestureRecognizer
@@ -205,7 +209,7 @@ class Invest extends Component {
 
 const styles = StyleSheet.create({
   bodyWrap: {
-    backgroundColor: 'white',  
+    backgroundColor: 'white',
     height: '100%'
   },
   container: {
@@ -264,21 +268,22 @@ const styles = StyleSheet.create({
   amountInput: {
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',    
+    textAlign: 'center',
     fontSize: 50,
     width: '35%',
-    marginTop: '5%'
+    marginTop: '5%',
   },
   dollarSign: {
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',        
-    fontSize: 50
+    textAlign: 'center',
+    fontSize: 50,
+    marginLeft: '35%'
   },
   coin: {
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center',    
+    alignItems: 'center',
     marginTop: '8%'
   },
 })

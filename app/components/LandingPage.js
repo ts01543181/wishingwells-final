@@ -12,6 +12,9 @@ import axios from 'axios'
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie, VictoryAxis } from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
+
+const db = firebase.database()
+
 const mapStateToProps = (state) => {
   return {
     uid: state.ProfileReducer.uid,
@@ -64,30 +67,46 @@ class LandingPage extends Component {
     firebase.database().ref(`users/${this.props.uid}`).on('value', (snapshot) => {
       let { total, wallet, goal } = snapshot.val()
         if (wallet !== '') {
-          axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
-          .then(({ data }) => {
+
+          db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(investmentData => {
+            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
+              return sum + Number(accum.amount)
+            }, 0)
+
             this.setState({
-              wellSavings: data[0].native_balance.amount
+              wellSavings: wellSavings,
             })
-            if (this.props.total > 0) {
-              this.setState({
-                pieData: [
-                  { x: "Well", y: (+this.state.wellSavings / goal) * 100},
-                  { x: 'Wallet', y: (total / goal) * 100},
-                  { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
-                ],
-                colorScale: ['#70dbdb', '#9fbfdf', '#D0D0D0']
-              })
-            } else {
-              this.setState({
-                pieData: [
-                  { x: "Well", y: (+this.state.wellSavings / goal) * 100},
-                  { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
-                ],
-                colorScale: ['#70dbdb', '#D0D0D0']
-              })
-            }
           })
+
+          db.ref(`users/${this.props.uid}/investmentLogs`).on('value', investmentData => {
+
+            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
+              return sum + Number(accum.amount)
+            }, 0)
+
+            this.setState({
+              wellSavings: wellSavings,
+            })
+          })
+
+          if (total > 0) {
+            this.setState({
+              pieData: [
+                { x: "Well", y: (+this.state.wellSavings / goal) * 100},
+                { x: 'Wallet', y: (total / goal) * 100},
+                { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
+              ],
+              colorScale: ['#4A4AB2', '#9fbfdf', '#D0D0D0']
+            })
+          } else {
+            this.setState({
+              pieData: [
+                { x: "Well", y: (+this.state.wellSavings / goal) * 100},
+                { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
+              ],
+              colorScale: ['#4A4AB2', '#D0D0D0']
+            })
+          }
         } else {
           this.setState({
             pieData: [
@@ -170,13 +189,15 @@ class LandingPage extends Component {
             <Text style={styles.goalText}>G O A L: <Text style={styles.boldText}>${this.props.goal}</Text></Text>
             <Text style={styles.goalText}>W E L L  S A V I N G S: <Text style={styles.boldText}>${this.state.wellSavings || 0}</Text></Text>
           </View>
-                  
+
             <View style={styles.pieWrap}>
               <Text style={styles.pieText}>G O A L  C H A R T</Text>
                 <VictoryPie data={this.state.pieData}
                 colorScale={this.state.colorScale}
                 innerRadius={50}
-                width={300}
+                width={350}
+                labelRadius={135}
+                style={{ labels: { fontSize: 15 } }}
                 />
             </View>
           </ScrollView>
@@ -261,7 +282,13 @@ const styles = StyleSheet.create({
   },
   chartText: {
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: '10%',
+    fontSize: 18,
+    color: 'grey'
+  },
+  goalChartText: {
+    textAlign: 'center',
+    marginTop: '20%',
     fontSize: 18,
     color: 'grey',
   },
@@ -284,14 +311,15 @@ const styles = StyleSheet.create({
     height: 390,
     borderRadius: 20,
     marginTop: 18,
-    justifyContent: 'center'
+    marginBottom: '5%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   goalWrap: {
     backgroundColor: 'rgba(250,250,250,0.5)',
     width: '100%',
     height: 100,
     borderRadius: 20,
-    marginTop: 18,
     justifyContent: 'center'
   },
   goalText: {

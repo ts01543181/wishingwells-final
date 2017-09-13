@@ -52,11 +52,9 @@ class WalletLogs extends Component {
     const { onSwipe } = this.props;
     return (
       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
-        
         <View style={styles.navbar}>
           <NavigationBar title={{title:'SAVINGS', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
-
         <View style={styles.pageButtons}>
           <TouchableOpacity style={styles.button} onPress={() => {}}>
             <Text style={styles.buttonText}>Wallet Logs</Text>
@@ -65,19 +63,16 @@ class WalletLogs extends Component {
             <Text style={styles.buttonText}>Well Logs</Text>
           </TouchableOpacity>
         </View>
-
         <View style={styles.totalWrap}>
           <View style={styles.total}>
             <Text style={styles.number}>${this.props.total}</Text>
             <Text style={styles.savings}>Current Wallet Savings</Text>
           </View>
-
         </View>
 
           <View style={styles.transactions}>
             <Text style={styles.transText}>SAVINGS LOG</Text>
           </View>
-
           <View style={styles.log}>
           <FlatList
             refreshControl={
@@ -100,7 +95,6 @@ class WalletLogs extends Component {
             style={{height:'100%'}}
           />
           </View>
-
     </Image>
     )
   }
@@ -138,11 +132,12 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0,0,0,0)',
+    height: 800,
+    backgroundColor: 'rgba(0,0,0,0)'
   },
   transactions: {
     marginTop: 20,
+    // marginBottom: 8,
     padding: 10,
     borderBottomWidth: 0.5,
     borderColor: 'white',
@@ -153,6 +148,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center'
   },
+  // navbar: {
+  //   shadowColor: '#000',
+  //   shadowOffset: { width: 0, height: 1 },
+  //   shadowOpacity: 0.8,
+  //   shadowRadius: 2,
+  //   zIndex:2
+  // },
   list: {
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,
@@ -194,7 +196,16 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   log : {
-    paddingBottom: '40%',
+    marginBottom: '90%',
+  },
+  total: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
+    width: 360,
+    backgroundColor: 'rgba(242,242,242,0.3)',
+    borderRadius: 15,
+    marginTop: 10,
   },
   savings: {
     fontSize: 20,
@@ -208,21 +219,12 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 5
   },
-  total: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 100,
-    width: 360,
-    backgroundColor: 'rgba(242,242,242,0.3)',
-    borderRadius: 15,
-    marginTop: 10,
-  },
   totalWrap:{
     flex:1,
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'center',
-    marginTop: '15%',
+    marginTop: 60,
     marginBottom: 40,
     shadowColor: '#000000',
     shadowOffset: {
