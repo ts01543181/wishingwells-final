@@ -19,7 +19,7 @@ class CashOutModal extends Component {
   _renderButton = (text, onPress) => (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
-        <Text style={styles.buttonText}>Cash Out Well</Text>
+        <Text style={styles.buttonText}>CASH OUT WELL</Text>
       </View>
     </TouchableOpacity>
   );
@@ -27,7 +27,7 @@ class CashOutModal extends Component {
   _renderCloseButton = (text, onPress) => (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
-        <Text>Close</Text>
+        <Text>CLOSE</Text>
       </View>
     </TouchableOpacity>
   );
@@ -92,17 +92,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: 'lightgrey',
-    marginTop: 10,
+    backgroundColor: 'rgba(10,10,10,0.2)',  
+    marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
-    height: 50,
-    width: 350,
+    borderRadius: 20,
+    height: 40,
+    width: 300,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   buttonText: {
-    fontSize: 20
+    fontSize: 15,
+    color: 'white'
   },
   modalContent: {
     backgroundColor: 'white',

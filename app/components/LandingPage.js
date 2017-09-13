@@ -120,34 +120,6 @@ class LandingPage extends Component {
       })
     })
   }
-  _onRefresh() {
-
-    this.setState({refreshing: true});
-    axios.get(`http://${HOST_IP}:80/api/getBitcoinValue`)
-    .then(({ data }) => {
-      this.props.setBitcoinValue(data)
-    })
-    // .then(() => this.setState({refreshing: false}))
-    // axios.get('https://api.coindesk.com/v1/bpi/historical/close.json')
-    // .then(({ data }) => {
-    //   console.log('bitcoin historical value', data.bpi)
-    //   let rawData = data.bpi
-    //   let dates = Object.keys(rawData)
-    //   let values = Object.values(rawData)
-    //   let final = []
-    //   for (let i = 0; i < dates.length; i ++) {
-    //     let obj = {}
-    //     let date = dates[i].split('-').join('').slice(6)
-    //     obj.x = date
-    //     obj.y = values[i]
-    //     final.push(obj)
-    //   }
-    //   this.setState({
-    //     history: final
-    //   })
-    // })
-    this.setState({refreshing: false});
-  }
   // getTotal() {
   //   let total;
   //   firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
@@ -164,19 +136,10 @@ class LandingPage extends Component {
     return (
       <View style={styles.body}>
       <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
-      {/* <View> */}
         <View>
         <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
-        <ScrollView
-            refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}
-              />}
-          >
           <View style={styles.priceWrap}>
-            {/* <View style={styles.priceWrap}> */}
               <View style={styles.priceBox}>
                 <Text style={styles.priceText}>1</Text>
                 <Text style={styles.priceCurr}>BITCOIN</Text>
@@ -184,19 +147,11 @@ class LandingPage extends Component {
               <View style={styles.priceBox}>
                 <Text style={styles.priceText}>{this.props.bitcoinValue}</Text>
                 <Text style={styles.priceCurr}>USD</Text>
-              {/* </View> */}
             </View>
           </View>
-          </ScrollView>
       </Image>
-          <ScrollView
-            refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}
-              />}
-          >
-          <View style={styles.bla}>
+          <ScrollView>
+          <View style={styles.container}>
             <View style={styles.chartWrap}>
               <Text style={styles.chartText}>P R I C E  C H A R T</Text>
               <VictoryChart
@@ -221,25 +176,22 @@ class LandingPage extends Component {
             <Text style={styles.goalText}>G O A L: <Text style={styles.boldText}>${this.props.goal}</Text></Text>
             <Text style={styles.goalText}>W E L L  S A V I N G S: <Text style={styles.boldText}>${this.state.wellSavings || 0}</Text></Text>
           </View>
-
+                  
             <View style={styles.pieWrap}>
-              {/* <View style={{marginBottom: '10%'}}> */}
-              <Text style={styles.chartText}>G O A L  C H A R T</Text>
+              <Text style={styles.pieText}>G O A L  C H A R T</Text>
                 <VictoryPie data={this.state.pieData}
                 colorScale={this.state.colorScale}
                 innerRadius={50}
                 width={300}
                 />
-              {/* </View> */}
             </View>
-
           </ScrollView>
        </View>
     )
   }
 }
 const styles = StyleSheet.create({
-  bla: {
+  container: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -317,7 +269,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     fontSize: 18,
-    color: 'grey'
+    color: 'grey',
+  },
+  pieText: {
+    textAlign: 'center',
+    marginTop: 10,
+    fontSize: 18,
+    color: 'grey',
+    marginTop: '15%'
   },
   wellText:{
     textAlign: 'center',

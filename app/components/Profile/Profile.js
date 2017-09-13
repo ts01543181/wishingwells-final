@@ -80,13 +80,13 @@ class Profile extends Component {
             </Image>
           <ScrollView>
 
-            <View style={styles.info}>
+            <View style={styles.firstInfo}>
               <Text><Icon name='at' size={25} style={styles.icon}/> {this.props.username}</Text>
               <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
             </View>
 
             <View style={styles.info}>
-               <Text style={styles.wellSavingsAmount}><Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
+               <Text style={styles.wellSavingsAmount}><Icon name='currency-usd' size={25} style={styles.dollarIcon}/>{this.state.wellSavings}</Text>
                <CashOutModal style={styles.invest} uid={this.props.uid} wellAmount={this.state.wellSavings}/>
              </View>
 
@@ -103,20 +103,11 @@ class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-  body: {
-    // marginBottom: 55
-  },
-  navbar: {
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 1 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
-    // zIndex:2
-  },
   about: {
     paddingTop: 15,
     marginLeft: 10,
-    fontSize: 20
+    fontSize: 20,
+    color: 'grey'
   },
   bio:{
     marginTop: 10,
@@ -137,12 +128,16 @@ const styles = StyleSheet.create({
     fontSize: 30,
     top: 10,
     fontWeight: 'bold',
-    // color: "#2eb8b8"
     color: 'white',
     shadowOpacity: 70
   },
   icon:{
-    marginLeft: 30
+    marginLeft: 30,
+    color: 'grey'
+  },
+  dollarIcon:{
+    marginLeft: 30,
+    // color: 'grey'
   },
   info:{
     paddingTop: 8,
@@ -156,6 +151,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(242,242,242,0.4)',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  firstInfo:{
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 20,
+    marginTop: 15,
+    borderRadius: 10,
+    backgroundColor: 'rgba(242,242,242,0.4)',
+  
   },
   aboutInfo:{
     paddingTop: 8,

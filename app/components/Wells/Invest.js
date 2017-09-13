@@ -156,17 +156,24 @@ class Invest extends Component {
   }
 
   render() {
+    const resizeMode = 'stretch';
 
     return (
       <View style={styles.bodyWrap}>
-       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+
+      <View style={styles.container}>
+        <Image source={require('../../../assets/backgroundProfile.jpg')} style={{
+          flex: 1,
+          resizeMode,
+        }}>
           
           <View style={styles.walletWrap}>
             <Text style={styles.walletAmount}>${this.props.total}</Text>
             <Text style={styles.walletText}>CURRENT WALLET BALANCE</Text>
           </View>
 
-      </Image>
+        </Image>
+      </View>
          
         <View>
           <Text style={styles.credentials}>A M O U N T   T O   I N V E S T</Text>
@@ -194,7 +201,6 @@ class Invest extends Component {
       </View>
     )
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -202,23 +208,37 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',  
     height: '100%'
   },
-  backgroundImage: {
+  container: {
     height: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  // backgroundImage: {
+  //   flex: 1,
+  //   'stretch',
+  //   // borderWidth: 1,
+  //   // height: '40%',
+  //   // alignItems: 'center',
+  //   // justifyContent:'center',
+  // },
   walletWrap: {
-    // justifyContent: 'center',
+    paddingTop: '1%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   walletAmount: {
-    // textAlign: 'center',
-    // alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0)',
     fontSize: 50,
-    color: 'white'
+    color: 'white',
+    textAlign: 'center',
   },
   walletText: {
+    textAlign: 'center',
     color: 'white',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0)'
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   amountWrap: {
     marginTop: '30%',
