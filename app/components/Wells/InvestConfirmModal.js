@@ -15,7 +15,7 @@ class InvestConfirmModal extends Component {
   _renderButton = (text, onPress) => (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
-        <Text style={styles.buttonText}>Confirm Investment</Text>
+        <Text style={styles.buttonText}>CONFIRM INVESTMENT</Text>
       </View>
     </TouchableOpacity>
   );
@@ -23,7 +23,7 @@ class InvestConfirmModal extends Component {
   _renderCloseButton = (text, onPress) => (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
-        <Text>Close</Text>
+        <Text style={styles.buttonText}>Close</Text>
       </View>
     </TouchableOpacity>
   );
@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: 'rgba(133, 224, 224,0.5)',  
-    // backgroundColor: 'lightgrey',
     marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
@@ -72,7 +71,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   buttonText: {
-    fontSize: 20
+    fontSize: 15,
+    color: 'grey'
   },
   modalContent: {
     backgroundColor: 'white',

@@ -104,8 +104,8 @@ class Well extends Component {
             <Text style={styles.walletText}>WALLET BALANCE</Text>
           </View>
       </Image>
+      <KeyboardAwareScrollView>
 
-          <KeyboardAwareScrollView>
           <View>
 
             <View style={styles.amountWrap}>
@@ -131,8 +131,6 @@ class Well extends Component {
 
 const styles = StyleSheet.create({
   backgroundImage:{
-    borderBottomLeftRadius: 170,
-    borderBottomRightRadius: 170,
     width: '100%',
     height: '30%',
     backgroundColor: 'rgba(0,0,0,0)'
@@ -141,13 +139,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white'
   },
-  // navbar: {
-  //   shadowColor: '#000',
-  //   shadowOffset: { width: 0, height: 1 },
-  //   shadowOpacity: 0.8,
-  //   shadowRadius: 2,
-  //   zIndex:2
-  // },
   walletAmountContainer: {
     marginTop: '5%',
     alignItems: 'center',
@@ -156,7 +147,7 @@ const styles = StyleSheet.create({
   },
   walletText:{
     fontSize: 14,
-    color: '#2aa2a2',
+    color: '#258e8e',
   },
   walletAmount: {
     fontSize: 60,
@@ -179,7 +170,7 @@ const styles = StyleSheet.create({
     paddingBottom: '25%',
     justifyContent:'center',
     alignSelf: 'center',
-    backgroundColor: 'rgba(133, 224, 224,0.5)',  
+    backgroundColor: 'rgba(92, 214, 214,0.5)',  
   },
   dollarSign:{
     backgroundColor:'rgba(0,0,0,0)',

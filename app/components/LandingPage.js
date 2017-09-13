@@ -130,14 +130,10 @@ class LandingPage extends Component {
     return (
       <View style={styles.body}>
       <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
-      {/* <View> */}
         <View>
         <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
-        <ScrollView
-          >
           <View style={styles.priceWrap}>
-            {/* <View style={styles.priceWrap}> */}
               <View style={styles.priceBox}>
                 <Text style={styles.priceText}>1</Text>
                 <Text style={styles.priceCurr}>BITCOIN</Text>
@@ -145,15 +141,11 @@ class LandingPage extends Component {
               <View style={styles.priceBox}>
                 <Text style={styles.priceText}>{this.props.bitcoinValue}</Text>
                 <Text style={styles.priceCurr}>USD</Text>
-              {/* </View> */}
             </View>
           </View>
-          </ScrollView>
       </Image>
-          <ScrollView
-            
-          >
-          <View style={styles.bla}>
+          <ScrollView>
+          <View style={styles.container}>
             <View style={styles.chartWrap}>
               <Text style={styles.chartText}>P R I C E  C H A R T</Text>
               <VictoryChart
@@ -178,25 +170,22 @@ class LandingPage extends Component {
             <Text style={styles.goalText}>G O A L: <Text style={styles.boldText}>${this.props.goal}</Text></Text>
             <Text style={styles.goalText}>W E L L  S A V I N G S: <Text style={styles.boldText}>${this.state.wellSavings || 0}</Text></Text>
           </View>
-
+                  
             <View style={styles.pieWrap}>
-              {/* <View style={{marginBottom: '10%'}}> */}
-              <Text style={styles.chartText}>G O A L  C H A R T</Text>
+              <Text style={styles.pieText}>G O A L  C H A R T</Text>
                 <VictoryPie data={this.state.pieData}
                 colorScale={this.state.colorScale}
                 innerRadius={50}
                 width={300}
                 />
-              {/* </View> */}
             </View>
-
           </ScrollView>
        </View>
     )
   }
 }
 const styles = StyleSheet.create({
-  bla: {
+  container: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -274,7 +263,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     fontSize: 18,
-    color: 'grey'
+    color: 'grey',
+  },
+  pieText: {
+    textAlign: 'center',
+    marginTop: 10,
+    fontSize: 18,
+    color: 'grey',
+    marginTop: '15%'
   },
   wellText:{
     textAlign: 'center',
