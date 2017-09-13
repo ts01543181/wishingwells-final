@@ -58,99 +58,102 @@ class Invest extends Component {
           amount: Number(this.state.amount) * 100,
         }
 
-        // DELETE THIS //
+        // // TEST CASING //
+        //
+        // db.ref(`users/${this.props.uid}`).once('value', (user) => {
+        //
+        //   db.ref(`users/${this.props.uid}`).update({
+        //     total: user.val().total - (chargeObj.amount / 100)
+        //   })
+        //
+        //
+        //   const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+        //
+        //   investmentLogsRef.push({
+        //     date: new Date().toDateString(),
+        //     time: new Date().getTime(),
+        //     amount: this.state.amount,
+        //     description: 'SELF INVESTMENT'
+        //   })
+        //
+        //   this.refs.view.fadeOutUp(800)
+        // })
+        //
+        // // TEST CASING //
 
-        db.ref(`users/${this.props.uid}`).once('value', (user) => {
+        axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
+        .then(({data}) => {
+          console.log(data.status)
 
-          db.ref(`users/${this.props.uid}`).update({
-            total: user.val().total - (chargeObj.amount / 100)
-          })
+          if (data.status === 'succeeded') {
+            db.ref(`users/${this.props.uid}`).once('value', (user) => {
 
+              db.ref(`users/${this.props.uid}`).update({
+                total: user.val().total - (chargeObj.amount / 100)
+              })
 
-          const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+              let buyObj = {
+                walletAddress: this.props.uid,
+                uid: this.props.uid,
+                amount: Number(this.state.amount),
+              }
 
-          investmentLogsRef.push({
-            date: new Date().toDateString(),
-            time: new Date().getTime(),
-            amount: this.state.amount,
-            description: 'SELF INVESTMENT'
-          })
+              axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
+              .then(({data}) => {
+                console.log(data)
 
-          this.refs.view.fadeOutUp(800)
+                let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
+
+                let feesObj = {
+                  walletAddress: this.props.uid,
+                  cardID: this.props.cardID,
+                  amount: Number(fees) * 100,
+                }
+
+                axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+                .then((data) => {
+
+                  console.log(data)
+
+                  const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+
+                  investmentLogsRef.push({
+                    date: new Date().toDateString(),
+                    time: new Date().getTime(),
+                    amount: this.state.amount,
+                    description: 'SELF INVESTMENT'
+                  })
+
+                  this.setState({
+                    amount: '',
+                    description: '',
+                    investmentReady: false,
+                  })
+
+                  alert('Investment Made')
+                })
+                .catch(err => {
+                  console.log(err)
+                  alert("Coinbase buy didn't go through (You can only invest up to 3 times per day)")
+                })
+              })
+              .catch(err => {
+                console.log(err)
+                alert("Coinbase buy didn't go through")
+              })
+            })
+          } else {
+            alert('Investment denied: Please check credit card input')
+          }
         })
-
-        // DELETE END //
-
-        // axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, chargeObj)
-        // .then(({data}) => {
-        //   console.log(data.status)
-        //
-        //   if (data.status === 'succeeded') {
-        //     db.ref(`users/${this.props.uid}`).once('value', (user) => {
-        //
-        //       db.ref(`users/${this.props.uid}`).update({
-        //         total: user.val().total - (chargeObj.amount / 100)
-        //       })
-        //
-        //       // let buyObj = {
-        //       //   walletAddress: this.props.uid,
-        //       //   uid: this.props.uid,
-        //       //   amount: Number(this.state.amount),
-        //       // }
-        //       //
-        //       // axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
-        //       // .then(({data}) => {
-        //       //   console.log(data)
-        //       //
-        //       //   let fees = (Number(data.total.amount) - Number(data.subtotal.amount)) + 0.3 + (0.03 * Number(this.state.amount));
-        //       //   let feesObj = {
-        //       //     walletAddress: this.props.uid,
-        //       //     cardID: this.props.cardID,
-        //       //     amount: fees * 100,
-        //       //   }
-        //       //
-        //       //   axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
-        //       //   .then(() => {
-        //       //     this.setState({
-        //       //       amount: '',
-        //       //       description: '',
-        //       //       investmentReady: false,
-        //       //     })
-        //       //
-        //       //     const ref = db.ref(`users/${this.props.uid}/investmentLogs`)
-        //       //
-        //       //     ref.push({
-        //       //       date: new Date().toDateString(),
-        //       //       time: new Date().getTime(),
-        //       //       amount: Number(data.subtotal.amount),
-        //       //     })
-        //
-        //           // const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
-        //           //
-        //           // investmentLogsRef.push({
-        //           //   date: new Date().toDateString(),
-        //           //   time: new Date().getTime(),
-        //           //   amount: this.state.amount,
-        //           //   description: 'SELF INVESTMENT'
-        //           // })
-        //       //
-        //       //     alert('Investment Made')
-        //       //   })
-        //       // })
-        //
-        //       this.refs.view.fadeOutUp(800)
-        //     })
-        //   } else {
-        //     alert('Investment denied: Please check credit card input')
-        //   }
-        // })
-        // .catch(err => {
-        //   console.log(err)
-        //   alert('Error')
-        // })
+        .catch(err => {
+          console.log(err)
+          alert('Error')
+        })
       } else {
         alert('Invalid card credentials')
       }
+      this.refs.view.fadeOutUp(800)
     } else {
       alert('Please confirm investment details')
     }

@@ -86,7 +86,7 @@ class Login extends Component {
     </View>
     : (
       <View>
-        
+
         <View>
         <Image source={require('../../assets/background2.jpg')}  style={styles.backgroundImage}>
       <View style={styles.container}>
@@ -126,10 +126,6 @@ class Login extends Component {
             <Text style={styles.signupText}>   SIGN UP</Text>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.bypass} onPress={() => Actions.Home()}>
-          <Text style={styles.account} > BYPASS </Text>
-        </TouchableOpacity>
       </View>
       </Image>
       </View>
