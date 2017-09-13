@@ -94,7 +94,6 @@ class Well extends Component {
   render() {
     return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView>
       <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
           <View style={styles.navbar}>
           <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
@@ -105,6 +104,7 @@ class Well extends Component {
             <Text style={styles.walletText}>WALLET BALANCE</Text>
           </View>
       </Image>
+      <KeyboardAwareScrollView>
 
           <View>
 
