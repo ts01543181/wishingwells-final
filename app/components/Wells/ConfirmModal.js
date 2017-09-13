@@ -62,8 +62,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: 'rgba(133, 224, 224,0.5)',  
-    // backgroundColor: 'lightgrey',
+    backgroundColor: 'rgba(92, 214, 214, 0.4)',  
     marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
