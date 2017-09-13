@@ -37,7 +37,7 @@ class QRScanner extends Component {
                 this.props.setUserInfo({
                   donationID: this.state.donationID,
                 })
-                Actions.DonationWell()
+                Actions.DonationProfile()
               },
             },
             { text: 'No', onPress: () => {

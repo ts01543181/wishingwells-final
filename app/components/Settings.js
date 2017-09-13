@@ -175,7 +175,7 @@ class Settings extends Component {
         <InputField
             ref='goal'
             iconLeft={<Icon name='currency-usd' size={30} style={styles.icon}/>}
-            placeholder='Set a goal'
+            placeholder='Set a Well Goal'
             value={this.props.goal}
           />
 
@@ -184,6 +184,8 @@ class Settings extends Component {
             iconLeft={<Icon name='information-outline' size={30} style={styles.icon}/>}
             placeholder='Add a bio to your profile'
             value={this.props.bio}
+            multiline={true}
+            style={styles.bioInput}
           />
         <Separator label="Private Information"/>
         <LinkField
@@ -232,6 +234,10 @@ const styles = StyleSheet.create({
     marginTop: 7,
     marginLeft: 10,
     color:'gray'
+  },
+  bioInput: {
+    padding: 10,
+    height: '10%'
   },
   button:{
     marginTop: 15,

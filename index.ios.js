@@ -18,6 +18,7 @@ import Profile from './app/components/Profile/Profile'
 import Settings from './app/components/Settings'
 import Well from './app/components/Wells/Well'
 import DonationWell from './app/components/Wells/DonationWell'
+import DonationProfile from './app/components/Wells/DonationProfile'
 import AddCard from './app/components/UserAuth/AddCard'
 import QRScanner from './app/components/QR/QRScanner'
 import Invest from './app/components/Wells/Invest'
@@ -62,6 +63,7 @@ export default class WishingWell extends Component {
             <Scene key="AddCard" component={AddCard} title="AddCard" panHandler={null} />
             <Scene key="QRScanner" component={QRScanner} title="QRScanner" panHandler={null} />
             <Scene key="DonationWell" component={DonationWell} title="DonationWell" panHandler={null} />
+            <Scene key="DonationProfile" component={DonationProfile} title="DonationProfile" panHandler={null} />
             <Scene key="Invest" component={Invest} title="Invest" panHandler={null} />
         </Scene>
       </Router>
