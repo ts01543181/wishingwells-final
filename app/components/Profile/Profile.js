@@ -104,8 +104,8 @@ class Profile extends Component {
 
   render() {
     return (
+      <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
       <View style={styles.body}>
-          <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
 
             <NavigationBar title={{title:'PROFILE', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
 
@@ -128,7 +128,7 @@ class Profile extends Component {
             </View>
 
             <View style={styles.info}>
-               <Text style={styles.wellSavingsAmount}>Well Amount: <Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
+               <Text style={styles.wellSavingsAmount}>Well Amount: <Icon name='currency-usd' size={25} style={styles.icon}/>{Number(this.state.wellSavings).toFixed(2)}</Text>
                <CashOutModal style={styles.invest} uid={this.props.uid} wellAmount={this.state.wellSavings}/>
              </View>
 
@@ -138,22 +138,15 @@ class Profile extends Component {
             </View>
 
           </ScrollView>
-        </Image>
       </View>
+      </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
   body: {
-    // marginBottom: 55
-  },
-  navbar: {
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 1 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
-    // zIndex:2
+    height: '70%'
   },
   about: {
     paddingTop: 15,
@@ -243,7 +236,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage:{
     width: '100%',
-    height: '100%',
+    height: 1000,
     backgroundColor: 'rgba(0,0,0,0)'
   },
   invest: {

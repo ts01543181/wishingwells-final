@@ -166,12 +166,12 @@ class Invest extends Component {
       <View style={styles.bodyWrap}>
 
       <View style={styles.container}>
-        <Image source={require('../../../assets/backgroundProfile.jpg')} style={{
+        <Image source={require('../../../assets/background2sliced.jpg')} style={{
           flex: 1,
-          resizeMode,
+          resizeMode: 'cover',
         }}>
           <View style={styles.walletWrap}>
-            <Text style={styles.walletAmount}>${this.props.total}</Text>
+            <Text style={styles.walletAmount}>${this.props.total.toFixed(2)}</Text>
             <Text style={styles.walletText}>CURRENT WALLET BALANCE</Text>
           </View>
         </Image>
@@ -182,7 +182,7 @@ class Invest extends Component {
         </View>
 
         <View style={styles.amountInputField}>
-          <Text style={styles.dollarSign}>$</Text>
+          <Text style={styles.dollarSign}>$  </Text>
           <KeyboardAwareScrollView>
           <TextInput style={styles.amountInput} placeholder="0" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
           </KeyboardAwareScrollView>
@@ -194,7 +194,7 @@ class Invest extends Component {
         >
            <View style={styles.coin}>
               <Animatable.View ref="view">
-                <Spinner type="CircleFlip" size={150} color={'#DAA520'}/>
+                <Spinner type="CircleFlip" size={150} color={'#ffd700'}/>
               </Animatable.View>
            </View>
         </GestureRecognizer>
@@ -217,16 +217,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // backgroundImage: {
-  //   flex: 1,
-  //   'stretch',
-  //   // borderWidth: 1,
-  //   // height: '40%',
-  //   // alignItems: 'center',
-  //   // justifyContent:'center',
-  // },
   walletWrap: {
-    paddingTop: '1%',
+    paddingTop: '5%',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
@@ -264,13 +256,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: 'grey',
+    marginRight: '5%'
   },
   amountInput: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
     fontSize: 50,
-    width: '35%',
+    width: '80%',
     marginTop: '5%',
   },
   dollarSign: {

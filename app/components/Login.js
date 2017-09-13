@@ -45,7 +45,7 @@ class Login extends Component {
           console.log(err)
         })
         return
-      } 
+      }
     });
   }
 
@@ -82,7 +82,7 @@ class Login extends Component {
 
     return this.state.loading?
     <View style={styles.spinnerContainer}>
-      <Spinner type="FadingCircleAlt" style={styles.spinner}/>
+      <Spinner type="Circle" style={styles.spinner} size={100} color={'#66b2b2'}/>
     </View>
     : (
       <View>

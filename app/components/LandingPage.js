@@ -144,11 +144,11 @@ class LandingPage extends Component {
       })
     })
   }
-  
+
   render() {
     return (
       <View style={styles.body}>
-      <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../assets/background2sliced.jpg')}  style={styles.backgroundImage}>
         <View>
         <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
@@ -168,13 +168,13 @@ class LandingPage extends Component {
             <View style={styles.chartWrap}>
               <Text style={styles.chartText}>P R I C E  C H A R T</Text>
               <VictoryChart
-             
+
               >
                 <VictoryLine
                 interpolation="natural"
                   data={this.state.history}
                   style={{
-                    data: { stroke: "#2eb8b8" },
+                    data: { stroke: "#22abc3" },
                     parent: { border: "1px solid #ccc"}
                   }}
                   animate={{
@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.3,
+    resizeMode: 'cover'
   },
   chartWrap: {
     backgroundColor: 'rgba(250,250,250,0.5)',
