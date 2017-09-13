@@ -48,10 +48,32 @@ class Profile extends Component {
 
   componentWillMount() {
 
-    axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
-    .then(({ data }) => {
+    // axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
+    // .then(({ data }) => {
+    //   this.setState({
+    //     wellSavings: data[0].native_balance.amount
+    //   })
+    // })
+
+    db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
+      console.log('here', data.val())
+      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
+        return sum + Number(accum.amount)
+      }, 0)
+
       this.setState({
-        wellSavings: data[0].native_balance.amount
+        wellSavings: wellSavings,
+      })
+    })
+
+    db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
+
+      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
+        return sum + Number(accum.amount)
+      }, 0)
+
+      this.setState({
+        wellSavings: wellSavings,
       })
     })
 

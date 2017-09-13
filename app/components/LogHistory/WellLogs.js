@@ -37,23 +37,34 @@ class WellLogs extends Component {
   componentWillMount() {
     db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
       console.log('here', data.val())
+      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
+        return sum + Number(accum.amount)
+      }, 0)
+
       this.setState({
-        wellLogs: Object.values(data.val())
+        wellLogs: Object.values(data.val()),
+        wellSavings: wellSavings,
       })
     })
 
     db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
+
+      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
+        return sum + Number(accum.amount)
+      }, 0)
+
       this.setState({
-        wellLogs: Object.values(data.val())
+        wellLogs: Object.values(data.val()),
+        wellSavings: wellSavings,
       })
     })
 
-    axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
-    .then(({ data }) => {
-      this.setState({
-        wellSavings: data[0].native_balance.amount
-      })
-    })
+    // axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
+    // .then(({ data }) => {
+    //   this.setState({
+    //     wellSavings: data[0].native_balance.amount
+    //   })
+    // })
   }
 
   _onRefresh() {
@@ -164,13 +175,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center'
   },
-  // navbar: {
-  //   shadowColor: '#000',
-  //   shadowOffset: { width: 0, height: 1 },
-  //   shadowOpacity: 0.8,
-  //   shadowRadius: 2,
-  //   zIndex:2
-  // },
   list: {
     backgroundColor: 'rgba(242,242,242,0.3)',
     borderRadius: 15,

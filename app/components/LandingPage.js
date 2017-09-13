@@ -12,6 +12,9 @@ import axios from 'axios'
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryPie, VictoryAxis } from "victory-native"
 import { HOST_IP } from '../../config.js'
 import * as Progress from 'react-native-progress'
+
+const db = firebase.database()
+
 const mapStateToProps = (state) => {
   return {
     uid: state.ProfileReducer.uid,
@@ -64,30 +67,46 @@ class LandingPage extends Component {
     firebase.database().ref(`users/${this.props.uid}`).on('value', (snapshot) => {
       let { total, wallet, goal } = snapshot.val()
         if (wallet !== '') {
-          axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
-          .then(({ data }) => {
+
+          db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(investmentData => {
+            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
+              return sum + Number(accum.amount)
+            }, 0)
+
             this.setState({
-              wellSavings: data[0].native_balance.amount
+              wellSavings: wellSavings,
             })
-            if (this.props.total > 0) {
-              this.setState({
-                pieData: [
-                  { x: "Well", y: (+this.state.wellSavings / goal) * 100},
-                  { x: 'Wallet', y: (total / goal) * 100},
-                  { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
-                ],
-                colorScale: ['#4A4AB2', '#9fbfdf', '#D0D0D0']
-              })
-            } else {
-              this.setState({
-                pieData: [
-                  { x: "Well", y: (+this.state.wellSavings / goal) * 100},
-                  { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
-                ],
-                colorScale: ['#4A4AB2', '#D0D0D0']
-              })
-            }
           })
+
+          db.ref(`users/${this.props.uid}/investmentLogs`).on('value', investmentData => {
+
+            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
+              return sum + Number(accum.amount)
+            }, 0)
+
+            this.setState({
+              wellSavings: wellSavings,
+            })
+          })
+
+          if (total > 0) {
+            this.setState({
+              pieData: [
+                { x: "Well", y: (+this.state.wellSavings / goal) * 100},
+                { x: 'Wallet', y: (total / goal) * 100},
+                { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
+              ],
+              colorScale: ['#4A4AB2', '#9fbfdf', '#D0D0D0']
+            })
+          } else {
+            this.setState({
+              pieData: [
+                { x: "Well", y: (+this.state.wellSavings / goal) * 100},
+                { x: 'Goal', y: ((goal - (total + +this.state.wellSavings)) / goal) * 100},
+              ],
+              colorScale: ['#4A4AB2', '#D0D0D0']
+            })
+          }
         } else {
           this.setState({
             pieData: [
@@ -177,7 +196,7 @@ class LandingPage extends Component {
                 colorScale={this.state.colorScale}
                 innerRadius={50}
                 width={350}
-                labelRadius={140}
+                labelRadius={135}
                 style={{ labels: { fontSize: 15 } }}
                 />
             </View>
