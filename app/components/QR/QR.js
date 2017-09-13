@@ -30,9 +30,13 @@ class QR extends Component {
         <View style={styles.navbar}>
         <NavigationBar title={{title:'MY QR', tintColor:"white"}} tintColor='rgba(220, 220, 220, 0.1)' leftButton={leftButtonConfig}/>
         </View>
+
+        <View style={styles.center}>
         <View style={styles.body}>
           <QRCode value={this.props.uid} size={250} />
         </View>
+        </View>
+
         <View style={styles.qrText}>
           <Text></Text>
           <Text></Text>
@@ -51,6 +55,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 130,
+    backgroundColor: 'rgba(250,250,250,0.5)',
+    borderRadius: 10,
+    padding: '5%',
+    width: '78%'
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   qrText: {
     justifyContent: 'center',
