@@ -167,9 +167,7 @@ class LandingPage extends Component {
           <View style={styles.container}>
             <View style={styles.chartWrap}>
               <Text style={styles.chartText}>P R I C E  C H A R T</Text>
-              <VictoryChart
-             
-              >
+              <VictoryChart>
                 <VictoryLine
                 interpolation="natural"
                   data={this.state.history}

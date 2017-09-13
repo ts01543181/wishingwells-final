@@ -27,14 +27,14 @@ class CashOutModal extends Component {
   _renderCloseButton = (text, onPress) => (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
-        <Text>CLOSE</Text>
+        <Text style={styles.buttonText}>CLOSE</Text>
       </View>
     </TouchableOpacity>
   );
 
   _renderModalContent = () => (
     <View style={styles.modalContent}>
-      <Text>Please note: There is a small transaction fee needed (~1-2 USD).</Text>
+      <Text>Please note: There is a small transaction fee of about $1 - $2.</Text>
       <Text></Text>
       <Text>You want to Cash Out: </Text>
       <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} keyboardType={'numeric'} multiline={true} onChangeText={(text) => this.setState({amount: text})} value={String(this.state.amount)}/>
