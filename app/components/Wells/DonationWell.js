@@ -253,7 +253,7 @@ class DonationWell extends Component {
     backgroundColor: 'rgba(0,0,0,0)',
     fontSize: 50,
     color: 'white',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   walletText: {
     textAlign: 'center',
