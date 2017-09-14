@@ -98,6 +98,30 @@ class Invest extends Component {
                 amount: Number(this.state.amount),
               }
 
+              const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+
+              const ref = db.ref(`users/${this.props.uid}/logs`)
+
+              ref.push({
+                date: new Date().toDateString(),
+                time: new Date().getTime(),
+                amount: '-' + this.state.amount,
+                description: 'SELF INVESTMENT'
+              })
+
+              investmentLogsRef.push({
+                date: new Date().toDateString(),
+                time: new Date().getTime(),
+                amount: this.state.amount,
+                description: 'SELF INVESTMENT'
+              })
+
+              this.setState({
+                amount: '',
+                description: '',
+                investmentReady: false,
+              })
+
               axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
               .then(({data}) => {
                 console.log(data)
@@ -114,21 +138,6 @@ class Invest extends Component {
                 .then((data) => {
 
                   console.log(data)
-
-                  const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
-
-                  investmentLogsRef.push({
-                    date: new Date().toDateString(),
-                    time: new Date().getTime(),
-                    amount: this.state.amount,
-                    description: 'SELF INVESTMENT'
-                  })
-
-                  this.setState({
-                    amount: '',
-                    description: '',
-                    investmentReady: false,
-                  })
 
                   alert('Investment Made')
                 })

@@ -122,7 +122,7 @@ class Profile extends Component {
             </Image>
           <ScrollView>
 
-            <View style={styles.info}>
+            <View style={styles.firstInfo}>
               <Text><Icon name='at' size={25} style={styles.icon}/> {this.props.username}</Text>
               <Text style={styles.email}><Icon name='email-outline' size={25} style={styles.icon}/> {this.props.email}</Text>
             </View>
@@ -195,6 +195,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(242,242,242,0.4)',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  firstInfo: {
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 10,
+    marginTop: 15,
+    borderRadius: 10,
+    backgroundColor: 'rgba(242,242,242,0.4)',
   },
   aboutInfo:{
     paddingTop: 8,

@@ -92,6 +92,17 @@ class DonationWell extends Component {
                 amount: Number(this.state.amount),
               }
 
+              const ref = db.ref(`users/${this.props.uid}/logs`)
+
+              let description = 'DONATED TO ' + this.props.receiverEmail
+
+              ref.push({
+                date: new Date().toDateString(),
+                time: new Date().getTime(),
+                amount: '-' + this.state.amount,
+                description: description
+              })
+
               axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
               .then(({data}) => {
                 console.log(data)
@@ -225,7 +236,7 @@ class DonationWell extends Component {
         </GestureRecognizer>
 
           <View style={styles.confirmModal}>
-            <DonationConfirmModal amount={this.state.amount} toggleDonateReady={this.toggleDonateReady}/>
+            <DonationConfirmModal amount={this.state.amount} description={this.state.description} toggleDonateReady={this.toggleDonateReady}/>
           </View>
       </View>
     )
@@ -287,7 +298,7 @@ class DonationWell extends Component {
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 50,
-    width: '35%',
+    width: '65%',
     marginTop: '5%',
   },
   descriptionInputField: {

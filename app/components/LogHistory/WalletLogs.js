@@ -9,7 +9,7 @@ import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 const db = firebase.database()
 const mapStateToProps = (state) => {
   return {
-    logs: state.SavingsReducer.entries,
+    logs: state.SavingsReducer.entries.reverse(),
     uid: state.ProfileReducer.uid,
     total: state.ProfileReducer.total,
   }
@@ -25,17 +25,34 @@ class WalletLogs extends Component {
     super()
     this.state = {
       refreshing: false,
+      walletSavings: ''
     };
   }
 
   componentDidMount() {
-    console.log('WALLET LOGS', this.props.logs)
     db.ref(`users/${this.props.uid}/logs`).on('value', (snapshot) => {
       (snapshot.val()) ? this.props.setSavings(Object.values(snapshot.val())) : null;
     })
-    firebase.database().ref(`users/${this.props.uid}`).on('value', (data) => {
-      this.props.setUserInfo({
-        total: data.val().total
+    db.ref(`users/${this.props.uid}/logs`).once('value').then(data => {
+      let vals = (data.val()) ? Object.values(data.val()) : [];
+      let walletSavings = vals.reduce((sum, accum) => {
+        return sum + Number(accum.amount)
+      }, 0)
+
+      this.setState({
+        walletSavings: walletSavings,
+      })
+    })
+
+    db.ref(`users/${this.props.uid}/logs`).on('value', data => {
+      let vals = (data.val()) ? Object.values(data.val()) : [];
+
+      let walletSavings = vals.reduce((sum, accum) => {
+        return sum + Number(accum.amount)
+      }, 0)
+
+      this.setState({
+        walletSavings: walletSavings,
       })
     })
   }
@@ -81,7 +98,7 @@ class WalletLogs extends Component {
                 onRefresh={this._onRefresh.bind(this)}
                 />}
             removeClippedSubviews={false}
-            data={this.props.logs.reverse()}
+            data={this.props.logs}
             renderItem={({item}) =>
               <View style={styles.list}>
                 <Text style={styles.description}>{item.description}</Text>

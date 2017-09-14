@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   amountInputField: {
     textAlign: 'center',
     width:'50%',
-    fontSize: 60,
+    fontSize: 50,
     backgroundColor: 'rgba(0,0,0,0)',
     justifyContent: 'center',
   },

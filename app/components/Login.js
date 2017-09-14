@@ -12,6 +12,8 @@ import { setBitcoinValue } from '../Actions/Bitcoin/BitcoinAction'
 import axios from 'axios'
 import { HOST_IP } from '../../config.js'
 import Spinner from 'react-native-spinkit'
+import reactMixin from 'react-mixin'
+import TimerMixin from 'react-timer-mixin'
 
 class Login extends Component {
   constructor(props) {
@@ -39,7 +41,7 @@ class Login extends Component {
         axios.get(`http://${HOST_IP}:4000/api/getBitcoinValue`)
         .then(({ data }) => {
           this.props.setBitcoinValue(data)
-          Actions.Home()
+          this.setTimeout(Actions.Home, 1750)
         })
         .catch(err => {
           console.log(err)
@@ -64,7 +66,7 @@ class Login extends Component {
         axios.get(`http://${HOST_IP}:4000/api/getBitcoinValue`)
         .then(({ data }) => {
           this.props.setBitcoinValue(data)
-          Actions.Home()
+          this.setTimeout(Actions.Home, 1750)
         })
         .catch(err => {
           console.log(err)
@@ -134,6 +136,8 @@ class Login extends Component {
     );
   }
 }
+
+reactMixin(Login.prototype, TimerMixin);
 
 const styles = StyleSheet.create({
   inputSection:{
