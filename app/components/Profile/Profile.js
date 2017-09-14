@@ -132,7 +132,7 @@ class Profile extends Component {
             </View>
 
             <View style={styles.info}>
-               <Text style={styles.wellSavingsAmount}>Well Amount: <Icon name='currency-usd' size={25} style={styles.icon}/>{Number(this.state.wellSavings).toFixed(2)}</Text>
+               <Text style={styles.wellSavingsAmount}>W E L L  A M O U N T : <Icon name='currency-usd' size={25} style={styles.icon}/>{Number(this.state.wellSavings).toFixed(2)}</Text>
                <CashOutModal style={styles.invest} uid={this.props.uid} wellAmount={this.state.wellSavings}/>
              </View>
 
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(242,242,242,0.4)',
   },
   wellSavingsAmount: {
-    fontSize: 30
+    fontSize: 20
   },
   money:{
     borderRadius: 10,
