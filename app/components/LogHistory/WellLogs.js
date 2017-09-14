@@ -93,7 +93,7 @@ class WellLogs extends Component {
         </View>
         <View style={styles.totalWrap}>
           <View style={styles.total}>
-            <Text style={styles.number}>${Number(this.state.wellSavings).toFixed(2) || 0}</Text>
+          <Text style={styles.number}>${Number(this.state.wellSavings).toFixed(2) || 0}</Text>
             <Text style={styles.savings}>Current Well Savings</Text>
           </View>
         </View>

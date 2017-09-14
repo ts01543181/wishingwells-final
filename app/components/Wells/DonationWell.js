@@ -225,7 +225,7 @@ class DonationWell extends Component {
         </GestureRecognizer>
 
           <View style={styles.confirmModal}>
-            <DonationConfirmModal amount={this.state.amount} description={this.state.description} toggleDonateReady={this.toggleDonateReady}/>
+            <DonationConfirmModal amount={this.state.amount} toggleDonateReady={this.toggleDonateReady}/>
           </View>
       </View>
     )
@@ -253,7 +253,7 @@ class DonationWell extends Component {
     backgroundColor: 'rgba(0,0,0,0)',
     fontSize: 50,
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   walletText: {
     textAlign: 'center',

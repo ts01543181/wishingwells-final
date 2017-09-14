@@ -59,7 +59,7 @@ class DonationProfile extends Component {
   render() {
     return (
       <View style={styles.body}>
-          <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
+        <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
 
             <Image source={{ uri: this.state.photo }} style={styles.image}>
               <View style={styles.namewrap}>
