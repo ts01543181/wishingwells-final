@@ -53,9 +53,14 @@ export default class Register extends Component {
     return (
         <View>
         <Image source={require('../../assets/background2.jpg')}  style={styles.backgroundImage}>
-        <Text style={styles.title}>
-         C R E A T E   A N   A C C O U N T 
-        </Text>
+
+        <View style={styles.titleWrap}>
+          <Text style={styles.title}>
+          C R E A T E   A N   A C C O U N T 
+          </Text>
+        </View>
+
+      <View style={styles.containerWrap}>
       <View style={styles.container}>
         <View style={styles.inputSection}>
           <Icon style={styles.email} name="email-outline" size={20} color="#F0F0F0"/>
@@ -92,6 +97,7 @@ export default class Register extends Component {
             autoCapitalize='none'
           />
         </View> 
+        </View> 
         <TouchableOpacity onPress={this._registerAccount} style={styles.signup}>
           <Text style={styles.signupText}>SIGN UP</Text>
         </TouchableOpacity>
@@ -101,6 +107,7 @@ export default class Register extends Component {
         </TouchableOpacity>
       
       </View>
+
       </Image>
       </View>
     );
@@ -144,11 +151,14 @@ const styles = StyleSheet.create({
   spinner: {
     marginTop: '80%'
   },
+  titleWrap: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   title: {
     fontSize: 20,
     color: '#E8E8E8',
-    marginLeft: 50,
-    marginTop: 90
+    marginTop: 90,
  },
   container: {
     alignItems: 'center',
@@ -157,7 +167,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(242,242,242,0.13)',
     borderRadius: 25,
     marginTop: 60,
-    marginLeft: 30
+  },
+  containerWrap: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputFields: {
     justifyContent: 'center',
