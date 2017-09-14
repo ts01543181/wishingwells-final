@@ -43,7 +43,7 @@ class Settings extends Component {
   constructor(props) {
     super(props)
     this.state={
-      photo: null,
+      photo: '',
       formData: {},
       uploading: false,
       progress: 0
@@ -64,7 +64,7 @@ class Settings extends Component {
 
   handleOnSave() {
     this.props.setUserInfo(this.state.formData)
-    if (this.state.photo === null && this.props.photo) {
+    if (this.state.photo === '' && this.props.photo) {
       this.setState({
         photo: this.props.photo
       })
@@ -79,6 +79,9 @@ class Settings extends Component {
       bio: this.state.formData.bio || this.props.bio,
       photo: this.state.photo || this.props.photo,
       goal: +this.state.formData.goal || +this.props.goal
+    })
+    .then(() => {
+      alert('Changes Saved')
     })
   }
 

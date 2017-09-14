@@ -58,7 +58,6 @@ class AddCard extends Component {
          this.props.setUserInfo({
            cardID: data
          });
-         alert('Added your card!')
        })
        .then(() => {
          let userUID = this.props.uid;

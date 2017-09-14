@@ -37,7 +37,8 @@ class DonationWell extends Component {
       description: '',
       coinSpeed: 20,
       paymentReady: false,
-      phoneNumber: ''
+      phoneNumber: '',
+      receiverEmail: '',
     }
     this.donate = this.donate.bind(this);
     this.toggleDonateReady = this.toggleDonateReady.bind(this);
@@ -94,7 +95,7 @@ class DonationWell extends Component {
 
               const ref = db.ref(`users/${this.props.uid}/logs`)
 
-              let description = 'DONATED TO ' + this.props.receiverEmail
+              let description = 'DONATED TO ' + this.state.receiverEmail
 
               ref.push({
                 date: new Date().toDateString(),

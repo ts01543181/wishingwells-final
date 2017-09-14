@@ -41,7 +41,7 @@ class Login extends Component {
         axios.get(`http://${HOST_IP}:4000/api/getBitcoinValue`)
         .then(({ data }) => {
           this.props.setBitcoinValue(data)
-          this.setTimeout(Actions.Home, 1750)
+          this.setTimeout(Actions.Home, 2000)
         })
         .catch(err => {
           console.log(err)
@@ -66,7 +66,7 @@ class Login extends Component {
         axios.get(`http://${HOST_IP}:4000/api/getBitcoinValue`)
         .then(({ data }) => {
           this.props.setBitcoinValue(data)
-          this.setTimeout(Actions.Home, 1750)
+          this.setTimeout(Actions.Home, 2000)
         })
         .catch(err => {
           console.log(err)

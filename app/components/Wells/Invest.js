@@ -62,9 +62,9 @@ class Invest extends Component {
         //
         // db.ref(`users/${this.props.uid}`).once('value', (user) => {
         //
-        //   db.ref(`users/${this.props.uid}`).update({
-        //     total: user.val().total - (chargeObj.amount / 100)
-        //   })
+          // db.ref(`users/${this.props.uid}`).update({
+          //   total: user.val().total - (chargeObj.amount / 100)
+          // })
         //
         //
         //   const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
@@ -137,13 +137,14 @@ class Invest extends Component {
                 axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, feesObj)
                 .then((data) => {
 
+                  // THIS PART ISN'T GOING THROUGH BECAUSE THE SET STATE ABOVE. WHEN ACTUALLY IMPLEMENTING, PUT SET STATE HERE
+
                   console.log(data)
 
                   alert('Investment Made')
                 })
                 .catch(err => {
                   console.log(err)
-                  alert("Coinbase buy didn't go through (You can only invest up to 3 times per day)")
                 })
               })
               .catch(err => {

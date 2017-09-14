@@ -30,8 +30,10 @@ class DonationConfirmModal extends Component {
 
   _renderModalContent = () => (
     <View style={styles.modalContent}>
-      <Text>You want to save: ${this.props.amount}?</Text>
-      <Text>Description: {this.props.description}</Text>
+      <Text style={styles.donationModalText}>You want to donate: ${this.props.amount}?</Text>
+      <Text></Text>
+      <Text style={styles.donationModalText}>Description: </Text>
+      <Text>{this.props.description}</Text>
       {this._renderButton('Confirm', () => {
           this.props.toggleDonateReady();
           this.setState({ visibleModal: null })
@@ -81,6 +83,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  donationModalText: {
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   bottomModal: {
     justifyContent: 'flex-end',
