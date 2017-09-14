@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, Alert, Button } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Alert, Button, TouchableWithoutFeedback, Image } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 import * as firebase from "firebase"
@@ -9,7 +9,10 @@ import DonationConfirmModal from './DonationConfirmModal.js'
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js'
 import { Actions } from 'react-native-router-flux'
 import { HOST_IP } from '../../../config.js'
+import Spinner from 'react-native-spinkit'
+import * as Animatable from 'react-native-animatable'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Communications from 'react-native-communications'
 
 const db = firebase.database()
 
@@ -21,6 +24,7 @@ const mapStateToProps = state => {
     receiverTotal: 0,
     receiverEmail: '',
     donateReady: false,
+    total: state.ProfileReducer.total
   }
 }
 
@@ -32,7 +36,9 @@ class DonationWell extends Component {
       amount: '',
       description: '',
       coinSpeed: 20,
-      paymentReady: false
+      paymentReady: false,
+      phoneNumber: '',
+      receiverEmail: '',
     }
     this.donate = this.donate.bind(this);
     this.toggleDonateReady = this.toggleDonateReady.bind(this);
@@ -41,7 +47,8 @@ class DonationWell extends Component {
   componentDidMount() {
     db.ref(`users/${this.props.qr}`).once('value', (user) => {
       this.setState({
-        receiverEmail: user.val().email
+        receiverEmail: user.val().email,
+        phoneNumber: user.val().phoneNumber
       })
     })
   }
@@ -53,6 +60,8 @@ class DonationWell extends Component {
   }
 
   donate() {
+
+    Communications.text(this.state.phoneNumber, this.state.description)
 
     if (Number(this.state.amount) < 5) {
       alert('Donation amount should be more than $5.00')
@@ -83,6 +92,17 @@ class DonationWell extends Component {
                 uid: this.props.qr,
                 amount: Number(this.state.amount),
               }
+
+              const ref = db.ref(`users/${this.props.uid}/logs`)
+
+              let description = 'DONATED TO ' + this.state.receiverEmail
+
+              ref.push({
+                date: new Date().toDateString(),
+                time: new Date().getTime(),
+                amount: '-' + this.state.amount,
+                description: description
+              })
 
               axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
               .then(({data}) => {
@@ -171,117 +191,145 @@ class DonationWell extends Component {
   }
 
   render() {
+    const resizeMode = 'stretch';
 
     return (
+      <View style={styles.bodyWrap}>
+
       <View style={styles.container}>
-        <KeyboardAwareScrollView>
-        <View style={styles.walletAmountContainer}>
-          <Text style={styles.walletAmount}>Donation to:</Text>
-          <Text style={styles.receiverEmail}>{this.state.receiverEmail}</Text>
+        <Image source={require('../../../assets/background2sliced.jpg')} style={{
+          flex: 1,
+          resizeMode: 'cover',
+        }}>
+          <View style={styles.walletWrap}>
+            <Text style={styles.walletAmount}>${this.props.total.toFixed(2)}</Text>
+            <Text style={styles.walletText}>CURRENT WALLET BALANCE</Text>
+          </View>
+        </Image>
+      </View>
+
+        <View>
+          <Text style={styles.credentials}>A M O U N T   T O  D O N A T E</Text>
         </View>
-        <View style={styles.inputFields}>
-          <View style={{height: "20%"}}>
-            <Text style={styles.credentials}>Input Amount</Text>
-          </View>
-          <TextInput style={styles.amountInputField} placeholder="Amount here" placeholderTextColor={'#A8A8A8'} keyboardType={'numeric'} multiline={true} onChangeText={(text) => this.setState({amount: Number(text)})} value={String(this.state.amount)}/>
-          <View style={{height: "20%"}}>
-            <Text style={styles.credentials}>Description</Text>
-          </View>
-          <TextInput placeholder='Description Here' placeholderTextColor={'#A8A8A8'} style={styles.descriptionInputField} multiline={true} numberOfLines={2} onChangeText={(text) => this.setState({description: text})} value={this.state.description}/>
+
+        <View style={styles.amountInputField}>
+          <Text style={styles.dollarSign}>$</Text>
+          <KeyboardAwareScrollView>
+          <TextInput style={styles.amountInput} placeholder="0" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
+          </KeyboardAwareScrollView>
+        </View>
+        <View style={styles.descriptionInputField}>
+          <Text>M E S S A G E : </Text>
+          <KeyboardAwareScrollView>
+          <TextInput style={styles.descriptionInput} multiline={true} placeholder="Message Here" numberOfLines={2} maxLength={54} onChangeText={(text) => this.setState({description: text})} value={this.state.description}/>
+          </KeyboardAwareScrollView>
+        </View>
+
+        <GestureRecognizer
+           onSwipeUp={(state) => this.donate()}
+          style={styles.coin}
+        >
+           <View style={styles.coin}>
+              <Animatable.View ref="view">
+                <Spinner type="CircleFlip" size={150} color={'#ffd700'}/>
+              </Animatable.View>
+           </View>
+        </GestureRecognizer>
+
           <View style={styles.confirmModal}>
             <DonationConfirmModal amount={this.state.amount} description={this.state.description} toggleDonateReady={this.toggleDonateReady}/>
           </View>
-          <View style={styles.investButtonContainer}>
-            <Button style={styles.investButton} title="Donate" onPress={this.donate}/>
-          </View>
-        </View>
-        </KeyboardAwareScrollView>
       </View>
     )
   }
-}
+  }
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
+  bodyWrap: {
+    backgroundColor: 'white',
+    height: '100%'
+  },
   container: {
-    flex: 1,
+    height: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  navbar: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    zIndex:2
-  },
-  walletAmountContainer: {
-    marginTop: '5%',
+  walletWrap: {
+    paddingTop: '5%',
+    display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   walletAmount: {
-    fontSize: 30,
+    backgroundColor: 'rgba(0,0,0,0)',
+    fontSize: 50,
+    color: 'white',
+    textAlign: 'center',
   },
-  receiverEmail: {
-    marginTop: 20,
-    fontSize: 20
+  walletText: {
+    textAlign: 'center',
+    color: 'white',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0)',
   },
-  inputFields: {
-    marginTop: '2%',
-    marginLeft: '25%',
-    height: '25%',
-    width: '50%',
-    borderColor: 'gray',
+  amountWrap: {
+    marginTop: '30%',
+    borderWidth: 1,
     alignItems: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   credentials: {
-    paddingTop: 10
+    paddingTop: '5%',
+    fontSize: 15,
+    textAlign: 'center'
   },
   confirmModal: {
-    height: '10%',
-    width: 100,
+    marginTop: '20%',
   },
   amountInputField: {
-    width: '100%',
-    height: '30%',
-    borderColor: 'gray',
-    borderColor: 'gray',
-    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: 'grey',
+  },
+  amountInput: {
+    alignItems: 'center',
+    justifyContent: 'center',
     textAlign: 'center',
-    fontSize: 15,
-    marginTop: 10,
+    fontSize: 50,
+    width: '65%',
+    marginTop: '5%',
   },
   descriptionInputField: {
-    width: '100%',
-    height: '50%',
-    borderColor: 'gray',
-    borderColor: 'gray',
-    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: 'grey',
+    marginLeft: '20%'
+  },
+  dollarSign: {
+    alignItems: 'center',
+    justifyContent: 'center',
     textAlign: 'center',
-    fontSize: 15,
-    marginTop: 10
+    fontSize: 50,
+    marginLeft: '35%'
   },
-  investButtonContainer: {
-    marginTop: '60%',
-    borderWidth: 1,
-    borderRadius: 60,
-    borderColor: 'blue',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 30,
-    paddingBottom: 70,
+  descriptionInput: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontSize: 20,
+    width: '60%',
+    height: 35
   },
-  investButton: {
-  }
-})
+  coin: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '8%'
+  },
+  })
 
-// <GestureRecognizer
-//   onSwipeUp={(state) => this.onSwipeUp(state)}
-//   config={config}
-//   style={styles.coin}
-//   >
-//   <View style={styles.coin}></View>
-// </GestureRecognizer>
-
-export default connect(mapStateToProps, { setUserInfo })(DonationWell)
+  export default connect(mapStateToProps)(DonationWell)

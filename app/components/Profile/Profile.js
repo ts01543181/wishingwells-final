@@ -57,7 +57,9 @@ class Profile extends Component {
 
     db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
       console.log('here', data.val())
-      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
+
+      let vals = (data.val()) ? Object.values(data.val()) : [];
+      let wellSavings = vals.reduce((sum, accum) => {
         return sum + Number(accum.amount)
       }, 0)
 
@@ -68,7 +70,9 @@ class Profile extends Component {
 
     db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
 
-      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
+      let vals = (data.val()) ? Object.values(data.val()) : [];
+
+      let wellSavings = vals.reduce((sum, accum) => {
         return sum + Number(accum.amount)
       }, 0)
 
@@ -104,8 +108,8 @@ class Profile extends Component {
 
   render() {
     return (
+      <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
       <View style={styles.body}>
-          <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
 
             <NavigationBar title={{title:'PROFILE', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
 
@@ -128,7 +132,7 @@ class Profile extends Component {
             </View>
 
             <View style={styles.info}>
-               <Text style={styles.wellSavingsAmount}>W E L L  A M O U N T: <Icon name='currency-usd' size={25} style={styles.icon}/>{this.state.wellSavings}</Text>
+               <Text style={styles.wellSavingsAmount}>W E L L  A M O U N T : <Icon name='currency-usd' size={25} style={styles.icon}/>{Number(this.state.wellSavings).toFixed(2)}</Text>
                <CashOutModal style={styles.invest} uid={this.props.uid} wellAmount={this.state.wellSavings}/>
              </View>
 
@@ -138,13 +142,16 @@ class Profile extends Component {
             </View>
 
           </ScrollView>
-        </Image>
       </View>
+      </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  body: {
+    height: '70%'
+  },
   about: {
     paddingTop: 15,
     marginLeft: 10,
@@ -169,6 +176,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     top: 10,
     fontWeight: 'bold',
+    // color: "#2eb8b8"
     color: 'white',
     shadowOpacity: 70
   },
@@ -188,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  firstInfo:{
+  firstInfo: {
     paddingTop: 8,
     paddingBottom: 8,
     paddingLeft: 8,
@@ -197,7 +205,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 15,
     borderRadius: 10,
-    backgroundColor: 'rgba(242,242,242,0.4)'
+    backgroundColor: 'rgba(242,242,242,0.4)',
   },
   aboutInfo:{
     paddingTop: 8,
@@ -239,11 +247,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(190,190,190,0.5)'
   },
   goalAmount: {
-    fontSize: 15
+    fontSize: 20
   },
   backgroundImage:{
     width: '100%',
-    height: '100%',
+    height: 1000,
     backgroundColor: 'rgba(0,0,0,0)'
   },
   invest: {

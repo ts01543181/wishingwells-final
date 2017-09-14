@@ -24,7 +24,7 @@ class QR extends Component {
   render() {
 
     return (
-      <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../../assets/background2.jpg')}  style={styles.backgroundImage}>
 
       <View>
         <View style={styles.navbar}>

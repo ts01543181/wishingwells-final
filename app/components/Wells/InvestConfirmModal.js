@@ -30,7 +30,7 @@ class InvestConfirmModal extends Component {
 
   _renderModalContent = () => (
     <View style={styles.modalContent}>
-      <Text>You want to invest: ${this.props.amount}?</Text>
+      <Text style={styles.investModalText}>You want to invest: ${this.props.amount}?</Text>
       {this._renderButton('Confirm', () => {
           this.setState({ visibleModal: null })
           this.props.toggleInvestmentReady();
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: 'rgba(133, 224, 224,0.5)',  
+    backgroundColor: 'rgba(133, 224, 224,0.5)',
     marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
@@ -81,6 +81,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  investModalText: {
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   bottomModal: {
     justifyContent: 'flex-end',

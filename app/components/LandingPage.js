@@ -46,6 +46,7 @@ class LandingPage extends Component {
 
   }
   componentWillMount() {
+
     firebase.database().ref(`users/${this.props.uid}`).once('value').then(data => {
       let logs = (data.val().logs) ? Object.values(data.val().logs) : [];
       let { username, firstname, lastname, email, photo, bio, wallet, cardID, total, goal, donationID } = data.val()
@@ -64,30 +65,18 @@ class LandingPage extends Component {
       this.props.setSavings(logs)
       this.props.setUserPhoto(photo)
     })
+
     firebase.database().ref(`users/${this.props.uid}`).on('value', (snapshot) => {
       let { total, wallet, goal } = snapshot.val()
-        if (wallet !== '') {
-
-          db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(investmentData => {
-            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
+        if (wallet !== '' && snapshot.val().investmentLogs) {
+            let vals = Object.values(snapshot.val().investmentLogs)
+            let wellSavings = vals.reduce((sum, accum) => {
               return sum + Number(accum.amount)
             }, 0)
 
             this.setState({
               wellSavings: wellSavings,
             })
-          })
-
-          db.ref(`users/${this.props.uid}/investmentLogs`).on('value', investmentData => {
-
-            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
-              return sum + Number(accum.amount)
-            }, 0)
-
-            this.setState({
-              wellSavings: wellSavings,
-            })
-          })
 
           if (total > 0) {
             this.setState({
@@ -144,11 +133,11 @@ class LandingPage extends Component {
       })
     })
   }
-  
+
   render() {
     return (
       <View style={styles.body}>
-      <Image source={require('../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../assets/background2sliced.jpg')}  style={styles.backgroundImage}>
         <View>
         <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)'/>
         </View>
@@ -172,7 +161,7 @@ class LandingPage extends Component {
                 interpolation="natural"
                   data={this.state.history}
                   style={{
-                    data: { stroke: "#2eb8b8" },
+                    data: { stroke: "#22abc3" },
                     parent: { border: "1px solid #ccc"}
                   }}
                   animate={{
@@ -239,6 +228,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.3,
+    resizeMode: 'cover'
   },
   chartWrap: {
     backgroundColor: 'rgba(250,250,250,0.5)',
@@ -319,7 +309,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 20,
     justifyContent: 'center',
-    marginTop: '7%'    
+    marginTop: '7%'
   },
   goalText: {
     alignSelf: 'center',

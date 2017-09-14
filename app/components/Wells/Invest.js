@@ -62,9 +62,9 @@ class Invest extends Component {
         //
         // db.ref(`users/${this.props.uid}`).once('value', (user) => {
         //
-        //   db.ref(`users/${this.props.uid}`).update({
-        //     total: user.val().total - (chargeObj.amount / 100)
-        //   })
+          // db.ref(`users/${this.props.uid}`).update({
+          //   total: user.val().total - (chargeObj.amount / 100)
+          // })
         //
         //
         //   const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
@@ -98,6 +98,30 @@ class Invest extends Component {
                 amount: Number(this.state.amount),
               }
 
+              const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
+
+              const ref = db.ref(`users/${this.props.uid}/logs`)
+
+              ref.push({
+                date: new Date().toDateString(),
+                time: new Date().getTime(),
+                amount: '-' + this.state.amount,
+                description: 'SELF INVESTMENT'
+              })
+
+              investmentLogsRef.push({
+                date: new Date().toDateString(),
+                time: new Date().getTime(),
+                amount: this.state.amount,
+                description: 'SELF INVESTMENT'
+              })
+
+              this.setState({
+                amount: '',
+                description: '',
+                investmentReady: false,
+              })
+
               axios.post(`http://${HOST_IP}:4000/api/buyCrypto`, buyObj)
               .then(({data}) => {
                 console.log(data)
@@ -110,31 +134,17 @@ class Invest extends Component {
                   amount: Number(fees) * 100,
                 }
 
-                axios.post(`http://${HOST_IP}:4000/api/payFees`, feesObj)
+                axios.post(`http://${HOST_IP}:4000/api/makeInvestment`, feesObj)
                 .then((data) => {
 
+                  // THIS PART ISN'T GOING THROUGH BECAUSE THE SET STATE ABOVE. WHEN ACTUALLY IMPLEMENTING, PUT SET STATE HERE
+
                   console.log(data)
-
-                  const investmentLogsRef = db.ref(`users/${this.props.uid}/investmentLogs`)
-
-                  investmentLogsRef.push({
-                    date: new Date().toDateString(),
-                    time: new Date().getTime(),
-                    amount: this.state.amount,
-                    description: 'SELF INVESTMENT'
-                  })
-
-                  this.setState({
-                    amount: '',
-                    description: '',
-                    investmentReady: false,
-                  })
 
                   alert('Investment Made')
                 })
                 .catch(err => {
                   console.log(err)
-                  alert("Coinbase buy didn't go through (You can only invest up to 3 times per day)")
                 })
               })
               .catch(err => {
@@ -166,12 +176,12 @@ class Invest extends Component {
       <View style={styles.bodyWrap}>
 
       <View style={styles.container}>
-        <Image source={require('../../../assets/backgroundProfile.jpg')} style={{
+        <Image source={require('../../../assets/background2sliced.jpg')} style={{
           flex: 1,
-          resizeMode,
+          resizeMode: 'cover',
         }}>
           <View style={styles.walletWrap}>
-            <Text style={styles.walletAmount}>${this.props.total}</Text>
+            <Text style={styles.walletAmount}>${this.props.total.toFixed(2)}</Text>
             <Text style={styles.walletText}>CURRENT WALLET BALANCE</Text>
           </View>
         </Image>
@@ -182,7 +192,7 @@ class Invest extends Component {
         </View>
 
         <View style={styles.amountInputField}>
-          <Text style={styles.dollarSign}>$</Text>
+          <Text style={styles.dollarSign}>$  </Text>
           <KeyboardAwareScrollView>
           <TextInput style={styles.amountInput} placeholder="0" keyboardType={'numeric'} onChangeText={(text) => this.setState({amount: Number(text)})} value={this.state.amount}/>
           </KeyboardAwareScrollView>
@@ -194,7 +204,7 @@ class Invest extends Component {
         >
            <View style={styles.coin}>
               <Animatable.View ref="view">
-                <Spinner type="CircleFlip" size={150} color={'#DAA520'}/>
+                <Spinner type="CircleFlip" size={150} color={'#ffd700'}/>
               </Animatable.View>
            </View>
         </GestureRecognizer>
@@ -217,16 +227,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // backgroundImage: {
-  //   flex: 1,
-  //   'stretch',
-  //   // borderWidth: 1,
-  //   // height: '40%',
-  //   // alignItems: 'center',
-  //   // justifyContent:'center',
-  // },
   walletWrap: {
-    paddingTop: '1%',
+    paddingTop: '5%',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
@@ -264,13 +266,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: 'grey',
+    marginRight: '5%'
   },
   amountInput: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
     fontSize: 50,
-    width: '35%',
+    width: '80%',
     marginTop: '5%',
   },
   dollarSign: {

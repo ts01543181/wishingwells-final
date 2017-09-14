@@ -38,6 +38,7 @@ class Well extends Component {
       amount: '',
       description: '',
       paymentReady: false,
+      total: null
     }
     this.addToWallet = this.addToWallet.bind(this);
   }
@@ -93,18 +94,18 @@ class Well extends Component {
 
   render() {
     return (
+    <KeyboardAwareScrollView>
     <View style={styles.container}>
-      <Image source={require('../../../assets/backgroundProfile.jpg')}  style={styles.backgroundImage}>
+      <Image source={require('../../../assets/background2sliced.jpg')}  style={styles.backgroundImage}>
           <View style={styles.navbar}>
           <NavigationBar title={{title:'WISHING WELL', tintColor:"white"}} tintColor='rgba(240, 240, 240, 0.1)' rightButton={rightButtonConfig}/>
           </View>
 
           <View style={styles.walletAmountContainer}>
-            <Text style={styles.walletAmount}>${this.props.total}</Text>
+            <Text style={styles.walletAmount}>${this.props.total.toFixed(2)}</Text>
             <Text style={styles.walletText}>WALLET BALANCE</Text>
           </View>
       </Image>
-      <KeyboardAwareScrollView>
 
           <View>
 
@@ -123,8 +124,8 @@ class Well extends Component {
 
           </View>
 
-          </KeyboardAwareScrollView>
         </View>
+      </KeyboardAwareScrollView>
     )
   }
 }
@@ -133,10 +134,11 @@ const styles = StyleSheet.create({
   backgroundImage:{
     width: '100%',
     height: '30%',
-    backgroundColor: 'rgba(0,0,0,0)'
+    backgroundColor: 'rgba(0,0,0,0)',
+    resizeMode: 'cover'
   },
   container: {
-    flex: 1,
+    height: '113%',
     backgroundColor: 'white'
   },
   walletAmountContainer: {
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
   },
   walletText:{
     fontSize: 14,
-    color: '#258e8e',
+    color: 'white',
   },
   walletAmount: {
     fontSize: 60,
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
     paddingBottom: '25%',
     justifyContent:'center',
     alignSelf: 'center',
-    backgroundColor: 'rgba(92, 214, 214,0.5)',
+    backgroundColor: 'rgba(121, 226, 231, 0.31)',
   },
   dollarSign:{
     backgroundColor:'rgba(0,0,0,0)',
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
   amountInputField: {
     textAlign: 'center',
     width:'50%',
-    fontSize: 60,
+    fontSize: 50,
     backgroundColor: 'rgba(0,0,0,0)',
     justifyContent: 'center',
   },
@@ -217,13 +219,5 @@ const styles = StyleSheet.create({
     width: 100,
   },
 })
-
-// <GestureRecognizer
-//   onSwipeUp={(state) => this.onSwipeUp(state)}
-//   config={config}
-//   style={styles.coin}
-//   >
-//   <View style={styles.coin}></View>
-// </GestureRecognizer>
 
 export default connect(mapStateToProps, { setUserInfo })(Well)
