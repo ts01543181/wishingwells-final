@@ -7,6 +7,7 @@ import axios from 'axios';
 import { setUserInfo } from '../../Actions/Profile/ProfileAction.js';
 import { CreditCardInput } from "react-native-credit-card-input";
 import { HOST_IP } from '../../../config'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const db = firebase.database()
 
@@ -26,7 +27,8 @@ class AddCard extends Component {
  constructor(props) {
    super(props);
    this.state = {
-     formData: {}
+     formData: {},
+     phoneNumber: ''
    }
    this.addACard = this.addACard.bind(this)
    this.handleFormChange = this.handleFormChange.bind(this)
@@ -38,6 +40,10 @@ class AddCard extends Component {
  }
 
  addACard() {
+     if (this.state.phoneNumber.length < 10) {
+       alert('Please enter a valid phone number')
+       return
+     }
      if (this.state.formData.valid === true) {
        let cardInfo = {
          number: this.state.formData.values.number,
@@ -63,6 +69,7 @@ class AddCard extends Component {
              .then(({ data }) => {
                db.ref('users/' + userUID).update({
                  wallet: data,
+                 phoneNumber: this.state.phoneNumber,
                });
                this.props.setUserInfo({
                  qr: data
@@ -102,12 +109,18 @@ class AddCard extends Component {
 
  render() {
    return (
+     <KeyboardAwareScrollView>
      <View>
        <View style={styles.placeholder}></View>
+       <View style={styles.phoneInput}>
+         <Text style={styles.phoneText}>Phone Number: </Text>
+         <TextInput placeholder="10-digit Number" keyboardType="numeric" style={styles.phoneInputAmount} maxLength={10} onChangeText={(text) => this.setState({phoneNumber: text})} value={this.state.phoneNumber}></TextInput>
+       </View>
        <CreditCardInput onChange={this.handleFormChange}/>
        <View style={styles.buttonPlaceholder}></View>
        <Button style={styles.button} title="Submit" onPress={this.addACard}></Button>
      </View>
+    </KeyboardAwareScrollView>
    )
  }
 }
@@ -119,6 +132,19 @@ const styles = StyleSheet.create({
  },
  buttonPlaceholder: {
    marginTop: '5%'
+ },
+ phoneInput: {
+   flexDirection: 'row',
+   marginLeft: '17%',
+   marginBottom: '10%',
+ },
+ phoneInputAmount: {
+   justifyContent: 'center',
+   textAlign: 'center',
+   marginLeft: '5%'
+ },
+ phoneText: {
+   fontWeight: 'bold'
  }
 })
 

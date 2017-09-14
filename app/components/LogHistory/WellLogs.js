@@ -35,29 +35,30 @@ class WellLogs extends Component {
   }
 
   componentWillMount() {
-    db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
-      console.log('here', data.val())
-      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
-        return sum + Number(accum.amount)
-      }, 0)
-
-      this.setState({
-        wellLogs: Object.values(data.val()),
-        wellSavings: wellSavings,
-      })
-    })
-
-    db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
-
-      let wellSavings = Object.values(data.val()).reduce((sum, accum) => {
-        return sum + Number(accum.amount)
-      }, 0)
-
-      this.setState({
-        wellLogs: Object.values(data.val()),
-        wellSavings: wellSavings,
-      })
-    })
+    // db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(data => {
+    //   let vals = (data.val()) ? Object.values(data.val()) : [];
+    //   let wellSavings = vals.reduce((sum, accum) => {
+    //     return sum + Number(accum.amount)
+    //   }, 0)
+    //
+    //   this.setState({
+    //     wellLogs: vals,
+    //     wellSavings: wellSavings,
+    //   })
+    // })
+    //
+    // db.ref(`users/${this.props.uid}/investmentLogs`).on('value', data => {
+    //   let vals = (data.val()) ? Object.values(data.val()) : [];
+    //
+    //   let wellSavings = vals.reduce((sum, accum) => {
+    //     return sum + Number(accum.amount)
+    //   }, 0)
+    //
+    //   this.setState({
+    //     wellLogs: vals,
+    //     wellSavings: wellSavings,
+    //   })
+    // })
 
     // axios.post(`http://${HOST_IP}:4000/api/getWellTotal`, {uid: this.props.uid})
     // .then(({ data }) => {
@@ -92,7 +93,7 @@ class WellLogs extends Component {
         </View>
         <View style={styles.totalWrap}>
           <View style={styles.total}>
-            <Text style={styles.number}>${this.state.wellSavings.toFixed(2) || 0}</Text>
+            <Text style={styles.number}>${Number(this.state.wellSavings).toFixed(2) || 0}</Text>
             <Text style={styles.savings}>Current Well Savings</Text>
           </View>
         </View>

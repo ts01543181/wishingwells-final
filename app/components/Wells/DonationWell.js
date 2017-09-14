@@ -12,6 +12,7 @@ import { HOST_IP } from '../../../config.js'
 import Spinner from 'react-native-spinkit'
 import * as Animatable from 'react-native-animatable'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Communications from 'react-native-communications'
 
 const db = firebase.database()
 
@@ -35,7 +36,8 @@ class DonationWell extends Component {
       amount: '',
       description: '',
       coinSpeed: 20,
-      paymentReady: false
+      paymentReady: false,
+      phoneNumber: ''
     }
     this.donate = this.donate.bind(this);
     this.toggleDonateReady = this.toggleDonateReady.bind(this);
@@ -44,7 +46,8 @@ class DonationWell extends Component {
   componentDidMount() {
     db.ref(`users/${this.props.qr}`).once('value', (user) => {
       this.setState({
-        receiverEmail: user.val().email
+        receiverEmail: user.val().email,
+        phoneNumber: user.val().phoneNumber
       })
     })
   }
@@ -56,6 +59,8 @@ class DonationWell extends Component {
   }
 
   donate() {
+
+    Communications.text(this.state.phoneNumber, this.state.description)
 
     if (Number(this.state.amount) < 5) {
       alert('Donation amount should be more than $5.00')
@@ -220,7 +225,7 @@ class DonationWell extends Component {
         </GestureRecognizer>
 
           <View style={styles.confirmModal}>
-            <DonationConfirmModal amount={this.state.amount} toggleDonateReady={this.toggleDonateReady}/>
+            <DonationConfirmModal amount={this.state.amount} description={this.state.description} toggleDonateReady={this.toggleDonateReady}/>
           </View>
       </View>
     )

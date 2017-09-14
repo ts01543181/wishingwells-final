@@ -38,6 +38,7 @@ class Well extends Component {
       amount: '',
       description: '',
       paymentReady: false,
+      total: null
     }
     this.addToWallet = this.addToWallet.bind(this);
   }

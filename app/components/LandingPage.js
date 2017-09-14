@@ -46,6 +46,7 @@ class LandingPage extends Component {
 
   }
   componentWillMount() {
+
     firebase.database().ref(`users/${this.props.uid}`).once('value').then(data => {
       let logs = (data.val().logs) ? Object.values(data.val().logs) : [];
       let { username, firstname, lastname, email, photo, bio, wallet, cardID, total, goal, donationID } = data.val()
@@ -64,30 +65,18 @@ class LandingPage extends Component {
       this.props.setSavings(logs)
       this.props.setUserPhoto(photo)
     })
+
     firebase.database().ref(`users/${this.props.uid}`).on('value', (snapshot) => {
       let { total, wallet, goal } = snapshot.val()
-        if (wallet !== '') {
-
-          db.ref(`users/${this.props.uid}/investmentLogs`).once('value').then(investmentData => {
-            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
+        if (wallet !== '' && snapshot.val().investmentLogs) {
+            let vals = Object.values(snapshot.val().investmentLogs)
+            let wellSavings = vals.reduce((sum, accum) => {
               return sum + Number(accum.amount)
             }, 0)
 
             this.setState({
               wellSavings: wellSavings,
             })
-          })
-
-          db.ref(`users/${this.props.uid}/investmentLogs`).on('value', investmentData => {
-
-            let wellSavings = Object.values(investmentData.val()).reduce((sum, accum) => {
-              return sum + Number(accum.amount)
-            }, 0)
-
-            this.setState({
-              wellSavings: wellSavings,
-            })
-          })
 
           if (total > 0) {
             this.setState({
